@@ -1,0 +1,81 @@
+.modal-lesson {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.7);
+    display: flex;
+    justify-content: center;
+    padding-top: 5rem;
+    
+}
+
+.modal-body-lesson {
+    position: relative;
+    padding: 2rem;
+    width: 400px;
+    border-radius: 5px;
+    background: white;
+    height: 400px;
+    
+}
+
+.close-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px
+}
+
+.modal-content-lesson {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+
+.warning-message-addstudent {
+    color: rgb(245, 111, 111);
+    margin: .3rem;
+    font-size: 1rem;
+}
+
+.create-lesson-btn {
+  /* background-color: transparent; */
+  cursor: pointer;
+  padding: 0;
+  margin: 0 auto;
+  /* font-size: 1rem; */
+  background: url('http://pngimg.com/uploads/plus/small/plus_PNG45.png');
+  background-size: 40px;
+  background-repeat: no-repeat;
+  width: 40px;
+  height: 40px;
+  border: none;
+  align-items: center;
+  
+}
+.create-lesson-btn:hover {
+    background-size: 42px;
+    
+}
+
+.choose {
+    color:white;
+    background: rgb(90, 156, 104);;
+}
+
+.choose-students-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.student-item {
+    border: 1px solid rgb(90, 156, 104);
+    padding: .2rem 1rem;
+    margin-bottom: .3rem;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}

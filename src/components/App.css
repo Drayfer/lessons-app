@@ -1,0 +1,205 @@
+.container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: space-between;
+  }
+  .sidebar {
+    width: 20%;
+    background: linear-gradient(90deg, #29323C 0%, #485563 100%);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    text-align: center;
+  
+  }
+  .sidebar h1 {
+    /* margin-top: 2rem; */
+    color: azure;
+  }
+  .main {
+    width: 80%;
+    background: linear-gradient(90deg, #8b98aa 0%, #b0b3b8 100%);
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+  .dayList {
+    width: 260px;
+    min-height: 300px;
+    border: rgb(211, 211, 211) solid 1px;
+    border-radius: 5px;
+    padding: .5rem;
+    margin: .5rem;
+    background: rgb(240, 244, 250);
+  }
+  
+  .dayList h2 {
+    text-align: center;
+    margin-bottom: 1rem;
+    margin-top: .5rem;
+    color: #29323C;
+  }
+  
+  .lessons {  
+    display: flex;
+    flex-direction: column;
+    height: 250px;
+  }
+  
+  .students-list {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid #aaa;
+    padding: .2rem .2rem;
+    margin-bottom: .2rem;
+    border-radius: 5px;
+    background-color: beige;
+    margin-left: .5rem;
+    margin-right: .5rem;
+  }
+  
+  .students-list-container {
+    list-style: none; 
+    padding-left: 0;
+  }
+  
+  .student-balance {
+    font-weight: 500;
+    font-size: 1.2rem;
+    color: green;
+  }
+  
+  .minus-balance {
+    color: red;
+  }
+  
+  .setect-btn {
+    display: flex;
+    justify-content: left;
+    flex-direction: column;
+  }
+  
+  .arrow-btn {
+      width: 14px;
+      height: 12px;
+      font-size: .6rem;
+      text-align: center;
+      padding-left: .4rem;
+      padding-right: 1rem;
+      margin: .1rem;
+      border: none;
+      border-radius: 2px;
+      color: white;
+      background: rgb(90, 156, 104);
+      cursor: pointer;
+  }
+  .arrow-btn:hover {
+    background: rgb(57, 121, 71);
+  }
+  
+  
+  .date-today {
+    color: aliceblue;
+    font-size: .8rem;
+  }
+  
+  .lessons-placeholder {
+    min-height: 150px;
+  }
+  
+  .students-list-delete {
+    border-radius: 5px;
+    background: rgb(243 110 94);
+    color: white;
+    font-size: 1rem;
+    border: none;
+    padding: .2rem .4rem;
+    cursor: pointer;
+  }
+  
+  .students-list-delete:hover {
+    background: rgb(235, 48, 24);
+  }
+  
+  .student-submit {
+    width: 8rem;
+    background: rgb(90, 156, 104);;
+    color:white;
+    padding: .5rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    opacity: 90%;
+    margin: 0 auto;
+    margin-top: 1rem;
+    font-weight: 800;
+  }
+  
+  .student-submit:hover {
+    opacity: 100%;
+  }
+  
+  .week-delete {
+    font-size: 1rem;
+    padding-top: .2rem;
+    padding-bottom: .05rem;
+    padding-left: .3rem;
+    padding-right: .3rem;
+  }
+  
+  .index-student {
+    color: #555d69;
+  }
+  
+  .student-name-index{
+    font-weight: 500;
+    color: #29323C;
+  }
+  
+  .icon-message {
+    cursor: pointer;
+    padding: 0;
+   
+    /* font-size: 1rem; */
+    background: url('https://cdn.icon-icons.com/icons2/984/PNG/512/Untitled-1-02_icon-icons.com_75124.png');
+    background-size: 20px;
+    background-repeat: no-repeat;
+    width: 20px;
+    height: 20px;
+    border: none;
+    align-items: center;
+    /* background: tomato; */
+  }
+  
+  .hide {
+    background: none;
+  }
+  
+  textarea {
+      background: center center no-repeat; /* This ruins default border */
+      border: 2px solid #888; 
+      font-size: 1.1rem;
+  }
+  
+  .student-message-btn {
+  cursor: pointer;
+  padding: 0 .2rem;
+  }
+  
+  .student-message-btn:hover {
+    background: rgb(198, 224, 240);
+    border-radius: 4px;
+  
+  }
+
+  .fixed-sidebar {
+    width: 280px;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    left: 10px
+
+   
+  }

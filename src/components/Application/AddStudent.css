@@ -1,0 +1,83 @@
+
+.modal1 {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.7);
+    align-items: center;
+    padding-top: 5rem;
+}
+.modal-body {
+    position: absolute;
+    width: 500px;
+    min-height: 100px;
+    background: white;
+    margin: 0 auto;
+
+}
+
+
+/* 
+.modal-body {
+    position: relative;
+    padding: 2rem;
+    width: 400px;
+    border-radius: 5px;
+    background: white;
+    height: 320px;
+}
+
+ 
+
+.close-btn:hover {
+    background: rgb(231, 52, 28);  
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    padding-top: 2rem;
+    font-size: 1.2rem;
+}
+
+.modal-content div {
+    padding-bottom: 1rem;
+}
+
+.warning-message-addstudent {
+    color: rgb(245, 111, 111);
+    margin: .3rem;
+    font-size: 1rem;
+}
+
+.create-student-btn {
+    background-color: transparent;
+    border: 2px solid #C0C0C0;
+    color: #fff;
+    cursor: pointer;
+    font-family: inherit;
+    padding: .5rem 1rem;
+    font-size: 1rem;
+  }
+  .create-student-btn:hover {
+    border-color: #ffffff;
+  }
+
+  .student-name {
+    font-size: 2rem;
+    padding: .5rem;
+    border-radius: 5px;
+    color: rgb(37, 153, 105);
+  }
+
+  .uroki {
+    color: rgb(182, 145, 22);
+  }
+
+  .modal-content input {
+      font-size: 1.2rem;
+  }
+
+   */
