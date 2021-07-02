@@ -27,6 +27,7 @@ export default function Dashboard() {
             <Students />
             <AddStudent />
             <NewWeek />
+            
             </div>
  
           </div>
