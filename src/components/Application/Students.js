@@ -10,7 +10,8 @@ export default function Students() {
 
     function resetMessage() {
         setShow(!show)
-        students[index].message = ''
+        messageReset(students[index])
+        // students[index].message = ''
         setIndex(0)
     }
 
@@ -25,7 +26,8 @@ export default function Students() {
 
     const { students,
         deleteStudent,
-        changeLessons } = useApp()
+        changeLessons,
+        messageReset } = useApp()
 
 
 
@@ -40,7 +42,7 @@ export default function Students() {
                 <Modal.Header closeButton>
                     <Modal.Title>Напоминание</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>{students[index].message}</Modal.Body>
+                <Modal.Body>{students.length > 0 && students[index].message}</Modal.Body>
                 <Modal.Footer>
                     <Button variant="primary" onClick={() => {
                         handleClose()

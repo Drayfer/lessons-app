@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect } from "react"
-
+import { firestore } from "../firebase"
+import { useAuth } from "./AuthContext"
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 const AppContext = React.createContext()
 
@@ -9,7 +11,10 @@ export function useApp() {
 
 export function AppProvider({ children }) {
 
+
+
   const [today, setToday] = useState(new Date())
+  const { currentUser } = useAuth()
 
 
   useEffect(() => {
@@ -18,6 +23,8 @@ export function AppProvider({ children }) {
     }, 1000);
     return () => clearInterval(interval)
   }, [setToday]);
+
+
 
   const DAYS = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
   const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
@@ -60,32 +67,81 @@ export function AppProvider({ children }) {
     },
   ])
 
+  function fetchStudents() {
+      let docRef = firestore.collection("users").doc(currentUser.uid)
+      docRef.get().then((doc) => {
+        if (doc.exists) {
+          setStudents([...doc.data().students])
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+        }
+      }).catch((error) => {
+        console.log("Error getting document:", error);
+      });
+  
+   
+
+  }
+
+
+  useEffect(async () => {
+    await fetchStudents()
+  }, [students])
+
+  useEffect(async () => {
+    let docRef = firestore.collection("users").doc(currentUser.uid)
+    docRef.get().then((doc) => {
+      if (!doc.exists) {
+        updateFirestore([...students])
+      } 
+    })
+  }, [])
+
 
   function createStudent(name, balance) {
-    setStudents([...students.concat({
-      id: Date.now(), name: name, balance: balance, message: '',
-      day: {
-        0: { time: 'none', ok: false },
-        1: { time: 'none', ok: false },
-        2: { time: 'none', ok: false },
-        3: { time: 'none', ok: false },
-        4: { time: 'none', ok: false },
-        5: { time: 'none', ok: false },
-        6: { time: 'none', ok: false }
-      }
-    })])
+    updateFirestore(
+      [...students.concat({
+            id: Date.now(), name: name, balance: balance, message: '',
+            day: {
+              0: { time: 'none', ok: false },
+              1: { time: 'none', ok: false },
+              2: { time: 'none', ok: false },
+              3: { time: 'none', ok: false },
+              4: { time: 'none', ok: false },
+              5: { time: 'none', ok: false },
+              6: { time: 'none', ok: false }
+            }
+          })]
+    )
+  }
+
+
+
+  function updateFirestore(params) {
+    firestore.collection('users').doc(currentUser.uid).set({
+      students: params
+    })
   }
 
   function deleteStudent(id) {
-    window.confirm("Действительно удалить студента?") && setStudents([...students.filter(student => student.id !== id)])
+    window.confirm("Действительно удалить студента?") && (
+      updateFirestore([...students.filter(student => student.id !== id)])
+    )
   }
+
 
   function changeLessons(arrow, id) {
     if (arrow === 'up') {
-      setStudents([...students], [...students.map(student => student.id === id ? student.balance = student.balance + 1 : student.balance)])
+      updateFirestore([...students], [...students.map(student => student.id === id ? student.balance = student.balance + 1 : student.balance)])
     } else if (arrow === 'down') {
-      setStudents([...students], [...students.map(student => student.id === id ? student.balance = student.balance - 1 : student.balance)])
+      updateFirestore([...students], [...students.map(student => student.id === id ? student.balance = student.balance - 1 : student.balance)])
     }
+  }
+
+  function messageReset (student) {
+    // student.message = ''
+    updateFirestore([...students], [...students.map(s => s === student ? s.message = '' : s.message )])
   }
 
   function getTodayLogo() {
@@ -110,14 +166,14 @@ export function AppProvider({ children }) {
 
     students.map(student => {
       if (student.id === id && student.day[day].ok === false) {
-        setStudents([...students], [...students.map(student => {
+        updateFirestore([...students], [...students.map(student => {
           if (student.id === id) {
             student.day[day].ok = true
           }
         })])
         changeLessons('down', id)
       } else if ((student.id === id && student.day[day].ok === true)) {
-        setStudents([...students], [...students.map(student => {
+        updateFirestore([...students], [...students.map(student => {
           if (student.id === id) {
             student.day[day].ok = false
           }
@@ -133,7 +189,7 @@ export function AppProvider({ children }) {
   function setLessons(namesStudents, index) {
     let time = 10;
     namesStudents.forEach(element => {
-      setStudents([...students], [...students.map(student => student.name === element ? student.day[index].time = `${time++}:00` : student.day[index].time = student.day[index].time)])
+      updateFirestore([...students], [...students.map(student => student.name === element ? student.day[index].time = `${time++}:00` : student.day[index].time = student.day[index].time)])
     });
   }
 
@@ -143,7 +199,7 @@ export function AppProvider({ children }) {
   function sendTime(time, man, day) {
     const numberDay = +DAYS.indexOf(day)
 
-    setStudents([...students], [students.map(student => {
+    updateFirestore([...students], [students.map(student => {
       if (student.id === man.id) {
         student.day[numberDay].time = time
       }
@@ -151,28 +207,42 @@ export function AppProvider({ children }) {
   }
 
   function updateWeek() {
-    setStudents([...students], [...students.map(student => {
+    updateFirestore([...students], [...students.map(student => {
       Object.entries(student.day).map(data => data[1].ok = false)
     })])
   }
 
   function leaveMessage(message, id) {
+    updateFirestore([...students], [...students.map(student => student.id === id ? student.message = message : null)])
+  }
 
-    setStudents([...students], [...students.map(student => student.id === id ? student.message = message : null)])
+  function deleteWeekLesson(student, index) {
+
+    // student.day[index].time = 'none'
+    // student.day[index].ok = false
+    updateFirestore([...students], [...students.map(s => (
+      s === student ? (
+        s.day[index].time = 'none',
+        s.day[index].ok = false
+    )
+      : s
+    ))])
   }
 
   const value = {
     getTodayLogo,
     students,
     deleteStudent,
-    changeLessons, 
+    changeLessons,
     createStudent,
     updateWeek,
     DAYS,
     checkLesson,
     setLessons,
     sendTime,
-    leaveMessage    
+    leaveMessage,
+    messageReset,
+    deleteWeekLesson
   }
 
   return (

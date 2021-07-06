@@ -20,7 +20,7 @@ export default function Login() {
       await login(emailRef.current.value, passwordRef.current.value)
       history.push("/")
     } catch {
-      setError("Failed to log in")
+      setError('Нет пользователя или неправильный пароль')
     }
 
     setLoading(false)

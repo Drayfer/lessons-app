@@ -10,7 +10,16 @@ import ForgotPassword from "./ForgotPassword"
 import UpdateProfile from "./UpdateProfile"
 
 
+const styles={
+  width: "30vw", 
+  backgroundImage: 'url("https://images.unsplash.com/photo-1531315630201-bb15abeb1653?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=375&q=80")',
+  backgroundRepeat: 'no-repeat',
+  backgroundPosition: 'center',
+  backgroundSize: 'cover',
+}
+
 function App() {
+
   return (
 
     <Router>
@@ -21,11 +30,20 @@ function App() {
             className="d-flex align-items-center justify-content-center"
             style={{ height: '100vh' }}
           >
-            <div className="w-100" style={{ maxWidth: "400px" }}>
-              <PrivateRoute path="/update-profile" component={UpdateProfile} />
-              <Route path="/signup" component={Signup} />
-              <Route path="/login" component={Login} />
-              <Route path="/forgot-password" component={ForgotPassword} />
+            <div className="d-flex justify-content-evenly">
+              <div className='bg-dark text-light d-flex align-items-center rounded' style={styles}>
+                <p class="h2 text-center m-3">Дневник для преподавателя</p>
+              </div>
+
+              <div style={{ width: '50vw', maxWidth: '500px' }}>
+                <div className="p-4" >
+                  <PrivateRoute path="/update-profile" component={UpdateProfile} />
+                  <Route path="/signup" component={Signup} />
+                  <Route path="/login" component={Login} />
+                  <Route path="/forgot-password" component={ForgotPassword} />
+                </div>
+
+              </div>
             </div>
           </Container>
         </Switch>

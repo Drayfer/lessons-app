@@ -16,7 +16,7 @@ export default function Signup() {
     e.preventDefault()
 
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
-      return setError("Passwords do not match")
+      return setError("Пароли не совпадают")
     }
 
     try {
@@ -25,7 +25,7 @@ export default function Signup() {
       await signup(emailRef.current.value, passwordRef.current.value)
       history.push("/")
     } catch {
-      setError("Failed to create an account")
+      setError("Пароль должен содержать от 6 символов")
     }
 
     setLoading(false)
