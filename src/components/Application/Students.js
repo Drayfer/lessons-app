@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useApp } from '../../contexts/AppContext'
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Button, CloseButton } from 'react-bootstrap';
 import { ChatDots } from 'react-bootstrap-icons';
 
 export default function Students() {
@@ -15,14 +15,6 @@ export default function Students() {
         // students[index].message = ''
         setIndex(0)
     }
-
-
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         messageBlick === 'icon-message' ? setMessageBlick('icon-message hide') : setMessageBlick('icon-message')
-    //     }, 50000);
-    //     return () => clearInterval(interval)
-    // }, [messageBlick]);
 
 
     const { students,
@@ -76,7 +68,9 @@ export default function Students() {
                     
                     
                     {/* <button className='students-list-delete' onClick={() => deleteStudent(student.id)}>&times;</button> */}
-                    <Button variant="outline-secondary p-0 pr-2 pl-2" onClick={() => deleteStudent(student.id)}> &times; </Button>
+                    <CloseButton onClick={() => deleteStudent(student.id)}/>
+                    {/* <Button variant="btn-close" ></Button> */}
+                     
                 </li>
                 )}
             </ul>

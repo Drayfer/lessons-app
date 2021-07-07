@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import './AddLesson.css'
 import { useApp } from '../../contexts/AppContext'
 import { Button, Modal } from 'react-bootstrap'
+import { PlusCircle } from 'react-bootstrap-icons';
 
 export default function AddLesson({ index }) {
     const { setLessons, DAYS, students } = useApp()
@@ -30,7 +31,8 @@ export default function AddLesson({ index }) {
     }
     return (
         <>
-            <button className="create-lesson-btn" onClick={handleShow}></button>
+            {/* <button className="create-lesson-btn" onClick={handleShow}></button> */}
+            <PlusCircle className="create-lesson-btn" onClick={handleShow}/>
 
 
             <Modal show={show} onHide={handleClose}>

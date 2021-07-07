@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { useApp } from "../../contexts/AppContext"
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, CloseButton } from 'react-bootstrap';
 import Time from './Time'
 import AddLesson from './AddLesson'
 
@@ -22,7 +22,6 @@ export default function Week() {
     const { DAYS, students, checkLesson, leaveMessage, deleteWeekLesson } = useApp()
 
     function createMessage(student) {
-        // return <h1 className='abs'>!!!!!!!!</h1>
         handleShow()
         setName(student.name)
         setId(student.id)
@@ -65,7 +64,7 @@ export default function Week() {
                 return (
 
                     <div className="dayList">
-                        <h2 className="border primary text-body" style={{background:'#DAEAD7'}}>{day}</h2>
+                        <h3 className="border primary text-body" style={{ background: '#DAEAD7' }}>{day}</h3>
                         <div className="lessons" >
                             <div className='lessons-placeholder'>
                                 {students.slice().sort((a, b) => a.day[index].time.slice(0, 2) - b.day[index].time.slice(0, 2)).map((student, i) => {
@@ -86,10 +85,7 @@ export default function Week() {
                                             </span>
                                             <span className='student-message-btn' onClick={() => createMessage(student)}>{student.name}</span>
                                             <span>
-                                                <Button variant="outline-secondary p-0 pr-2 pl-2" onClick={() => {
-                                                deleteWeekLesson(student, index)
-
-                                                }}>&times;</Button>
+                                                <CloseButton onClick={() => deleteWeekLesson(student, index)} />
                                             </span>
                                         </div>
                                         )
