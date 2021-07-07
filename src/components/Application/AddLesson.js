@@ -45,7 +45,7 @@ export default function AddLesson({ index }) {
                                 {/* <input type="checkbox" onChange = {}/> */}
                                 {student.name}
                             </li>
-                            } 
+                            } else return null
                            
                         })}
                     </ul>

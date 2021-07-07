@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { useApp } from "../../contexts/AppContext"
-import { Modal, Button, Form, Card } from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';
 import Time from './Time'
 import AddLesson from './AddLesson'
 
@@ -86,14 +86,14 @@ export default function Week() {
                                             </span>
                                             <span className='student-message-btn' onClick={() => createMessage(student)}>{student.name}</span>
                                             <span>
-                                                <Button variant="outline-secondary p-0 pr-1 pl-1" onClick={() => {
+                                                <Button variant="outline-secondary p-0 pr-2 pl-2" onClick={() => {
                                                 deleteWeekLesson(student, index)
 
                                                 }}>&times;</Button>
                                             </span>
                                         </div>
                                         )
-                                    }
+                                    } else return null
 
                                 })}
 

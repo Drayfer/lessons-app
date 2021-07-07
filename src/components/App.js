@@ -10,13 +10,14 @@ import ForgotPassword from "./ForgotPassword"
 import UpdateProfile from "./UpdateProfile"
 
 
-const styles={
-  width: "30vw", 
-  backgroundImage: 'url("https://images.unsplash.com/photo-1531315630201-bb15abeb1653?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=375&q=80")',
-  backgroundRepeat: 'no-repeat',
-  backgroundPosition: 'center',
-  backgroundSize: 'cover',
-}
+// const styles={
+//   width: "30vw", 
+//   backgroundImage: 'url("https://images.unsplash.com/photo-1531315630201-bb15abeb1653?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=375&q=80")',
+//   backgroundRepeat: 'no-repeat',
+//   backgroundPosition: 'center',
+//   backgroundSize: 'cover',
+//   minWidth: '250px',
+// }
 
 function App() {
 
@@ -31,8 +32,10 @@ function App() {
             style={{ height: '100vh' }}
           >
             <div className="d-flex justify-content-evenly">
-              <div className='bg-dark text-light d-flex align-items-center rounded' style={styles}>
-                <p class="h2 text-center m-3">Дневник для преподавателя</p>
+              <div className='left-title-image' >
+              {/* bg-dark text-light d-flex align-items-center rounded  */}
+              {/* "h2 text-center m-3 */}
+                <h1 className='left-title-text'>Дневник преподавателя</h1>
               </div>
 
               <div style={{ width: '50vw', maxWidth: '500px' }}>

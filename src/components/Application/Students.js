@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useApp } from '../../contexts/AppContext'
 import { Modal, Button } from 'react-bootstrap';
+import { ChatDots } from 'react-bootstrap-icons';
 
 export default function Students() {
 
     const [index, setIndex] = useState(0)
-    const [messageBlick, setMessageBlick] = useState('icon-message')
+
 
 
     function resetMessage() {
@@ -16,12 +17,12 @@ export default function Students() {
     }
 
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            messageBlick === 'icon-message' ? setMessageBlick('icon-message hide') : setMessageBlick('icon-message')
-        }, 500);
-        return () => clearInterval(interval)
-    }, [messageBlick]);
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         messageBlick === 'icon-message' ? setMessageBlick('icon-message hide') : setMessageBlick('icon-message')
+    //     }, 50000);
+    //     return () => clearInterval(interval)
+    // }, [messageBlick]);
 
 
     const { students,
@@ -61,7 +62,7 @@ export default function Students() {
                         setIndex(index)
                     }
 
-                    } className={student.message ? `${messageBlick}` : null}> </span>
+                    } className={student.message ? `blink2` : null}>{student.message ? <ChatDots /> : null}</span>
                     <span className="index-student">{index + 1}. </span>
                     <span className="student-name-index" > {student.name} </span>
                     <span className={student.balance > 0 ? 'student-balance' : 'student-balance minus-balance'}>{student.balance}</span>
@@ -72,9 +73,10 @@ export default function Students() {
                         <button className='arrow-btn' onClick={() => changeLessons('down', student.id)}> &#9660;</button>
                     </span>
 
-
+                    
+                    
                     {/* <button className='students-list-delete' onClick={() => deleteStudent(student.id)}>&times;</button> */}
-                    <Button variant="outline-secondary p-0 pr-1 pl-1" onClick={() => deleteStudent(student.id)}>&times;</Button>
+                    <Button variant="outline-secondary p-0 pr-2 pl-2" onClick={() => deleteStudent(student.id)}> &times; </Button>
                 </li>
                 )}
             </ul>

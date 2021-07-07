@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from "react"
 import { firestore } from "../firebase"
 import { useAuth } from "./AuthContext"
-import { useCollectionData } from "react-firebase-hooks/firestore";
 
 const AppContext = React.createContext()
 
@@ -22,7 +21,7 @@ export function AppProvider({ children }) {
       setToday(new Date());
     }, 1000);
     return () => clearInterval(interval)
-  }, [setToday]);
+  }, []);
 
 
 
@@ -67,52 +66,40 @@ export function AppProvider({ children }) {
     },
   ])
 
-  function fetchStudents() {
-      let docRef = firestore.collection("users").doc(currentUser.uid)
-      docRef.get().then((doc) => {
-        if (doc.exists) {
-          setStudents([...doc.data().students])
-        } else {
-          // doc.data() will be undefined in this case
-          console.log("No such document!");
-        }
-      }).catch((error) => {
-        console.log("Error getting document:", error);
-      });
-  
-   
+  useEffect(() => fetchStudents(), [])
 
+  function fetchStudents() {
+    let docRef = firestore.collection("users").doc(currentUser.uid)
+    docRef.get().then((doc) => {
+      if (doc.exists) {
+        setStudents([...doc.data().students])
+      } else {
+        updateFirestore([...students])
+        console.log("No such document!");
+      }
+    }).catch((error) => {
+      console.log("Error getting document:", error);
+    });
   }
 
 
-  useEffect(async () => {
-    await fetchStudents()
-  }, [students])
 
-  useEffect(async () => {
-    let docRef = firestore.collection("users").doc(currentUser.uid)
-    docRef.get().then((doc) => {
-      if (!doc.exists) {
-        updateFirestore([...students])
-      } 
-    })
-  }, [])
 
 
   function createStudent(name, balance) {
     updateFirestore(
       [...students.concat({
-            id: Date.now(), name: name, balance: balance, message: '',
-            day: {
-              0: { time: 'none', ok: false },
-              1: { time: 'none', ok: false },
-              2: { time: 'none', ok: false },
-              3: { time: 'none', ok: false },
-              4: { time: 'none', ok: false },
-              5: { time: 'none', ok: false },
-              6: { time: 'none', ok: false }
-            }
-          })]
+        id: Date.now(), name: name, balance: balance, message: '',
+        day: {
+          0: { time: 'none', ok: false },
+          1: { time: 'none', ok: false },
+          2: { time: 'none', ok: false },
+          3: { time: 'none', ok: false },
+          4: { time: 'none', ok: false },
+          5: { time: 'none', ok: false },
+          6: { time: 'none', ok: false }
+        }
+      })]
     )
   }
 
@@ -122,6 +109,7 @@ export function AppProvider({ children }) {
     firestore.collection('users').doc(currentUser.uid).set({
       students: params
     })
+    setStudents(params)
   }
 
   function deleteStudent(id) {
@@ -139,9 +127,9 @@ export function AppProvider({ children }) {
     }
   }
 
-  function messageReset (student) {
+  function messageReset(student) {
     // student.message = ''
-    updateFirestore([...students], [...students.map(s => s === student ? s.message = '' : s.message )])
+    updateFirestore([...students], [...students.map(s => s === student ? s.message = '' : s.message)])
   }
 
   function getTodayLogo() {
@@ -217,15 +205,12 @@ export function AppProvider({ children }) {
   }
 
   function deleteWeekLesson(student, index) {
-
-    // student.day[index].time = 'none'
-    // student.day[index].ok = false
     updateFirestore([...students], [...students.map(s => (
       s === student ? (
         s.day[index].time = 'none',
         s.day[index].ok = false
-    )
-      : s
+      )
+        : s
     ))])
   }
 

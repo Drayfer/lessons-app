@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import { useApp } from "../../contexts/AppContext"
 
 export default function Sidebar() {

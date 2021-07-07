@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react'
 import { useApp } from '../../contexts/AppContext'
-import './AddStudent.css'
 import { Button, Form, Modal } from 'react-bootstrap'
 
 export default function AddStudent() {
@@ -10,7 +9,7 @@ export default function AddStudent() {
     const numberRef = useRef()
 
     const [student, setStudent] = useState({ id: 0, name: '', balance: '' })
-    const [messageShow, setMessageShow] = useState(false)
+
 
     function handleSubmitInput(event) {
         event.preventDefault()
@@ -21,11 +20,9 @@ export default function AddStudent() {
             }
             createStudent(nameRef.current.value, Number(numberRef.current.value))
             setStudent({ ...student, name: '', balance: '' })
-            setMessageShow(false)
+    
             setShow(false)
-        } else {
-            setMessageShow(true)
-        }
+        } 
     }
 
 

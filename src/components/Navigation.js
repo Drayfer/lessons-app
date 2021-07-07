@@ -1,6 +1,6 @@
 import { Nav } from "react-bootstrap"
 import { useAuth } from "../contexts/AuthContext"
-import React, { useState } from "react"
+import React from "react"
 
 
 export default function Navigation() {
