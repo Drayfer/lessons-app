@@ -23,7 +23,7 @@ export default function Time({ day, student, hours }) {
     function createTime() {
         sendTime(time, student, day)
         handleClose()
-        setTime(hours)
+        // setTime(hours)
         
     }
 

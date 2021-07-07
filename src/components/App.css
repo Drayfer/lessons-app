@@ -201,7 +201,7 @@
 
   .fixed-sidebar {
     width: 280px;
-    position:fixed;
+    /* position:fixed; */
     display: flex;
     flex-direction: column;
     margin: 0 auto;

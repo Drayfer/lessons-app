@@ -22,10 +22,10 @@ export default function Dashboard() {
         <div className="d-flex justify-content-between" style={{ minHeight: '100vh' }} >
           <div className="bg-secondary text-center" style={{ minWidth: '300px', background: 'linear-gradient(90deg, #29323C 0%, #485563 100%)' }}>
             <div className='fixed-sidebar'>   
+            <p className="date-today"><Sidebar /></p>
                 <Students />
                 <AddStudent />
                 <NewWeek />
-                <p className="date-today"><Sidebar /></p>
             </div>
 
           </div>
