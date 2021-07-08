@@ -32,6 +32,10 @@
     margin: .5rem;
     background: rgb(240, 244, 250);
   }
+
+  .active {
+    background: rgb(220, 232, 250);
+  }
   
   .dayList h3 {
     text-align: center;
@@ -49,11 +53,24 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid #aaa;
+    border: 1px solid #aaa; 
     padding: .2rem .6rem;
     margin-bottom: .2rem;
     border-radius: 5px;
     background-color: beige;
+    margin-left: .5rem;
+    margin-right: .5rem;
+  }
+
+  .students-list-checked {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #aaa; 
+    padding: .2rem .6rem;
+    margin-bottom: .2rem;
+    border-radius: 5px;
+    background-color: rgb(216, 216, 180);
     margin-left: .5rem;
     margin-right: .5rem;
   }
@@ -276,5 +293,6 @@
   .student-list-buttons {
     display: flex;
     justify-content: space-between;
+    color:#b1e6a9;
   }
  

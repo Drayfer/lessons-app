@@ -33,7 +33,7 @@ export default function Week() {
         leaveMessage(messageRef.current.value, id)
         handleClose()
     }
-
+    console.log((new Date()).getDay())
     return (
         <>
             <Modal show={show} onHide={handleClose}>
@@ -59,17 +59,18 @@ export default function Week() {
                 </Modal.Body>
             </Modal>
 
-
+            
             {DAYS.map((day, index) => {
                 return (
-
-                    <div className="dayList">
-                        <h3 className="border primary text-body" style={{ background: '#DAEAD7' }}>{day}</h3>
+                    
+                    // <div className="dayList">
+                   <div className={(new Date()).getDay()-1 === index ? "dayList active" : `dayList` }>   
+                        <h3 className="border primary text-body" style={(new Date()).getDay()-1 === index ? {background: '#b1e6a9'} : { background: '#DAEAD7' } }>{day}</h3>
                         <div className="lessons" >
                             <div className='lessons-placeholder'>
                                 {students.slice().filter(a => a.day[index].time !== 'none').sort((a, b) => a.day[index].time.slice(0, 2) - b.day[index].time.slice(0, 2)).map((student, i) => {
                                     if (student.day[index].time !== 'none') {
-                                        return (<div className='students-list'>
+                                        return (<div className={student.day[String(index)].ok ? 'students-list-checked' : 'students-list'}>
 
                                             <span>
                                                 <span className='student-time'>
