@@ -1,8 +1,9 @@
 import React, { useState, useRef } from 'react'
-import { useApp } from "../../contexts/AppContext"
+import { useApp } from "../../../contexts/AppContext"
 import { Modal, Button, Form, CloseButton } from 'react-bootstrap';
-import Time from './Time'
-import AddLesson from './AddLesson'
+import Time from '../Time'
+import AddLesson from '../AddLesson'
+import './WeekNow.css'
 
 
 
@@ -33,7 +34,7 @@ export default function WeekNow() {
         handleClose()
     }
     return (
-        <>
+        <div className="bg-light d-flex justify-content-around flex-wrap">
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Оставить напоминание о {name}</Modal.Title>
@@ -98,6 +99,6 @@ export default function WeekNow() {
                     </div>
                 )
             })}
-        </>
+        </div>
     )
 }

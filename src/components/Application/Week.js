@@ -1,104 +1,29 @@
 import React, { useState, useRef } from 'react'
-import { useApp } from "../../contexts/AppContext"
-import { Modal, Button, Form, CloseButton } from 'react-bootstrap';
-import Time from './Time'
-import AddLesson from './AddLesson'
-
+import WeekNow from './Weeks/WeekNow'
+import { Tabs, Tab } from 'react-bootstrap';
 
 export default function Week() {
 
-
-    const [value, setValue] = useState('')
-    const messageRef = useRef()
-    const [show, setShow] = useState(false);
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
-
-    const [name, setName] = useState('')
-    const [id, setId] = useState(0)
-
-    const { DAYS, students, checkLesson, leaveMessage, deleteWeekLesson } = useApp()
-
-    function createMessage(student) {
-        handleShow()
-        setName(student.name)
-        setId(student.id)
-        setValue(student.message)
-    }
-
-    function sendMessage(e) {
-        e.preventDefault()
-        leaveMessage(messageRef.current.value, id)
-        handleClose()
-    }   
+    const [key, setKey] = useState('active');
+    // className="bg-light d-flex justify-content-around flex-wrap" style={{ width: '100%' }}
     return (
-        <>
-            <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Оставить напоминание о {name}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form onSubmit={sendMessage}>
-                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                            <Form.Control
-                                as="textarea"
-                                placeholder="Напишите здесь"
-                                ref={messageRef}
-                                style={{ height: '150px' }}
-                                value={value}
-                                onChange={e => setValue(e.target.value)}
-                            />
-                        </Form.Group>
-                        <Button variant="primary" type='submit'>
-                            Сохранить
-                        </Button>
-                    </Form>
-                </Modal.Body>
-            </Modal>
-
-            
-            {DAYS.map((day, index) => {
-                return (
-                    
-                    // <div className="dayList">
-                   <div className={(new Date()).getDay()-1 === index ? "dayList active" : `dayList` }>   
-                        <h3 className="border primary text-body" style={(new Date()).getDay()-1 === index ? {background: '#b1e6a9'} : { background: '#DAEAD7' } }>{day}</h3>
-                        <div className="lessons" >
-                            <div className='lessons-placeholder'>
-                                {students.slice().filter(a => a.day[index].time !== 'none').sort((a, b) => a.day[index].time.slice(0, 2) - b.day[index].time.slice(0, 2)).map((student, i) => {
-                                    if (student.day[index].time !== 'none') {
-                                        return (<div className={student.day[String(index)].ok ? 'students-list-checked' : 'students-list'}>
-
-                                            <span>
-                                                <span className='student-time'>
-                                                    <Time
-                                                        hours={student.day[index].time}
-                                                        student={student}
-                                                        day={day}
-                                                    />
-                                                </span>
-                                                <span> <input className='student-message-btn' type='checkbox' checked={student.day[String(index)].ok} onChange={() => checkLesson(student.id, index)} /> </span>
-                                                &nbsp;
-                                                <span className='student-message-btn' onClick={() => createMessage(student)}>{student.name}</span>
-                                            </span>
-
-                                            <span>
-                                                <CloseButton onClick={() => deleteWeekLesson(student, index)} />
-                                            </span>
-                                        </div>
-                                        )
-                                    } else return null
-
-                                })}
-
-                            </div>
-                            <AddLesson index={index} />
-                        </div>
-                    </div>
-                )
-            })}
-        </>
+        <div >
+            <Tabs
+                id="controlled-tab-example"
+                activeKey={key}
+                onSelect={(k) => setKey(k)}
+                className="d-flex justify-content-center bg-light"
+            >
+                <Tab eventKey="past" title="Прошлая неделя" >
+                    <p>В разработке</p>
+                </Tab>
+                <Tab eventKey="active" title="Текущая неделя" >
+                    <WeekNow />
+                </Tab>
+                <Tab eventKey="qq" title="Следующая неделя">
+                <p>В разработке</p>
+                </Tab>
+            </Tabs>
+        </div>
     )
 }

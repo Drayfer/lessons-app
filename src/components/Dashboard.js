@@ -30,7 +30,7 @@ export default function Dashboard() {
 
           </div>
 
-          <div className="bg-light d-flex justify-content-around flex-wrap" style={{ width: '80%' }}>
+          <div style={{ width: '100%' }} >
             <Week />
           </div>
         </div>
