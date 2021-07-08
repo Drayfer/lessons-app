@@ -5,9 +5,8 @@ import Time from './Time'
 import AddLesson from './AddLesson'
 
 
-export default function Week() {
 
-
+export default function WeekNow() {
     const [value, setValue] = useState('')
     const messageRef = useRef()
     const [show, setShow] = useState(false);
@@ -32,7 +31,7 @@ export default function Week() {
         e.preventDefault()
         leaveMessage(messageRef.current.value, id)
         handleClose()
-    }   
+    }
     return (
         <>
             <Modal show={show} onHide={handleClose}>
@@ -58,13 +57,13 @@ export default function Week() {
                 </Modal.Body>
             </Modal>
 
-            
+
             {DAYS.map((day, index) => {
                 return (
-                    
+
                     // <div className="dayList">
-                   <div className={(new Date()).getDay()-1 === index ? "dayList active" : `dayList` }>   
-                        <h3 className="border primary text-body" style={(new Date()).getDay()-1 === index ? {background: '#b1e6a9'} : { background: '#DAEAD7' } }>{day}</h3>
+                    <div className={(new Date()).getDay() - 1 === index ? "dayList active" : `dayList`}>
+                        <h3 className="border primary text-body" style={(new Date()).getDay() - 1 === index ? { background: '#b1e6a9' } : { background: '#DAEAD7' }}>{day}</h3>
                         <div className="lessons" >
                             <div className='lessons-placeholder'>
                                 {students.slice().filter(a => a.day[index].time !== 'none').sort((a, b) => a.day[index].time.slice(0, 2) - b.day[index].time.slice(0, 2)).map((student, i) => {
