@@ -8,7 +8,7 @@ import AddLesson from './AddLesson'
 export default function Week() {
 
 
-
+    const [value, setValue] = useState('')
     const messageRef = useRef()
     const [show, setShow] = useState(false);
 
@@ -25,7 +25,7 @@ export default function Week() {
         handleShow()
         setName(student.name)
         setId(student.id)
-
+        setValue(student.message)
     }
 
     function sendMessage(e) {
@@ -33,7 +33,6 @@ export default function Week() {
         leaveMessage(messageRef.current.value, id)
         handleClose()
     }
-
 
     return (
         <>
@@ -49,7 +48,8 @@ export default function Week() {
                                 placeholder="Напишите здесь"
                                 ref={messageRef}
                                 style={{ height: '150px' }}
-
+                                value={value}
+                                onChange={e => setValue(e.target.value)}
                             />
                         </Form.Group>
                         <Button variant="primary" type='submit'>
@@ -67,23 +67,23 @@ export default function Week() {
                         <h3 className="border primary text-body" style={{ background: '#DAEAD7' }}>{day}</h3>
                         <div className="lessons" >
                             <div className='lessons-placeholder'>
-                                {students.slice().sort((a, b) => a.day[index].time.slice(0, 2) - b.day[index].time.slice(0, 2)).map((student, i) => {
+                                {students.slice().filter(a => a.day[index].time !== 'none').sort((a, b) => a.day[index].time.slice(0, 2) - b.day[index].time.slice(0, 2)).map((student, i) => {
                                     if (student.day[index].time !== 'none') {
                                         return (<div className='students-list'>
 
                                             <span>
-
-                                                <Time
-                                                    hours={student.day[index].time}
-                                                    student={student}
-                                                    day={day}
-
-                                                />
+                                                <span className='student-time'>
+                                                    <Time
+                                                        hours={student.day[index].time}
+                                                        student={student}
+                                                        day={day}
+                                                    />
+                                                </span>
                                                 <span> <input className='student-message-btn' type='checkbox' checked={student.day[String(index)].ok} onChange={() => checkLesson(student.id, index)} /> </span>
                                                 &nbsp;
-
+                                                <span className='student-message-btn' onClick={() => createMessage(student)}>{student.name}</span>
                                             </span>
-                                            <span className='student-message-btn' onClick={() => createMessage(student)}>{student.name}</span>
+
                                             <span>
                                                 <CloseButton onClick={() => deleteWeekLesson(student, index)} />
                                             </span>

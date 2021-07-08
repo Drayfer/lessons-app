@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useApp } from '../../contexts/AppContext'
 import { Modal, Button, CloseButton } from 'react-bootstrap';
 import { ChatDots } from 'react-bootstrap-icons';
+import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse';
 
 export default function Students() {
 
@@ -24,9 +25,9 @@ export default function Students() {
 
 
 
-        const [show, setShow] = useState(false);
-        const handleClose = () => setShow(false);
-        const handleShow = () => setShow(true);
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
 
     return (
@@ -49,28 +50,39 @@ export default function Students() {
             <h1 className="pb-4 text-light">Студенты - {students.length}</h1>
             <ul className='students-list-container'>
                 {students.map((student, index) => <li draggable="true" key={student.name} className="students-list">
-                    <span onClick={() => {
-                        handleShow()
-                        setIndex(index)
-                    }
+                    <div className='student-list-info'>
+                        <span onClick={() => {
+                            handleShow()
+                            setIndex(index)
+                        }
 
-                    } className={student.message ? `blink2` : null}>{student.message ? <ChatDots /> : null}</span>
-                    <span className="index-student">{index + 1}. </span>
-                    <span className="student-name-index" > {student.name} </span>
-                    <span className={student.balance > 0 ? 'student-balance' : 'student-balance minus-balance'}>{student.balance}</span>
-
-
-                    <span className="setect-btn">
-                        <button className='arrow-btn' onClick={() => changeLessons('up', student.id)}>&#9650;</button>
-                        <button className='arrow-btn' onClick={() => changeLessons('down', student.id)}> &#9660;</button>
-                    </span>
-
+                        } className={student.message ? `blink2` : `noblink`}> {student.message ? <ChatDots /> : ''}
+                            &nbsp;
+                        </span>
+                        <span className="index-student">{index + 1}. </span>
                     
-                    
-                    {/* <button className='students-list-delete' onClick={() => deleteStudent(student.id)}>&times;</button> */}
-                    <CloseButton onClick={() => deleteStudent(student.id)}/>
-                    {/* <Button variant="btn-close" ></Button> */}
-                     
+                        <span className="student-name-index" > {student.name} </span>
+                    </div>
+                    <div className="student-list-controls">
+                        <span className={student.balance > 0 ? 'student-balance' : 'student-balance minus-balance'}>{student.balance}</span>
+
+                        <span className="student-list-buttons">
+                            <span className="setect-btn">
+                                <button className='arrow-btn' onClick={() => changeLessons('up', student.id)}>&#9650;</button>
+                                <button className='arrow-btn' onClick={() => changeLessons('down', student.id)}> &#9660;</button>
+                            </span>
+
+
+                            <span className="ml-3">
+                                <CloseButton onClick={() => deleteStudent(student.id)} />
+                            </span>
+                        </span>
+
+                    </div>
+
+
+
+
                 </li>
                 )}
             </ul>

@@ -29,7 +29,6 @@
     min-height: 300px;
     border: rgb(211, 211, 211) solid 1px;
     border-radius: 5px;
-    padding: .5rem;
     margin: .5rem;
     background: rgb(240, 244, 250);
   }
@@ -44,15 +43,14 @@
   .lessons {  
     display: flex;
     flex-direction: column;
-    height: 250px;
   }
   
   .students-list {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     border: 1px solid #aaa;
-    padding: .2rem .2rem;
+    padding: .2rem .6rem;
     margin-bottom: .2rem;
     border-radius: 5px;
     background-color: beige;
@@ -60,6 +58,8 @@
     margin-right: .5rem;
   }
   
+
+
   .students-list-container {
     list-style: none; 
     padding-left: 0;
@@ -214,12 +214,17 @@
     -webkit-animation: blink2 1s linear infinite;
     animation: blink2 1s linear infinite;
     cursor: pointer;
+    padding-right: .3rem;
   }
   @-webkit-keyframes blink2 {
     100% { color: rgba(34, 34, 34, 0); }
   }
   @keyframes blink2 {
     100% { color: rgba(34, 34, 34, 0); }
+  }
+  .noblink {
+    padding: 10px;
+  
   }
 
   .left-title-image {
@@ -242,3 +247,34 @@
     padding: 4rem;
   
   }
+
+  .students-sidebar-list {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #aaa;
+    padding: .2rem .6rem;
+    margin-bottom: .2rem;
+    border-radius: 5px;
+    background-color: beige;
+    margin-left: .5rem;
+    margin-right: .5rem;
+  }
+
+  .student-list-controls {
+    display: flex;
+    justify-content: space-between;
+    width: 35%;
+    
+  }
+
+  .student-list-info {
+    width: 64%;
+    text-align: left;
+  }
+
+  .student-list-buttons {
+    display: flex;
+    justify-content: space-between;
+  }
+ 

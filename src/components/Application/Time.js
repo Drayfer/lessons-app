@@ -10,7 +10,7 @@ export default function Time({ day, student, hours }) {
 
 
     const [time, setTime] = useState(hours)
-
+    
 
 
 
@@ -92,7 +92,7 @@ export default function Time({ day, student, hours }) {
                     
                     <h2 className='student-name-time'>{student.name}</h2>
 
-
+                    <h3>Старое время: {hours}</h3>
                     <div className='modal-content-time' >
                         <div className='time-elem'>
                             <button className="arrow-time" onClick={() => setStudentTime('hourPlus')}>&#9650;</button>
