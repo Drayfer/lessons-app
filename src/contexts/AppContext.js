@@ -23,10 +23,21 @@ export function AppProvider({ children }) {
     return () => clearInterval(interval)
   }, []);
 
-
+  const lWeek = {
+    0: [
+      { name: 'Игорь', time: '14:00' },
+      { name: 'Dkdf', time: '16:00' },
+    ],
+    1: [
+      { name: 'Игорь', time: '14:00' },
+      { name: 'Dkdf', time: '16:00' },
+    ],
+  }
 
   const DAYS = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
   const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+  const [lastWeekDays, setlastWeekDays] = useState({})
+  const [nextWeekDays, setNextWeekDays] = useState([])
   const [students, setStudents] = useState([
     {
       id: 1, name: 'Роман', balance: 3, message: 'Пример сообщения, как напоминания о том, какую информацию можно оставить о студенте, чтобы не забыть',
@@ -66,7 +77,12 @@ export function AppProvider({ children }) {
     },
   ])
 
-  useEffect(() => fetchStudents(), [])
+  useEffect(() => {
+    fetchStudents()
+    fetchLastWeek()
+    fetchNextWeek()
+  }, [])
+
 
   function fetchStudents() {
     let docRef = firestore.collection("users").doc(currentUser.uid)
@@ -74,7 +90,8 @@ export function AppProvider({ children }) {
       if (doc.exists) {
         setStudents([...doc.data().students])
       } else {
-        updateFirestore([...students])
+        // updateFirestore([...students])
+        initialFirestore([...students])
         console.log("No such document!");
       }
     }).catch((error) => {
@@ -82,7 +99,49 @@ export function AppProvider({ children }) {
     });
   }
 
+  function fetchLastWeek() {
+    let docRef = firestore.collection("users").doc(currentUser.uid)
+    docRef.get().then((doc) => {
+      if (doc.data().lastWeek) {
+        console.log("есть документ");
+        setlastWeekDays(doc.data().lastWeek)
+      } else {
+        console.log("документа нет");
+        setLastWeek()
+      }
+    }).catch((error) => {
+      console.log("Error getting document:", error);
+    });
+  }
 
+    function fetchNextWeek() {
+    let docRef = firestore.collection("users").doc(currentUser.uid)
+    docRef.get().then((doc) => {
+      if (doc.data().nextWeek) {
+        console.log("есть документ");
+        setNextWeekDays(doc.data().nextWeek)
+      } else {
+        console.log("документа нет");
+        let ff = [...doc.data().students.map(student => {
+          const s = student
+          delete s.balance
+          // s.day.forEach(elem => delete elem.ok)
+          for (let key in s.day) {
+            delete s.day[key].ok
+          }
+          return s  
+        })]
+
+        setNextWeek(ff)
+        // setNextWeekDays(ff)
+        setNextWeekDays(ff)
+        // setNextWeekDays([...doc.data().students.map(student => {student.name}
+        // )])
+      }
+    }).catch((error) => {
+      console.log("Error getting document:", error);
+    });
+  }
 
 
 
@@ -106,10 +165,17 @@ export function AppProvider({ children }) {
 
 
   function updateFirestore(params) {
-    firestore.collection('users').doc(currentUser.uid).set({
+    firestore.collection('users').doc(currentUser.uid).update({
       students: params
     })
     setStudents(params)
+  }
+
+  function initialFirestore(students) {
+    firestore.collection('users').doc(currentUser.uid).set({
+      students: students,
+    })
+    fetchNextWeek()
   }
 
   function deleteStudent(id) {
@@ -194,10 +260,48 @@ export function AppProvider({ children }) {
     })])
   }
 
-  function updateWeek() {
+  async function updateWeek() {
+
+    setLastWeek()
+
+
     updateFirestore([...students], [...students.map(student => {
       Object.entries(student.day).map(data => data[1].ok = false)
     })])
+    // setNextWeek(([...students], [...students.map(student => {
+    //     Object.entries(student.day).map(data => data[1].ok = false)
+    //   })]))
+  }
+
+  function setNextWeek(params) {
+    firestore.collection('users').doc(currentUser.uid).update({
+      nextWeek: params
+    })
+    // setNextWeekDays(params)
+  }
+
+  function setLastWeek() {
+    let lastWeek = {}
+    let a = []
+
+    DAYS.forEach((day, index) => {
+      students.map(student => student.day[index].ok &&
+        (
+          a.push({
+            name: student.name,
+            time: student.day[index].time
+          })
+        )
+      )
+      a.sort((a, b) => a.time > b.time ? 1 : -1);
+      lastWeek[index] = a
+      a = []
+    })
+    setlastWeekDays(lastWeek)
+
+    firestore.collection("users").doc(currentUser.uid).update({
+      lastWeek: lastWeek
+    })
   }
 
   function leaveMessage(message, id) {
@@ -227,7 +331,9 @@ export function AppProvider({ children }) {
     sendTime,
     leaveMessage,
     messageReset,
-    deleteWeekLesson
+    deleteWeekLesson,
+    lastWeekDays,
+    nextWeekDays
   }
 
   return (

@@ -25,7 +25,7 @@ export default function Signup() {
       await signup(emailRef.current.value, passwordRef.current.value)
       history.push("/")
     } catch {
-      setError("Пароль должен содержать от 6 символов")
+      setError("Пароль должен содержать от 6 символов или пользователь существует")
     }
 
     setLoading(false)

@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react'
 import WeekNow from './Weeks/WeekNow'
+import LastWeek from './Weeks/LastWeek'
 import { Tabs, Tab } from 'react-bootstrap';
+import NextWeek from './Weeks/NextWeek';
 
 export default function Week() {
 
@@ -15,13 +17,13 @@ export default function Week() {
                 className="d-flex justify-content-center bg-light"
             >
                 <Tab eventKey="past" title="Прошлая неделя" >
-                    <p>В разработке</p>
+                    <LastWeek />
                 </Tab>
                 <Tab eventKey="active" title="Текущая неделя" >
                     <WeekNow />
                 </Tab>
                 <Tab eventKey="qq" title="Следующая неделя">
-                <p>В разработке</p>
+                <NextWeek />
                 </Tab>
             </Tabs>
         </div>

@@ -1,0 +1,8 @@
+.day-card {
+    width: 260px;
+    min-height: 300px;
+    border: rgb(211, 211, 211) solid 1px;
+    border-radius: 5px;
+    margin: .5rem;
+    background: rgb(240, 244, 250);
+}
