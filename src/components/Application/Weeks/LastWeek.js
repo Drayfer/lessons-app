@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useApp } from "../../../contexts/AppContext"
 import { Modal, Button, Form, CloseButton } from 'react-bootstrap';
+import { Calendar2Check } from 'react-bootstrap-icons';
 import './LastWeek.css'
 
 export default function LastWeek() {
@@ -12,26 +13,26 @@ export default function LastWeek() {
 
             {DAYS.map((day, index) => {
                 return (
-                    <div className={(new Date()).getDay() - 1 === index ? "dayList active" : `dayList`}>
-                        <h3 className="border primary text-body" style={(new Date()).getDay() - 1 === index ? { background: '#b1e6a9' } : { background: '#DAEAD7' }}>{day}</h3>
+                    <div className='dayList day-lastweek'>
+                        <h3 className="border primary text-body" style={{ background: 'rgb(249, 255, 206)' }}>{day}</h3>
                         <div className="lessons" >
                             <div className='lessons-placeholder'>
                                 {
 
-                                    lastWeekDays[index] ? lastWeekDays[index].map(a => {
+                                    lastWeekDays[index] ? lastWeekDays[index].map(student => {
 
                                         return (
-                                            <div className='students-list'>
+                                            <div className='students-list last-week'>
 
                                                 <span>
                                                     <span className='student-time'>
-                                                        {a.time}
+                                                        <button className='check-time'>{student.time}</button>
                                                     </span>
                                                 
-                                                    <span className='student-message-btn'>{a.name}</span>
+                                                    <span className='student-message-btn'>{student.name}</span>
                                                 </span>
                                                 <span>
-                                                    1
+                                                <Calendar2Check />
                                                 </span>
                                             </div>
                                         )

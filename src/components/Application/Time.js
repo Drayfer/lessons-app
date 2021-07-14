@@ -4,7 +4,7 @@ import { Modal, Button } from 'react-bootstrap';
 
 import './Time.css'
 
-export default function Time({ day, student, hours }) {
+export default function Time({ day, student, hours, nextWeek=false }) {
 
     const { sendTime } = useApp()
 
@@ -21,7 +21,7 @@ export default function Time({ day, student, hours }) {
 
 
     function createTime() {
-        sendTime(time, student, day)
+        sendTime(time, student, day, nextWeek)
         handleClose()
         // setTime(hours)
         

@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useApp } from "../../../contexts/AppContext"
 import { Modal, Button, Form, CloseButton } from 'react-bootstrap';
+import { Calendar2Check } from 'react-bootstrap-icons';
 import Time from '../Time'
 import AddLesson from '../AddLesson'
 import './WeekNow.css'
@@ -18,8 +19,14 @@ export default function WeekNow() {
 
     const [name, setName] = useState('')
     const [id, setId] = useState(0)
+    
 
     const { DAYS, students, checkLesson, leaveMessage, deleteWeekLesson } = useApp()
+
+    const [i, setI] = useState([])
+    useEffect(() => {
+        setI(students)
+        }, [students]);
 
     function createMessage(student) {
         handleShow()
@@ -67,17 +74,24 @@ export default function WeekNow() {
                         <h3 className="border primary text-body" style={(new Date()).getDay() - 1 === index ? { background: '#b1e6a9' } : { background: '#DAEAD7' }}>{day}</h3>
                         <div className="lessons" >
                             <div className='lessons-placeholder'>
-                                {students.slice().filter(a => a.day[index].time !== 'none').sort((a, b) => a.day[index].time.slice(0, 2) - b.day[index].time.slice(0, 2)).map((student, i) => {
+                                {i.slice().filter(a => a.day[index].time !== 'none').sort((a, b) => a.day[index].time.slice(0, 2) - b.day[index].time.slice(0, 2)).map((student, i) => {
                                     if (student.day[index].time !== 'none') {
                                         return (<div className={student.day[String(index)].ok ? 'students-list-checked' : 'students-list'}>
-
+                                        
                                             <span>
                                                 <span className='student-time'>
-                                                    <Time
+                                                    {/* <Time
                                                         hours={student.day[index].time}
                                                         student={student}
                                                         day={day}
-                                                    />
+                                                    /> */}
+                                                    {student.day[index].ok 
+                                                    ? <button className='hour-btn check-time'>{student.day[index].time}</button>
+                                                    : <Time
+                                                    hours={student.day[index].time}
+                                                    student={student}
+                                                    day={day}
+                                                /> }
                                                 </span>
                                                 <span> <input className='student-message-btn' type='checkbox' checked={student.day[String(index)].ok} onChange={() => checkLesson(student.id, index)} /> </span>
                                                 &nbsp;
@@ -85,7 +99,7 @@ export default function WeekNow() {
                                             </span>
 
                                             <span>
-                                                <CloseButton onClick={() => deleteWeekLesson(student, index)} />
+                                               {student.day[index].ok ? <Calendar2Check /> : <CloseButton onClick={() => deleteWeekLesson(student, index)} />}
                                             </span>
                                         </div>
                                         )

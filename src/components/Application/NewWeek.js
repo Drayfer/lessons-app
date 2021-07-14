@@ -34,22 +34,6 @@ export default function NewWeek() {
                     </Button>
                 </Modal.Footer>
             </Modal>
-
-
-
-
-
-
-
-
-            {/* <button className="create-student-btn week" onClick={() => setWeek() }>Новая неделя</button>
-
-{isOpen && (<div className="modal">
-    <div className="modal-body">
-    <h1>Данные на новую неделю обновлены!</h1>
-    <button className='student-submit' onClick={() => setIsOpen(!isOpen)}>Готово</button>
-    </div>
-</div>)} */}
         </>
     )
 }

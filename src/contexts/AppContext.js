@@ -77,11 +77,13 @@ export function AppProvider({ children }) {
     },
   ])
 
-  useEffect(() => {
-    fetchStudents()
-    fetchLastWeek()
-    fetchNextWeek()
+  useEffect( () => {
+          fetchStudents()
+          fetchNextWeek()
+          fetchLastWeek()
   }, [])
+
+
 
 
   function fetchStudents() {
@@ -89,10 +91,11 @@ export function AppProvider({ children }) {
     docRef.get().then((doc) => {
       if (doc.exists) {
         setStudents([...doc.data().students])
+        console.log('есть');
       } else {
         // updateFirestore([...students])
         initialFirestore([...students])
-        console.log("No such document!");
+        console.log("No such document!!!!!!!");
       }
     }).catch((error) => {
       console.log("Error getting document:", error);
@@ -103,10 +106,10 @@ export function AppProvider({ children }) {
     let docRef = firestore.collection("users").doc(currentUser.uid)
     docRef.get().then((doc) => {
       if (doc.data().lastWeek) {
-        console.log("есть документ");
+        // console.log("есть документ");
         setlastWeekDays(doc.data().lastWeek)
       } else {
-        console.log("документа нет");
+        // console.log("документа нет");
         setLastWeek()
       }
     }).catch((error) => {
@@ -114,29 +117,25 @@ export function AppProvider({ children }) {
     });
   }
 
-    function fetchNextWeek() {
+  function fetchNextWeek() {
     let docRef = firestore.collection("users").doc(currentUser.uid)
     docRef.get().then((doc) => {
       if (doc.data().nextWeek) {
         console.log("есть документ");
-        setNextWeekDays(doc.data().nextWeek)
+        setNextWeekDays([...doc.data().nextWeek])
       } else {
         console.log("документа нет");
         let ff = [...doc.data().students.map(student => {
           const s = student
           delete s.balance
-          // s.day.forEach(elem => delete elem.ok)
+          delete s.message
           for (let key in s.day) {
             delete s.day[key].ok
           }
-          return s  
+          return s
         })]
 
-        setNextWeek(ff)
-        // setNextWeekDays(ff)
-        setNextWeekDays(ff)
-        // setNextWeekDays([...doc.data().students.map(student => {student.name}
-        // )])
+        updateNextWeek(ff)
       }
     }).catch((error) => {
       console.log("Error getting document:", error);
@@ -146,9 +145,10 @@ export function AppProvider({ children }) {
 
 
   function createStudent(name, balance) {
+    const id = Date.now()
     updateFirestore(
       [...students.concat({
-        id: Date.now(), name: name, balance: balance, message: '',
+        id: id, name: name, balance: balance, message: '',
         day: {
           0: { time: 'none', ok: false },
           1: { time: 'none', ok: false },
@@ -157,6 +157,20 @@ export function AppProvider({ children }) {
           4: { time: 'none', ok: false },
           5: { time: 'none', ok: false },
           6: { time: 'none', ok: false }
+        }
+      })]
+    )
+    updateNextWeek(
+      [...nextWeekDays.concat({
+        id: id, name: name,
+        day: {
+          0: { time: 'none' },
+          1: { time: 'none' },
+          2: { time: 'none' },
+          3: { time: 'none' },
+          4: { time: 'none' },
+          5: { time: 'none' },
+          6: { time: 'none' }
         }
       })]
     )
@@ -176,12 +190,14 @@ export function AppProvider({ children }) {
       students: students,
     })
     fetchNextWeek()
+    fetchLastWeek()
   }
 
   function deleteStudent(id) {
-    window.confirm("Действительно удалить студента?") && (
+    if (window.confirm("Действительно удалить студента?")) {
       updateFirestore([...students.filter(student => student.id !== id)])
-    )
+      updateNextWeek([...nextWeekDays.filter(student => student.id !== id)])
+    }
   }
 
 
@@ -240,44 +256,100 @@ export function AppProvider({ children }) {
 
   }
 
-  function setLessons(namesStudents, index) {
+  function setLessons(namesStudents, index, LessonNextWeek = 0) {
     let time = 10;
-    namesStudents.forEach(element => {
-      updateFirestore([...students], [...students.map(student => student.name === element ? student.day[index].time = `${time++}:00` : student.day[index].time = student.day[index].time)])
-    });
+    if (LessonNextWeek === 0) {
+      console.log(0)
+      namesStudents.forEach(element => {
+        updateFirestore([...students], [...students.map(student => student.name === element ? student.day[index].time = `${time++}:00` : student.day[index].time = student.day[index].time)])
+      });
+    } else {
+      console.log(1)
+      namesStudents.forEach(element => {
+        updateNextWeek([...nextWeekDays], [...nextWeekDays.map(student => student.name === element ? student.day[index].time = `${time++}:00` : student.day[index].time = student.day[index].time)])
+      });
+    }
+
+
   }
 
 
 
 
-  function sendTime(time, man, day) {
-    const numberDay = +DAYS.indexOf(day)
 
-    updateFirestore([...students], [students.map(student => {
-      if (student.id === man.id) {
-        student.day[numberDay].time = time
+  function sendTime(time, man, day, LessonNextWeek = false) {
+    const numberDay = +DAYS.indexOf(day)
+    if (LessonNextWeek === false) {
+      updateFirestore([...students], [students.map(student => {
+        if (student.id === man.id) {
+          student.day[numberDay].time = time
+        }
+      })])
+    } else {
+      updateNextWeek([...nextWeekDays], [nextWeekDays.map(student => {
+        if (student.id === man.id) {
+          student.day[numberDay].time = time
+        }
+      })])
+    }
+
+  }
+
+  // function updateWeek() {
+
+  //   setLastWeek()
+
+
+  //   updateFirestore([...students], [...students.map(student => {
+  //     Object.entries(student.day).map(data => data[1].ok = false)
+  //   })])
+  //   updateNextWeek(([...students], [...students.map(student => {
+  //       Object.entries(student.day).map(data => data[1].ok = false)
+  //     })]))
+  // }
+
+
+  function updateWeek() {
+    setLastWeek()
+    // fetchLastWeek()
+
+    // const bufferWeek = students.slice()
+    // const bufferNextWeek = nextWeekDays.slice()
+    // updateFirestore([...bufferNextWeek], [...bufferNextWeek.map((student, index) => {
+    //   student.balance = bufferWeek[index].balance
+    //   student.message = bufferWeek[index].message
+    //   for (let key in student.day) {
+    //     student.day[key].ok = false
+    //   }
+    // })])
+    // fetchStudents()
+
+    // updateNextWeek([...bufferWeek], [...bufferWeek.map(student => {
+    //   delete student.balance
+    //   delete student.balance
+    //   for (let key in student.day) {
+    //     delete student.day[key].ok
+    //   }
+    // })])
+
+    updateFirestore([...students], [...students.map((student, index) => {
+      for (let key in student.day) {
+        student.day[key].ok = false
+        student.day[key].time = nextWeekDays[index].day[key].time
       }
     })])
+
+    // fetchNextWeek()
+    
+    
   }
 
-  async function updateWeek() {
 
-    setLastWeek()
-
-
-    updateFirestore([...students], [...students.map(student => {
-      Object.entries(student.day).map(data => data[1].ok = false)
-    })])
-    // setNextWeek(([...students], [...students.map(student => {
-    //     Object.entries(student.day).map(data => data[1].ok = false)
-    //   })]))
-  }
-
-  function setNextWeek(params) {
+  function updateNextWeek(params) {
     firestore.collection('users').doc(currentUser.uid).update({
       nextWeek: params
     })
-    // setNextWeekDays(params)
+    setNextWeekDays(params)
   }
 
   function setLastWeek() {
@@ -308,16 +380,49 @@ export function AppProvider({ children }) {
     updateFirestore([...students], [...students.map(student => student.id === id ? student.message = message : null)])
   }
 
-  function deleteWeekLesson(student, index) {
-    updateFirestore([...students], [...students.map(s => (
-      s === student ? (
-        s.day[index].time = 'none',
-        s.day[index].ok = false
-      )
-        : s
-    ))])
+  function deleteWeekLesson(student, index, LessonNextWeek = 0) {
+    if (LessonNextWeek === 0) {
+      updateFirestore([...students], [...students.map(s => (
+        s === student ? (
+          s.day[index].time = 'none',
+          s.day[index].ok = false
+        )
+          : s
+      ))])
+    } else {
+      updateNextWeek([...nextWeekDays], [...nextWeekDays.map(s => (
+        s === student ? (
+          s.day[index].time = 'none'
+        )
+          : s
+      ))])
+    }
+
   }
 
+  // function copyPreviousSchedule() {
+  //   let cop = students.slice()
+  //   updateNextWeek([...cop], [...cop.map(student => {
+  //     delete student.balance
+  //     delete student.balance
+  //     for (let key in student.day) {
+  //       delete student.day[key].ok
+  //     }
+  //   })])
+  // }
+  function copyPreviousSchedule() {
+    updateNextWeek([...nextWeekDays], [...nextWeekDays.map((student, index) => {
+      student.name = students[index].name
+      student.id = students[index].id
+      for (let key in student.day) {
+        student.day[key].time = students[index].day[key].time
+      }
+    })])
+  }
+
+
+
+  
   const value = {
     getTodayLogo,
     students,
@@ -333,7 +438,8 @@ export function AppProvider({ children }) {
     messageReset,
     deleteWeekLesson,
     lastWeekDays,
-    nextWeekDays
+    nextWeekDays,
+    copyPreviousSchedule,
   }
 
   return (

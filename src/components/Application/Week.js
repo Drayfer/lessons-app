@@ -10,7 +10,7 @@ export default function Week() {
     // className="bg-light d-flex justify-content-around flex-wrap" style={{ width: '100%' }}
     return (
         <div >
-            <Tabs
+            <Tabs 
                 id="controlled-tab-example"
                 activeKey={key}
                 onSelect={(k) => setKey(k)}

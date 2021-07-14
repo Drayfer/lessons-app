@@ -6,3 +6,26 @@
     margin: .5rem;
     background: rgb(240, 244, 250);
 }
+
+.check-time {
+    background: rgb(206, 200, 200);
+    border: 1px solid rgb(163, 201, 163); 
+    padding: 1px 6px;
+    color: rgb(61, 61, 61);
+    cursor: auto;
+    border: none;
+}
+.check-time:hover {
+    background: rgb(206, 200, 200);
+    cursor: auto;
+    
+}
+
+.last-week {
+    background: rgb(241, 241, 241);
+}
+
+.day-lastweek {
+    background: rgb(254, 255, 246);
+    /* background: rgb(249, 255, 206); */
+}
