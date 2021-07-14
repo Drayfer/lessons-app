@@ -10,19 +10,19 @@ export default function Week() {
     // className="bg-light d-flex justify-content-around flex-wrap" style={{ width: '100%' }}
     return (
         <div >
-            <Tabs 
+            <Tabs
                 id="controlled-tab-example"
                 activeKey={key}
                 onSelect={(k) => setKey(k)}
                 className="d-flex justify-content-center bg-light"
             >
-                <Tab eventKey="past" title="Прошлая неделя" >
+                <Tab eventKey="past" title="Прошлая" tabClassName='text-secondary'>
                     <LastWeek />
                 </Tab>
-                <Tab eventKey="active" title="Текущая неделя" >
+                <Tab eventKey="active" title="Текущая" tabClassName='text-secondary'>
                     <WeekNow />
                 </Tab>
-                <Tab eventKey="qq" title="Следующая неделя">
+                <Tab eventKey="future" title="Следующая" tabClassName='text-secondary'>
                 <NextWeek />
                 </Tab>
             </Tabs>

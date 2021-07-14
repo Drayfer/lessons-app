@@ -311,26 +311,6 @@ export function AppProvider({ children }) {
 
   function updateWeek() {
     setLastWeek()
-    // fetchLastWeek()
-
-    // const bufferWeek = students.slice()
-    // const bufferNextWeek = nextWeekDays.slice()
-    // updateFirestore([...bufferNextWeek], [...bufferNextWeek.map((student, index) => {
-    //   student.balance = bufferWeek[index].balance
-    //   student.message = bufferWeek[index].message
-    //   for (let key in student.day) {
-    //     student.day[key].ok = false
-    //   }
-    // })])
-    // fetchStudents()
-
-    // updateNextWeek([...bufferWeek], [...bufferWeek.map(student => {
-    //   delete student.balance
-    //   delete student.balance
-    //   for (let key in student.day) {
-    //     delete student.day[key].ok
-    //   }
-    // })])
 
     updateFirestore([...students], [...students.map((student, index) => {
       for (let key in student.day) {
@@ -338,10 +318,6 @@ export function AppProvider({ children }) {
         student.day[key].time = nextWeekDays[index].day[key].time
       }
     })])
-
-    // fetchNextWeek()
-    
-    
   }
 
 
@@ -400,16 +376,6 @@ export function AppProvider({ children }) {
 
   }
 
-  // function copyPreviousSchedule() {
-  //   let cop = students.slice()
-  //   updateNextWeek([...cop], [...cop.map(student => {
-  //     delete student.balance
-  //     delete student.balance
-  //     for (let key in student.day) {
-  //       delete student.day[key].ok
-  //     }
-  //   })])
-  // }
   function copyPreviousSchedule() {
     updateNextWeek([...nextWeekDays], [...nextWeekDays.map((student, index) => {
       student.name = students[index].name
@@ -439,7 +405,6 @@ export function AppProvider({ children }) {
     deleteWeekLesson,
     lastWeekDays,
     nextWeekDays,
-    copyPreviousSchedule,
   }
 
   return (

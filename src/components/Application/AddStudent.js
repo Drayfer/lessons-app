@@ -14,14 +14,13 @@ export default function AddStudent() {
     function handleSubmitInput(event) {
         event.preventDefault()
         if (nameRef.current.value.trim() && numberRef.current.value.trim()) {
-            if (!Number(numberRef.current.value)) {
-                alert("Введите правильное значение в поле 'Оплаченные уроки'")
+            if (Number(numberRef.current.value) || Number(numberRef.current.value) == 0) {
+                createStudent(nameRef.current.value, Number(numberRef.current.value))
+                setStudent({ ...student, name: '', balance: '' })
+                setShow(false)
                 return;
             }
-            createStudent(nameRef.current.value, Number(numberRef.current.value))
-            setStudent({ ...student, name: '', balance: '' })
-    
-            setShow(false)
+            alert("Введите правильное значение в поле 'Оплаченные уроки'")
         } 
     }
 
@@ -60,39 +59,6 @@ export default function AddStudent() {
                 </Modal.Body>
              
             </Modal>
-            {/* 
-            <Button className="btn btn-outline-secondary bg-secondary text-light" onClick={() => setIsOpen(!isOpen)}>Добавить студента</Button>
-            {isOpen && (<div className="modal1">
-                <div className='modal-body'>
-                <Button className='btn btn-danger float-right' onClick={() => setIsOpen(!isOpen)}>&times;</Button>
-
-                </div>
-
-            </div>)} */}
-
-            {/* {isOpen && (<div className="modal1">
-                <div className="modal-body">
-                    <button className='close-btn' onClick={() => setIsOpen(!isOpen)}>&times;</button>
-                    <div><span className='student-name'>{student.name}</span> <span className='student-name uroki'>{student.balance}</span>
-                        <span>{student.balance ? <span className='student-name uroki'>уроков</span> : null}</span>
-                    </div>
-                    <form className='modal-content' onSubmit={handleSubmitInput}>
-                        <div>
-                            <label htmlFor='text'>Имя ученика:</label>
-                            &nbsp;
-                            <input autoFocus type='text' placeholder='Имя ученика' value={student.name} onChange={event => setStudent({ ...student, name: event.target.value })} />
-                        </div>
-                        <div>
-                            <label htmlFor='text'>Оплаченные уроки:</label>
-                            &nbsp;
-                            <input type='text' placeholder='5' value={student.balance} onChange={event => setStudent({ ...student, balance: event.target.value })} />
-                        </div>
-                        {messageShow ? <p className='warning-message-addstudent'>* заполните необходимые поля</p> : null}
-                        <button className='student-submit' type='submit' onClick={handleSubmitInput}>Добавить</button>
-                    </form>
-
-                </div>
-            </div>)} */}
         </>
     )
 }
