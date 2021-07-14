@@ -405,6 +405,7 @@ export function AppProvider({ children }) {
     deleteWeekLesson,
     lastWeekDays,
     nextWeekDays,
+    copyPreviousSchedule
   }
 
   return (
