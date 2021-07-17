@@ -5,7 +5,7 @@ import { Button, Modal } from 'react-bootstrap'
 import { PlusCircle } from 'react-bootstrap-icons';
 
 export default function AddLessonNextWeek({ index }) {
-    const { setLessons, DAYS, nextWeekDays } = useApp()
+    const { setLessons, DAYS, nextWeekDays, students } = useApp()
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -17,7 +17,7 @@ export default function AddLessonNextWeek({ index }) {
 
     function changeClass(event) {
         event.target.className === 'student-item' ? event.target.className = 'student-item choose' : event.target.className = 'student-item'
-        selectNames.includes(event.target.childNodes[0].data) ? setSelectNames([...selectNames.filter(name => name !== event.target.childNodes[0].data)]) : setSelectNames([...selectNames.concat(event.target.childNodes[0].data)])
+        selectNames.includes(event.target.childNodes[0].data) ? setSelectNames([...selectNames.filter(id => id !== event.target.childNodes[0].data)]) : setSelectNames([...selectNames.concat(event.target.childNodes[0].data)])
     }
 
     function showRes(event) {
@@ -42,8 +42,7 @@ export default function AddLessonNextWeek({ index }) {
                         {nextWeekDays.map(student => {
                             if(student.day[index].time === 'none') {
                                 return <li className='student-item' key={student.id} onClick={(event) => changeClass(event)}>
-                                {/* <input type="checkbox" onChange = {}/> */}
-                                {student.name}
+                                {students.map(s => s.id === student.id && s.name)}
                             </li>
                             } else return null
                            

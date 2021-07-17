@@ -24,7 +24,7 @@ export default function NextWeek() {
 
     const [i, setI] = useState([])
 
-    const { DAYS, deleteWeekLesson, nextWeekDays, copyPreviousSchedule } = useApp()
+    const { DAYS, deleteWeekLesson, nextWeekDays, copyPreviousSchedule, students } = useApp()
 
 
     useEffect(() => {
@@ -84,7 +84,7 @@ export default function NextWeek() {
                                                         />
                                                     </span>
 
-                                                    <span className='student-message-btn' onClick={() => createMessage(student)}>{student.name}</span>
+                                                    <span className='student-message-btn' onClick={() => createMessage(student)}>{students.map(s => s.id == student.id && s.name)}</span>
                                                 </span>
 
                                                 <span>

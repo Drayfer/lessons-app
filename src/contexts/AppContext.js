@@ -129,6 +129,7 @@ export function AppProvider({ children }) {
           const s = student
           delete s.balance
           delete s.message
+          delete s.name
           for (let key in s.day) {
             delete s.day[key].ok
           }
@@ -162,7 +163,7 @@ export function AppProvider({ children }) {
     )
     updateNextWeek(
       [...nextWeekDays.concat({
-        id: id, name: name,
+        id: id,
         day: {
           0: { time: 'none' },
           1: { time: 'none' },
@@ -259,14 +260,12 @@ export function AppProvider({ children }) {
   function setLessons(namesStudents, index, LessonNextWeek = 0) {
     let time = 10;
     if (LessonNextWeek === 0) {
-      console.log(0)
       namesStudents.forEach(element => {
         updateFirestore([...students], [...students.map(student => student.name === element ? student.day[index].time = `${time++}:00` : student.day[index].time = student.day[index].time)])
       });
     } else {
-      console.log(1)
       namesStudents.forEach(element => {
-        updateNextWeek([...nextWeekDays], [...nextWeekDays.map(student => student.name === element ? student.day[index].time = `${time++}:00` : student.day[index].time = student.day[index].time)])
+        updateNextWeek([...nextWeekDays], [...nextWeekDays.map((student, i) => students[i].name === element ? student.day[index].time = `${time++}:00` : student.day[index].time = student.day[index].time)])
       });
     }
 
@@ -343,7 +342,7 @@ export function AppProvider({ children }) {
       students.map(student => student.day[index].ok &&
         (
           a.push({
-            name: student.name,
+            id: student.id,
             time: student.day[index].time
           })
         )
@@ -385,7 +384,6 @@ export function AppProvider({ children }) {
 
   function copyPreviousSchedule() {
     updateNextWeek([...nextWeekDays], [...nextWeekDays.map((student, index) => {
-      student.name = students[index].name
       student.id = students[index].id
       for (let key in student.day) {
         student.day[key].time = students[index].day[key].time
@@ -393,9 +391,10 @@ export function AppProvider({ children }) {
     })])
   }
 
-  const updateUser = (id, showBalance) => {
+  const updateUser = (id, showBalance, name) => {
     updateFirestore([...students], [...students.map(student => student.id === id && (
-      student.showBalance = showBalance
+      student.showBalance = showBalance,
+      student.name = name
       ))])
  
   }

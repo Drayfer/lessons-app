@@ -9,6 +9,7 @@ export default function Students() {
     const [index, setIndex] = useState(0)
     const [showOptions, setShowOptions] = useState(false);
     const [showBalance, setShowBalance] = useState();
+    const [showName, setShowName] = useState();
 
     function resetMessage() {
         setShow(!show)
@@ -34,6 +35,7 @@ export default function Students() {
     const handleOptions = (index) => {
         setShowOptions(true)
         setIndex(index)
+        setShowName(students[index].name)
         setShowBalance((students[index].showBalance === undefined || students[index].showBalance === false) ? false : true )
       
     }
@@ -61,7 +63,13 @@ export default function Students() {
                 </Modal.Header>
                 <Modal.Body>
                     <div>
-                        <input type='checkbox' checked={showBalance} onChange={(e) => setShowBalance(!showBalance) } /> 
+                       
+                      
+                        <label>Изменить имя </label>
+                        <br />
+                        <input type='text' value={showName} onChange={(e) => setShowName(e.target.value) } /> 
+                        <br />
+                        <input type='checkbox' checked={showBalance} onChange={(e) => setShowBalance(!showBalance) } style={{marginTop: '20px'}}/> 
                         &nbsp;
                         <span>Скрыть баланс ученика</span>
                     </div>
@@ -71,7 +79,7 @@ export default function Students() {
                         Закрыть
                     </Button>
                     <Button variant="primary" onClick={() => {
-                        updateUser(students[index].id, showBalance)
+                        updateUser(students[index].id, showBalance, showName)
                         setShowOptions(false)
                     }}>
                         Сохранить
