@@ -328,6 +328,13 @@ export function AppProvider({ children }) {
     setNextWeekDays(params)
   }
 
+    function updateLastWeek(params) {
+    firestore.collection('users').doc(currentUser.uid).update({
+      lastWeek: params
+    })
+    setlastWeekDays(params)
+  }
+
   function setLastWeek() {
     let lastWeek = {}
     let a = []
@@ -386,7 +393,12 @@ export function AppProvider({ children }) {
     })])
   }
 
-
+  const updateUser = (id, showBalance) => {
+    updateFirestore([...students], [...students.map(student => student.id === id && (
+      student.showBalance = showBalance
+      ))])
+ 
+  }
 
   
   const value = {
@@ -405,7 +417,8 @@ export function AppProvider({ children }) {
     deleteWeekLesson,
     lastWeekDays,
     nextWeekDays,
-    copyPreviousSchedule
+    copyPreviousSchedule,
+    updateUser
   }
 
   return (

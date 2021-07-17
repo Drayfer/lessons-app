@@ -80,11 +80,6 @@ export default function WeekNow() {
                                         
                                             <span>
                                                 <span className='student-time'>
-                                                    {/* <Time
-                                                        hours={student.day[index].time}
-                                                        student={student}
-                                                        day={day}
-                                                    /> */}
                                                     {student.day[index].ok 
                                                     ? <button className='hour-btn check-time'>{student.day[index].time}</button>
                                                     : <Time
