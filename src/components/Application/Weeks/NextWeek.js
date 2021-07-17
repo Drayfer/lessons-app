@@ -70,7 +70,9 @@ export default function NextWeek() {
                             <h3 className="border primary text-body" style={{ background: 'rgb(202, 240, 247)' }}>{day}</h3>
                             <div className="lessons" >
                                 <div className='lessons-placeholder'>
-                                    {i.slice().filter(a => a.day[index].time !== 'none').sort((a, b) => a.day[index].time.slice(0, 2) - b.day[index].time.slice(0, 2)).map((student, i) => {
+                                    {i.slice().filter(a => a.day[index].time !== 'none')
+                                    .sort((a, b) => +a.day[index].time.replace(':', '') - +b.day[index].time.replace(':', ''))
+                                    .map((student, i) => {
                                         if (student.day[index].time !== 'none') {
                                             return (<div className='students-list'>
 
