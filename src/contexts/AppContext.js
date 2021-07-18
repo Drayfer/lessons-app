@@ -77,10 +77,10 @@ export function AppProvider({ children }) {
     },
   ])
 
-  useEffect( () => {
-          fetchStudents()
-          fetchNextWeek()
-          fetchLastWeek()
+  useEffect(() => {
+    fetchStudents()
+    fetchNextWeek()
+    fetchLastWeek()
   }, [])
 
 
@@ -130,6 +130,7 @@ export function AppProvider({ children }) {
           delete s.balance
           delete s.message
           delete s.name
+          delete s.showBalance
           for (let key in s.day) {
             delete s.day[key].ok
           }
@@ -327,7 +328,7 @@ export function AppProvider({ children }) {
     setNextWeekDays(params)
   }
 
-    function updateLastWeek(params) {
+  function updateLastWeek(params) {
     firestore.collection('users').doc(currentUser.uid).update({
       lastWeek: params
     })
@@ -391,15 +392,34 @@ export function AppProvider({ children }) {
     })])
   }
 
-  const updateUser = (id, showBalance, name) => {
-    updateFirestore([...students], [...students.map(student => student.id === id && (
+  const updateUser = (id, showBalance, name, place) => {
+    function array_move(arr, old_index, new_index) {
+      if (new_index >= arr.length) {
+        let k = new_index - arr.length + 1
+        while (k--) {
+          arr.push(undefined)
+        }
+      }
+      arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+      return arr
+    };
+    let oldPlace = 0
+    students.forEach((s, i) => s.id === id && (oldPlace = i))
+    const sortedArr = array_move(students, oldPlace, place)
+  
+
+    updateFirestore([...sortedArr], [...sortedArr.map(student => student.id === id && (
       student.showBalance = showBalance,
       student.name = name
-      ))])
- 
+    ))])  
+
+    const sortedArr2 = array_move(nextWeekDays, oldPlace, place)
+    updateNextWeek([...sortedArr2])
   }
 
-  
+ 
+
+
   const value = {
     getTodayLogo,
     students,
