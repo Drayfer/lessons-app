@@ -40,14 +40,14 @@ export default function AddLessonNextWeek({ index }) {
                 <Modal.Body>
                 <ul className='choose-students-list'>
                         {nextWeekDays.map(student => {
-                            if(student.day[index].time === 'none') {
+                            if(student.day[index].time === 'none' && students.find(s => s.id === student.id).hide !== true) {
                                 return <li className='student-item' key={student.id} onClick={(event) => changeClass(event)}>
                                 {students.map(s => s.id === student.id && s.name)}
                             </li>
                             } else return null
                            
                         })}
-                    </ul>
+                    </ul>   
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>

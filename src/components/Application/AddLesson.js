@@ -41,7 +41,7 @@ export default function AddLesson({ index }) {
                 </Modal.Header>
                 <Modal.Body>
                 <ul className='choose-students-list'>
-                        {students.map(student => {
+                        {students.filter(student => student.hide === false || !student.hide).map(student => {
                             if(student.day[index].time === 'none') {
                                 return <li className='student-item' key={student.id} onClick={(event) => changeClass(event)}>
                                 {/* <input type="checkbox" onChange = {}/> */}

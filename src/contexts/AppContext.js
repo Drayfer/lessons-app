@@ -420,7 +420,7 @@ export function AppProvider({ children }) {
     })])
   }
 
-  const updateUser = (id, showBalance, name, place, phone='', email='', skype='', note='') => {
+  const updateUser = (id, showBalance, name, place, phone = '', email = '', skype = '', note = '', hide = false) => {
     function array_move(arr, old_index, new_index) {
       if (new_index >= arr.length) {
         let k = new_index - arr.length + 1
@@ -434,7 +434,8 @@ export function AppProvider({ children }) {
     let oldPlace = 0
     students.forEach((s, i) => s.id === id && (oldPlace = i))
     const sortedArr = array_move(students, oldPlace, place)
-  
+
+
 
     updateFirestore([...sortedArr], [...sortedArr.map(student => student.id === id && (
       student.showBalance = showBalance,
@@ -442,15 +443,41 @@ export function AppProvider({ children }) {
       student.phone = phone,
       student.email = email,
       student.skype = skype,
-      student.note = note
-    ))])  
+      student.note = note,
+      student.hide = hide
+    ))])
 
     const sortedArr2 = array_move(nextWeekDays, oldPlace, place)
     updateNextWeek([...sortedArr2])
   }
 
 
-
+  function hideUsers(id) {
+    const deleteStudent = students.find(student => student.id === id)
+    deleteStudent.day = {
+      0: { time: 'none', ok: false },
+      1: { time: 'none', ok: false },
+      2: { time: 'none', ok: false },
+      3: { time: 'none', ok: false },
+      4: { time: 'none', ok: false },
+      5: { time: 'none', ok: false },
+      6: { time: 'none', ok: false }
+    }
+    updateFirestore([...students], [...students.map(student => student.id === id && (
+      student.day = deleteStudent.day
+    ))])
+    updateNextWeek([...nextWeekDays], [...nextWeekDays.map(student => student.id === id && (
+      student.day = {
+        0: { time: 'none' },
+        1: { time: 'none' },
+        2: { time: 'none' },
+        3: { time: 'none' },
+        4: { time: 'none' },
+        5: { time: 'none' },
+        6: { time: 'none' }
+      }
+    ))])
+  }
 
   const value = {
     getTodayLogo,
@@ -471,7 +498,8 @@ export function AppProvider({ children }) {
     copyPreviousSchedule,
     updateUser,
     options,
-    updateOptions
+    updateOptions,
+    hideUsers
   }
 
   return (

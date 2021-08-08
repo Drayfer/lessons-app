@@ -80,6 +80,9 @@
   .students-list-container {
     list-style: none; 
     padding-left: 0;
+    background: linear-gradient(
+90deg
+, rgb(41, 50, 60) 0%, rgb(72, 85, 99) 100%);
   }
   
   .student-balance {
@@ -294,4 +297,9 @@
     display: flex;
     justify-content: space-between;
   }
+
+  /* .tab-content {
+    background-color: transparent;
+  } */
+
  
