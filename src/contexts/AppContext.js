@@ -256,7 +256,7 @@ export function AppProvider({ children }) {
       ].join(typeof separator !== 'undefined' ? separator : ':');
     }
 
-    return `Сегодня: ${DAYS[today.getDay() - 1] === undefined ? todayDay = DAYS[6] : todayDay = DAYS[today.getDay() - 1]} /
+    return `${DAYS[today.getDay() - 1] === undefined ? todayDay = DAYS[6] : todayDay = DAYS[today.getDay() - 1]} /
      ${String(today.getDate()).padStart(2, '0')} ${MONTHS[today.getMonth()]} /
     ${getTimeString()}
     `
