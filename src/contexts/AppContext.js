@@ -239,9 +239,9 @@ export function AppProvider({ children }) {
     }
   }
 
-  function messageReset(student) {
+  function messageReset(id) {
     // student.message = ''
-    updateFirestore([...students], [...students.map(s => s === student ? s.message = '' : s.message)])
+    updateFirestore([...students], [...students.map(s => s.id === id ? s.message = '' : s.message)])
   }
 
   function getTodayLogo() {

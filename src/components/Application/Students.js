@@ -25,7 +25,7 @@ export default function Students() {
     function resetMessage() {
 
         setShow(!show)
-        messageReset(students[index])
+        messageReset(id)
         // students[index].message = ''
         setIndex(0)
     }
