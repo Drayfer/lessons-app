@@ -17,9 +17,8 @@ export default function PushNotification() {
             theme: 'darkblue',
             native: true // when using native, your OS will handle theming.
         })
-
-
-
+        alarm.volume = +options.volume / 100
+        alarm.play()
     }
 
 
@@ -49,10 +48,7 @@ export default function PushNotification() {
                     dif = (dateB - new Date()) / 1000 / 60
                     dif <= 0 && dif > -2 && setPlay(true)
                     // dif <= 30 && dif > 0 && play && (console.log(`Урок с ${student.name}`) || setPlay(false))
-                    dif <= +options.minutes && dif > 0 && play && ((notification(student.name, dif) || (
-                        alarm.volume = +options.volume / 100,
-                        alarm.play()
-                    )) && setPlay(false))
+                    dif <= +options.minutes && dif > 0 && play && ((notification(student.name, dif)) && setPlay(false))
                 }
             }
 

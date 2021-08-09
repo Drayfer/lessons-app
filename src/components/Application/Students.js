@@ -79,7 +79,7 @@ export default function Students() {
                 <Modal.Header closeButton>
                     <Modal.Title>Напоминание</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>{students.length > 0 && students[index].message}</Modal.Body>
+                <Modal.Body>{students.length > 0 && id !== undefined && students.find(s => s.id === id).message}</Modal.Body>
                 <Modal.Footer>
                     <Button variant="primary" onClick={() => {
                         handleClose()
@@ -165,7 +165,7 @@ export default function Students() {
                         {students.filter(student => student.hide == false || !student.hide).map((student, i) => <li draggable="true" key={student.id} className="students-list" style={{ minHeight: '38px' }}>
                             <div className='student-list-info'>
                                 <span onClick={() => {
-                                    setIndex(i)
+                                    setId(student.id)
                                     handleShow()
                                 }
 
@@ -206,6 +206,7 @@ export default function Students() {
                             <div className='student-list-info'>
                                 <span onClick={() => {
                                     setIndex(i)
+                                    setId(student.id)
                                     handleShow()
                                 }
 
