@@ -435,6 +435,9 @@ export function AppProvider({ children }) {
     students.forEach((s, i) => s.id === id && (oldPlace = i))
     const sortedArr = array_move(students, oldPlace, place)
 
+    // students.filter(s => s.hide !== true || !s.hide).forEach((s, i) => s.id === id && (oldPlace = i))
+    // const sortedArr = array_move(students.filter(s => s.hide !== true), oldPlace, place)
+
 
 
     updateFirestore([...sortedArr], [...sortedArr.map(student => student.id === id && (

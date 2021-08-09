@@ -23,14 +23,14 @@ export default function AddLessonNextWeek({ index }) {
     function showRes(event) {
         event.preventDefault()
         handleClose()
-        setLessons(selectNames, index,  1)
+        setLessons(selectNames, index, 1)
         setSelectNames([])
 
     }
     return (
         <>
             {/* <button className="create-lesson-btn" onClick={handleShow}></button> */}
-            <PlusCircle className="create-lesson-btn" onClick={handleShow}/>
+            <PlusCircle className="create-lesson-btn" onClick={handleShow} />
 
 
             <Modal show={show} onHide={handleClose}>
@@ -38,16 +38,19 @@ export default function AddLessonNextWeek({ index }) {
                     <Modal.Title>{DAYS[index]}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <ul className='choose-students-list'>
+                    <ul className='choose-students-list'>
                         {nextWeekDays.map(student => {
-                            if(student.day[index].time === 'none' && students.find(s => s.id === student.id).hide !== true) {
+                            if (student.day[index].time === 'none'
+                                // && students.find(s => s.id === student.id).hasOwnProperty('hide') === false
+                                && students.find(s => s.id === student.id).hide !== true
+                            ) {
                                 return <li className='student-item' key={student.id} onClick={(event) => changeClass(event)}>
-                                {students.map(s => s.id === student.id && s.name)}
-                            </li>
+                                    {students.map(s => s.id === student.id && s.name)}
+                                </li>
                             } else return null
-                           
+
                         })}
-                    </ul>   
+                    </ul>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>

@@ -3,7 +3,7 @@ import { useApp } from '../../contexts/AppContext'
 import { Modal, Button, CloseButton, Form, Tabs, Tab } from 'react-bootstrap';
 import { ChatDots, Phone } from 'react-bootstrap-icons';
 import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse';
-import { BookmarkPlusFill, ShieldFillMinus } from 'react-bootstrap-icons';
+import { BookmarkPlusFill, CalendarMinusFill } from 'react-bootstrap-icons';
 
 export default function Students() {
     const [id, setId] = useState()
@@ -108,7 +108,7 @@ export default function Students() {
                         <label className='mt-3'>Положение в списке:</label>
                         <select class="form-select" aria-label="Default select example" value={place} onChange={e => setPlace(e.target.value)}>
                             {/* <option selected>Выбрать место</option> */}
-                            {students.filter(student => key == 'active' ? (student.hide == false || !student.hide) : student.hide == true).map((s, i) => {
+                            {students.filter(student => key === 'active' ? (student.hide === false || !student.hide) : student.hide === true).map((s, i) => {
                                 return (
                                     <option value={i}>{i === index ? `${i + 1} - текущее положение` : i + 1}</option>
                                 )
@@ -130,6 +130,7 @@ export default function Students() {
                             value={note}
                             style={{ height: '150px' }}
                             onChange={(e) => setNote(e.target.value)}
+                            
                         />
 
                     </div>
@@ -199,7 +200,7 @@ export default function Students() {
                         )}
                     </ul>
                 </Tab>
-                <Tab eventKey="hide" title={<ShieldFillMinus />} tabClassName={key == 'hide' ? 'text-secondary' : 'text-white'}>
+                <Tab eventKey="hide" title={<CalendarMinusFill />} tabClassName={key == 'hide' ? 'text-secondary' : 'text-white'}>
                     <ul className='students-list-container'>
                         {students.filter(student => student.hide === true).map((student, i) => <li draggable="true" key={student.id} className="students-list" style={{ minHeight: '38px', backgroundColor: '#DCE8FA' }}>
                             <div className='student-list-info'>
