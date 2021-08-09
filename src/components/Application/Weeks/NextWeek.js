@@ -24,7 +24,13 @@ export default function NextWeek() {
 
     const [i, setI] = useState([])
 
-    const { DAYS, deleteWeekLesson, nextWeekDays, copyPreviousSchedule, students } = useApp()
+    const { DAYS, deleteWeekLesson, nextWeekDays, copyPreviousSchedule, students, leaveMessage } = useApp()
+
+    function sendMessage(e) {
+        e.preventDefault()
+        leaveMessage(messageRef.current.value, id)
+        handleClose()
+    }
 
 
     useEffect(() => {
@@ -32,11 +38,15 @@ export default function NextWeek() {
     }, [nextWeekDays]);
 
     function createMessage(student) {
+        console.log(students.find(s => s.id == student.id).name)
+        setValue(students.find(s => s.id == student.id).message)
         handleShow()
         setName(student.name)
         setId(student.id)
-        setValue(student.message)
+        
     }
+
+
 
     function handleButton() {
         copyPreviousSchedule()
@@ -47,6 +57,29 @@ export default function NextWeek() {
 
     return (
         <>
+        <Modal show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Оставить напоминание о {name}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={sendMessage}>
+                        <Form.Group className="mb-3" controlId="formBasicPassword">
+                            <Form.Control
+                                as="textarea"
+                                placeholder="Напишите здесь"
+                                ref={messageRef}
+                                style={{ height: '150px' }}
+                                value={value}
+                                onChange={e => setValue(e.target.value)}
+                            />
+                        </Form.Group>
+                        <Button variant="primary" type='submit'>
+                            Сохранить
+                        </Button>
+                    </Form>
+                </Modal.Body>
+            </Modal>
+            
             <div>
                 <Alert show={showAlert} variant="success">
                     <Alert.Heading>Расписание прошлой недели скопировано.</Alert.Heading>
@@ -93,7 +126,7 @@ export default function NextWeek() {
                                                     <CloseButton onClick={() => deleteWeekLesson(student, index, 1)} />
                                                 </span>
                                             </div>
-                                            )
+                                                )
                                         } else return null
 
                                     })}

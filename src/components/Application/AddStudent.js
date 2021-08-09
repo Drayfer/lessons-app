@@ -14,7 +14,7 @@ export default function AddStudent() {
     function handleSubmitInput(event) {
         event.preventDefault()
         if (nameRef.current.value.trim() && numberRef.current.value.trim()) {
-            if (Number(numberRef.current.value) || Number(numberRef.current.value) == 0) {
+            if (Number(numberRef.current.value) || Number(numberRef.current.value) === 0) {
                 createStudent(nameRef.current.value, Number(numberRef.current.value))
                 setStudent({ ...student, name: '', balance: '' })
                 setShow(false)

@@ -84,8 +84,8 @@ export default function Students() {
                                     <option value={i}>{i === index ? `${i+1} - текущее положение` : i+1}</option>
                                 )
                             })}
-
                         </select>
+            
                     </div>
                 </Modal.Body>
                 <Modal.Footer>

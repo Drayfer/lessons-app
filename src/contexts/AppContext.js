@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react"
 import { firestore } from "../firebase"
+import { messaging } from "../firebase"
 import { useAuth } from "./AuthContext"
 
 const AppContext = React.createContext()
@@ -38,6 +39,12 @@ export function AppProvider({ children }) {
   const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
   const [lastWeekDays, setlastWeekDays] = useState({})
   const [nextWeekDays, setNextWeekDays] = useState([])
+  const [options, setOptions] = useState({
+    notification: true,
+    minutes: 3,
+    volume: 100
+  })
+
   const [students, setStudents] = useState([
     {
       id: 1, name: 'Роман', balance: 3, message: 'Пример сообщения, как напоминания о том, какую информацию можно оставить о студенте, чтобы не забыть',
@@ -81,6 +88,7 @@ export function AppProvider({ children }) {
     fetchStudents()
     fetchNextWeek()
     fetchLastWeek()
+    fetchOptions()
   }, [])
 
 
@@ -121,7 +129,7 @@ export function AppProvider({ children }) {
     let docRef = firestore.collection("users").doc(currentUser.uid)
     docRef.get().then((doc) => {
       if (doc.data().nextWeek) {
-        console.log("есть документ");
+        // console.log("есть документ");
         setNextWeekDays([...doc.data().nextWeek])
       } else {
         console.log("документа нет");
@@ -144,7 +152,27 @@ export function AppProvider({ children }) {
     });
   }
 
+  function fetchOptions() {
+    let docRef = firestore.collection("users").doc(currentUser.uid)
+    docRef.get().then((doc) => {
+      if (doc.data().options) {
+        console.log("есть документ");
+        setOptions(doc.data().options)
+      } else {
+        console.log("документа нет");
+        updateOptions(options)
+      }
+    }).catch((error) => {
+      console.log("Error getting document:", error);
+    });
+  }
 
+  function updateOptions(params) {
+    firestore.collection('users').doc(currentUser.uid).update({
+      options: params
+    })
+    setOptions(params)
+  }
 
   function createStudent(name, balance) {
     const id = Date.now()
@@ -417,7 +445,7 @@ export function AppProvider({ children }) {
     updateNextWeek([...sortedArr2])
   }
 
- 
+
 
 
   const value = {
@@ -437,7 +465,9 @@ export function AppProvider({ children }) {
     lastWeekDays,
     nextWeekDays,
     copyPreviousSchedule,
-    updateUser
+    updateUser,
+    options,
+    updateOptions
   }
 
   return (
