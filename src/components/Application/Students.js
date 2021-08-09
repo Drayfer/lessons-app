@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useApp } from '../../contexts/AppContext'
 import { Modal, Button, CloseButton, Form } from 'react-bootstrap';
-import { ChatDots } from 'react-bootstrap-icons';
+import { ChatDots, Phone } from 'react-bootstrap-icons';
 import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse';
 
 export default function Students() {
@@ -11,6 +11,10 @@ export default function Students() {
     const [showBalance, setShowBalance] = useState();
     const [showName, setShowName] = useState();
     const [place, setPlace] = useState();
+    const [phone, setPhone] = useState();
+    const [email, setEmail] = useState();
+    const [skype, setSkype] = useState();
+    const [note, setNote] = useState();
 
     function resetMessage() {
        
@@ -40,6 +44,10 @@ export default function Students() {
         setPlace(i)
         setShowName(students[i].name)
         setShowBalance((students[i].showBalance === undefined || students[i].showBalance === false) ? false : true)
+        setPhone(students[i].phone)
+        setEmail(students[i].email)
+        setSkype(students[i].skype)
+        setNote(students[i].note)
 
     }
 
@@ -62,21 +70,19 @@ export default function Students() {
 
             <Modal show={showOptions} onHide={() => setShowOptions(false)}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Настройки</Modal.Title>
+                    <Modal.Title>Профиль студента</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div>
 
 
-                        <label>Изменить имя </label>
-                        <br />
+                        <label className='mr-2'>Имя:</label>
                         <input type='text' value={showName} onChange={(e) => setShowName(e.target.value)} />
                         <br />
-                        <input type='checkbox' checked={showBalance} onChange={(e) => setShowBalance(!showBalance)} />
-                        &nbsp;
+                        <input className='mr-2 mt-3' type='checkbox' checked={showBalance} onChange={(e) => setShowBalance(!showBalance)} />
                         <span>Скрыть баланс ученика</span>
                         <br />
-                        <label style={{ marginTop: '20px' }}>Положение в списке </label>
+                        <label className='mt-3'>Положение в списке:</label>
                         <select class="form-select" aria-label="Default select example" value={place} onChange={e => setPlace(e.target.value)}>
                             {/* <option selected>Выбрать место</option> */}
                             {students.map((s, i) => {
@@ -85,7 +91,24 @@ export default function Students() {
                                 )
                             })}
                         </select>
-            
+                        <label className='mr-2'>Телефон родителей:</label>
+                        <input className='mt-3' type='text' value={phone} onChange={(e) => setPhone(e.target.value)}/>
+                        <br />
+                        <label className='mr-2'>E-mail:</label>
+                        <input className='mt-3' type='text' value={email} onChange={(e) => setEmail(e.target.value)}/>
+                        <br />
+                        <label className='mr-2'>Skype:</label>
+                        <input className='mt-3' type='text' value={skype} onChange={(e) => setSkype(e.target.value)}/>
+                        <br />
+                        <label className='mt-3'>Заметки:</label>
+                        <Form.Control
+                                as="textarea"
+                                placeholder="Напишите здесь"
+                                value={note}
+                                style={{ height: '150px' }}
+                                onChange={(e) => setNote(e.target.value)}
+                            />
+                        
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
@@ -93,7 +116,7 @@ export default function Students() {
                         Закрыть
                     </Button>
                     <Button variant="primary" onClick={() => {
-                        updateUser(students[index].id, showBalance, showName, place)
+                        updateUser(students[index].id, showBalance, showName, place, phone, email, skype, note)
                         setShowOptions(false)
                         setPlace(false)
                     }}>

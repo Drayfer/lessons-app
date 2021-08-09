@@ -7,7 +7,7 @@ export default function Sidebar() {
     
     return (
         <>
-            <p className="date-today pt-4">{getTodayLogo()}</p>       
+            <p className="date-today pt-4 small">{getTodayLogo()}</p>       
         </>
     )
 }
