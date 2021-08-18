@@ -32,7 +32,7 @@ export const Footer = () => {
 
     return (
         <div className={styles.container}>
-        <div style={{marginRight: '1rem'}}> {weekTab === 'active' ? 'На этой неделе: ': weekTab === 'past' ? 'На прошлой неделе: ' : 'На следующей неделе:'} {currentLessons}</div>
+        <div style={{marginRight: '1rem'}}> {weekTab === 'active' ? 'На этой неделе: ': weekTab === 'past' ? 'На прошлой неделе: ' : 'На следующей неделе: '} {currentLessons}</div>
         <div>Всего проведено: {options.countLessons}</div>
         </div>
     )
