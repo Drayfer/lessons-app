@@ -39,6 +39,7 @@ export function AppProvider({ children }) {
   const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
   const [lastWeekDays, setlastWeekDays] = useState({})
   const [nextWeekDays, setNextWeekDays] = useState([])
+  const [weekTab, setWeekTab] = useState('active')
   const [options, setOptions] = useState({
     notification: true,
     minutes: 3,
@@ -504,7 +505,9 @@ export function AppProvider({ children }) {
     updateUser,
     options,
     updateOptions,
-    hideUsers
+    hideUsers,
+    weekTab,
+    setWeekTab
   }
 
   return (

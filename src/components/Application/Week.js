@@ -3,17 +3,17 @@ import WeekNow from './Weeks/WeekNow'
 import LastWeek from './Weeks/LastWeek'
 import { Tabs, Tab } from 'react-bootstrap';
 import NextWeek from './Weeks/NextWeek';
+import { useApp } from "../../contexts/AppContext"
 
 export default function Week() {
-
-    const [key, setKey] = useState('active');
-    // className="bg-light d-flex justify-content-around flex-wrap" style={{ width: '100%' }}
+    const { weekTab, setWeekTab } = useApp()
+    
     return (
-        <div >
+        <div>
             <Tabs
                 id="controlled-tab-example"
-                activeKey={key}
-                onSelect={(k) => setKey(k)}
+                activeKey={weekTab}
+                onSelect={(k) => setWeekTab(k)}
                 className="d-flex justify-content-center bg-light"
             >
                 <Tab eventKey="past" title="Прошлая" tabClassName='text-secondary'>
