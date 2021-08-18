@@ -31,51 +31,57 @@ export default function Navigation() {
 
     return (
         <>
-        {optionsNotification && (
-             <Modal show={show} onHide={handleClose}>
-             <Modal.Header closeButton>
-                 <Modal.Title>Настройки</Modal.Title>
-             </Modal.Header>
-             <Modal.Body>
-                 <Form onSubmit={handleSubmit}>
-                     <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                         <Form.Check type="checkbox" checked={optionsNotification.notification}
-                             onChange={() => setOptionsNotification(optionsNotification, optionsNotification.notification = !optionsNotification.notification)}
-                             label={optionsNotification.notification ? 'Выключить уведомления' : 'Включить уведомления'}
-                         />
-                     </Form.Group>
-                     {optionsNotification.notification && (
-                         <>
-                             <Form.Group className="mb-3" controlId="formBasicPassword">
-                                 <Form.Label>За сколько минут до урока уведомлять</Form.Label>
-                                 <Form.Control type="text" value={optionsNotification.minutes} 
-                                 onChange={(e) => setOptionsNotification(optionsNotification, optionsNotification.minutes = +e.target.value)}
-                                 />
+            {optionsNotification && (
+                <Modal show={show} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Настройки</Modal.Title>
+                    </Modal.Header>
+                    <Form onSubmit={handleSubmit}>
+                    <Modal.Body>
+                            <Form.Group className="mb-3" controlId="formBasicCheckbox">
+                                <Form.Check type="checkbox" checked={optionsNotification.notification}
+                                    onChange={() => setOptionsNotification(optionsNotification, optionsNotification.notification = !optionsNotification.notification)}
+                                    label={optionsNotification.notification ? 'Выключить уведомления' : 'Включить уведомления'}
+                                />
+                            </Form.Group>
+                            {optionsNotification.notification && (
+                                <>
+                                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                                        <Form.Label>За сколько минут до урока уведомлять</Form.Label>
+                                        <Form.Control type="text" value={optionsNotification.minutes}
+                                            onChange={(e) => setOptionsNotification(optionsNotification, optionsNotification.minutes = +e.target.value)}
+                                        />
 
-                             </Form.Group>
-                             <Form.Group className="mb-3">
-                                 <Form.Label>Громкость уведомления</Form.Label>
-                                 <input className='w-100' type="range" min="0" max="100" value={optionsNotification.volume} 
-                                 onChange={(e) => setOptionsNotification(optionsNotification, optionsNotification.volume = +e.target.value)}
-                                 />
-                             </Form.Group>
-                         </>
-                     )
-                     }
+                                    </Form.Group>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label>Громкость уведомления</Form.Label>
+                                        <input className='w-100' type="range" min="0" max="100" value={optionsNotification.volume}
+                                            onChange={(e) => setOptionsNotification(optionsNotification, optionsNotification.volume = +e.target.value)}
+                                        />
+                                    </Form.Group>
+                                </>
+                            )
+                            }
+                            <Form.Group className="mb-3">
+                                <Form.Label>Сбросить счетчик уроков: {options.countLessons}</Form.Label>
+                                <Button className='ml-2' variant="outline-danger" size="sm" onClick={() => {
+                                    setOptionsNotification(optionsNotification, optionsNotification.countLessons = 0)
+                                }
+                                }>Сброс</Button>
+                            </Form.Group>
+                        
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="primary" type='submit'>
+                            Сохранить
+                        </Button>
+                    </Modal.Footer>
+                    </Form>
+                </Modal>
+            )}
 
 
-                     <Button variant="primary" type='submit'>
-                         Сохранить
-                     </Button>
-                 </Form>
 
-
-             </Modal.Body>
-         </Modal>
-        )}
-     
-           
-            
 
             <Nav className='d-flex justify-content-end bg-dark'>
                 <Nav.Item>

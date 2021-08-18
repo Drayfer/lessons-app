@@ -42,7 +42,8 @@ export function AppProvider({ children }) {
   const [options, setOptions] = useState({
     notification: true,
     minutes: 3,
-    volume: 100
+    volume: 100,
+    countLessons: 0
   })
 
   const [students, setStudents] = useState([
@@ -156,10 +157,10 @@ export function AppProvider({ children }) {
     let docRef = firestore.collection("users").doc(currentUser.uid)
     docRef.get().then((doc) => {
       if (doc.data().options) {
-        console.log("есть документ");
+        console.log("есть документ options");
         setOptions(doc.data().options)
       } else {
-        console.log("документа нет");
+        console.log("документа нет options");
         updateOptions(options)
       }
     }).catch((error) => {
@@ -263,12 +264,12 @@ export function AppProvider({ children }) {
   }
 
   function checkLesson(id, day) {
-
     students.map(student => {
       if (student.id === id && student.day[day].ok === false) {
         updateFirestore([...students], [...students.map(student => {
           if (student.id === id) {
             student.day[day].ok = true
+            updateOptions(options, options.countLessons = options.countLessons ? +options.countLessons + 1 : 0 + 1)
           }
         })])
         changeLessons('down', id)
@@ -276,6 +277,7 @@ export function AppProvider({ children }) {
         updateFirestore([...students], [...students.map(student => {
           if (student.id === id) {
             student.day[day].ok = false
+            updateOptions(options, options.countLessons = options.countLessons ? +options.countLessons - 1 : 0)
           }
         })])
         changeLessons('up', id)
