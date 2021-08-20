@@ -5,7 +5,7 @@ import { Calendar2Check } from 'react-bootstrap-icons';
 import './LastWeek.css'
 
 export default function LastWeek() {
-    const { DAYS, lastWeekDays, students } = useApp()
+    const { DAYS, lastWeekDays, students, lightCheck, handleLight } = useApp()
 
 
     return (
@@ -22,7 +22,10 @@ export default function LastWeek() {
                                     lastWeekDays[index] ? lastWeekDays[index].map((student, i) => {
 
                                         return (
-                                            <div className='students-list last-week'>
+                                            <div onClick={() => handleLight(student.id)}
+                                            className={lightCheck == student.id ? 'students-list last-week lightcheck' : 'students-list last-week'}
+                                            >
+                                                
 
                                                 <span>
                                                     <span className='student-time'>

@@ -24,7 +24,7 @@ export default function NextWeek() {
 
     const [i, setI] = useState([])
 
-    const { DAYS, deleteWeekLesson, nextWeekDays, copyPreviousSchedule, students, leaveMessage } = useApp()
+    const { DAYS, deleteWeekLesson, nextWeekDays, copyPreviousSchedule, students, leaveMessage, lightCheck, handleLight } = useApp()
 
     function sendMessage(e) {
         e.preventDefault()
@@ -43,7 +43,7 @@ export default function NextWeek() {
         handleShow()
         setName(student.name)
         setId(student.id)
-        
+
     }
 
 
@@ -57,7 +57,7 @@ export default function NextWeek() {
 
     return (
         <>
-        <Modal show={show} onHide={handleClose}>
+            <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Оставить напоминание о {name}</Modal.Title>
                 </Modal.Header>
@@ -79,7 +79,7 @@ export default function NextWeek() {
                     </Form>
                 </Modal.Body>
             </Modal>
-            
+
             <div>
                 <Alert show={showAlert} variant="success">
                     <Alert.Heading>Расписание прошлой недели скопировано.</Alert.Heading>
@@ -91,7 +91,7 @@ export default function NextWeek() {
                     </div>
                 </Alert>
                 <div className='d-flex justify-content-end bg-light pt-2'>
-                {!showAlert && <span className='btn btn-outline-secondary btn-sm mr-3' onClick={() => handleButton(true)}>Скопировать расписание прошлой недели</span>}
+                    {!showAlert && <span className='btn btn-outline-secondary btn-sm mr-3' onClick={() => handleButton(true)}>Скопировать расписание прошлой недели</span>}
                 </div>
             </div>
 
@@ -104,32 +104,35 @@ export default function NextWeek() {
                             <div className="lessons" >
                                 <div className='lessons-placeholder'>
                                     {i.slice().filter(a => a.day[index].time !== 'none')
-                                    .sort((a, b) => +a.day[index].time.replace(':', '') - +b.day[index].time.replace(':', ''))
-                                    .map((student, i) => {
-                                        if (student.day[index].time !== 'none') {
-                                            return (<div className='students-list'>
+                                        .sort((a, b) => +a.day[index].time.replace(':', '') - +b.day[index].time.replace(':', ''))
+                                        .map((student, i) => {
+                                            if (student.day[index].time !== 'none') {
+                                                return (<div
+                                                    onClick={() => handleLight(student.id)}
+                                                    className={lightCheck == student.id ? 'students-list lightcheck' : 'students-list'}
+                                                >
 
-                                                <span>
-                                                    <span className='student-time next-week'>
-                                                        <Time
-                                                            hours={student.day[index].time}
-                                                            student={student}
-                                                            day={day}
-                                                            nextWeek={true}
-                                                        />
+                                                    <span>
+                                                        <span className='student-time next-week'>
+                                                            <Time
+                                                                hours={student.day[index].time}
+                                                                student={student}
+                                                                day={day}
+                                                                nextWeek={true}
+                                                            />
+                                                        </span>
+
+                                                        <span className='student-message-btn' onClick={() => createMessage(student)}>{students.map(s => s.id == student.id && s.name)}</span>
                                                     </span>
 
-                                                    <span className='student-message-btn' onClick={() => createMessage(student)}>{students.map(s => s.id == student.id && s.name)}</span>
-                                                </span>
-
-                                                <span>
-                                                    <CloseButton onClick={() => deleteWeekLesson(student, index, 1)} />
-                                                </span>
-                                            </div>
+                                                    <span>
+                                                        <CloseButton onClick={() => deleteWeekLesson(student, index, 1)} />
+                                                    </span>
+                                                </div>
                                                 )
-                                        } else return null
+                                            } else return null
 
-                                    })}
+                                        })}
 
                                 </div>
                                 <AddLessonNextWeek index={index} />

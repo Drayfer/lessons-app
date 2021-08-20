@@ -40,6 +40,7 @@ export function AppProvider({ children }) {
   const [lastWeekDays, setlastWeekDays] = useState({})
   const [nextWeekDays, setNextWeekDays] = useState([])
   const [weekTab, setWeekTab] = useState('active')
+  const [lightCheck, setLightCheck] = useState('')
   const [options, setOptions] = useState({
     notification: true,
     minutes: 3,
@@ -485,6 +486,10 @@ export function AppProvider({ children }) {
     ))])
   }
 
+  const handleLight = id => {
+    id == lightCheck ? setLightCheck('') : setLightCheck(id)
+  }
+
   const value = {
     getTodayLogo,
     students,
@@ -507,7 +512,9 @@ export function AppProvider({ children }) {
     updateOptions,
     hideUsers,
     weekTab,
-    setWeekTab
+    setWeekTab,
+    lightCheck,
+    handleLight
   }
 
   return (

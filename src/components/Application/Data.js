@@ -1,7 +1,7 @@
 import React from 'react'
 import { useApp } from "../../contexts/AppContext"
 
-export default function Sidebar() {
+export default function Data() {
 
     const { getTodayLogo } = useApp()
     

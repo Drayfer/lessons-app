@@ -36,7 +36,9 @@ export default function Students() {
         changeLessons,
         messageReset,
         updateUser,
-        hideUsers
+        hideUsers,
+        lightCheck,
+        handleLight
     } = useApp()
 
 
@@ -45,18 +47,7 @@ export default function Students() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    // const handleOptions = (i) => {
-    //     setShowOptions(true)
-    //     setIndex(i)
-    //     setPlace(i)
-    //     setShowName(students[i].name)
-    //     setShowBalance((students[i].showBalance === undefined || students[i].showBalance === false) ? false : true)
-    //     setPhone(students[i].phone)
-    //     setEmail(students[i].email)
-    //     setSkype(students[i].skype)
-    //     setNote(students[i].note)
-    //     setHide(students[i].hide)
-    // }
+   
 
     const handleOptions = (id, i) => {
         const currentStudent = students.find(student => student.id === id)
@@ -130,7 +121,7 @@ export default function Students() {
                             value={note}
                             style={{ height: '150px' }}
                             onChange={(e) => setNote(e.target.value)}
-                            
+
                         />
 
                     </div>
@@ -161,10 +152,17 @@ export default function Students() {
                 className="d-flex justify-content-center mb-1 border-0"
             >
                 <Tab eventKey="active" title={<BookmarkPlusFill />} tabClassName={key == 'active' ? 'text-secondary' : 'text-white'}>
-                    <ul className='students-list-container' style={{ }}>
-                        {students.filter(student => student.hide == false || !student.hide).map((student, i) => <li draggable="true" key={student.id} className="students-list" style={{ minHeight: '38px' }}>
+                    <ul className='students-list-container'>
+                        {students.filter(student => student.hide == false || !student.hide).map((student, i) => <li
+                            draggable="true"
+                            key={student.id}
+                            className={lightCheck == student.id ? 'students-list lightcheck' : 'students-list'}
+                            style={{ minHeight: '38px' }}
+                            onClick={() => handleLight(student.id)}                            
+                        >
                             <div className='student-list-info'>
-                                <span onClick={() => {
+                                <span onClick={(e) => {
+                                    e.stopPropagation()
                                     setId(student.id)
                                     handleShow()
                                 }
@@ -175,7 +173,10 @@ export default function Students() {
                                 <span className="index-student">{i + 1}. </span>
 
                                 {/* <span className="student-name-index" > {student.name} </span> */}
-                                <span className='student-message-btn' onClick={() => handleOptions(student.id, i)}>{student.name}</span>
+                                <span className='student-message-btn' onClick={(e) => {
+                                    e.stopPropagation()
+                                    handleOptions(student.id, i)
+                                }}>{student.name}</span>
                             </div>
                             <div className="student-list-controls">
                                 <span className={student.balance > 0 ? 'student-balance' : 'student-balance minus-balance'}
@@ -185,13 +186,22 @@ export default function Students() {
                                     {
                                         (student.showBalance === undefined || student.showBalance === false) &&
                                         <span className="setect-btn">
-                                            <button className='arrow-btn' onClick={() => changeLessons('up', student.id)}>&#9650;</button>
-                                            <button className='arrow-btn' onClick={() => changeLessons('down', student.id)}> &#9660;</button>
+                                            <button className='arrow-btn' onClick={(e) => {
+                                                e.stopPropagation()
+                                                changeLessons('up', student.id)
+                                            }}>&#9650;</button>
+                                            <button className='arrow-btn' onClick={(e) => {
+                                                e.stopPropagation()
+                                                changeLessons('down', student.id)
+                                            }}> &#9660;</button>
                                         </span>
                                     }
 
                                     <span className="ml-3">
-                                        <CloseButton onClick={() => deleteStudent(student.id)} />
+                                        <CloseButton onClick={(e) => {
+                                            e.stopPropagation()
+                                            deleteStudent(student.id)
+                                        }} />
                                     </span>
                                 </span>
 
@@ -202,9 +212,17 @@ export default function Students() {
                 </Tab>
                 <Tab eventKey="hide" title={<CalendarMinusFill />} tabClassName={key == 'hide' ? 'text-secondary' : 'text-white'}>
                     <ul className='students-list-container'>
-                        {students.filter(student => student.hide === true).map((student, i) => <li draggable="true" key={student.id} className="students-list" style={{ minHeight: '38px', backgroundColor: '#DCE8FA' }}>
+                        {students.filter(student => student.hide === true).map((student, i) => <li
+                            draggable="true"
+                            key={student.id}
+                            className='students-list'
+                            style={{ minHeight: '38px', backgroundColor: '#DCE8FA' }}
+                            
+                        >
+
                             <div className='student-list-info'>
-                                <span onClick={() => {
+                                <span onClick={(e) => {
+                                    e.stopPropagation()
                                     setIndex(i)
                                     setId(student.id)
                                     handleShow()
@@ -226,13 +244,22 @@ export default function Students() {
                                     {
                                         (student.showBalance === undefined || student.showBalance === false) &&
                                         <span className="setect-btn">
-                                            <button className='arrow-btn' onClick={() => changeLessons('up', student.id)}>&#9650;</button>
-                                            <button className='arrow-btn' onClick={() => changeLessons('down', student.id)}> &#9660;</button>
+                                            <button className='arrow-btn' onClick={(e) => {
+                                                e.stopPropagation()
+                                                changeLessons('up', student.id)
+                                            }}>&#9650;</button>
+                                            <button className='arrow-btn' onClick={(e) => {
+                                                e.stopPropagation()
+                                                changeLessons('down', student.id)
+                                            }}> &#9660;</button>
                                         </span>
                                     }
 
                                     <span className="ml-3">
-                                        <CloseButton onClick={() => deleteStudent(student.id)} />
+                                        <CloseButton onClick={(e) => {
+                                            e.stopPropagation()
+                                            deleteStudent(student.id)
+                                        }} />
                                     </span>
                                 </span>
 

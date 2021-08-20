@@ -298,8 +298,8 @@
     justify-content: space-between;
   }
 
-  /* .tab-content {
-    background-color: transparent;
-  } */
+  .lightcheck {
+    outline: 4px solid red;
+  }
 
  

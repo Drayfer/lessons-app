@@ -10,14 +10,6 @@ import ForgotPassword from "./ForgotPassword"
 import UpdateProfile from "./UpdateProfile"
 
 
-// const styles={
-//   width: "30vw", 
-//   backgroundImage: 'url("https://images.unsplash.com/photo-1531315630201-bb15abeb1653?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=375&q=80")',
-//   backgroundRepeat: 'no-repeat',
-//   backgroundPosition: 'center',
-//   backgroundSize: 'cover',
-//   minWidth: '250px',
-// }
 
 function App() {
 
