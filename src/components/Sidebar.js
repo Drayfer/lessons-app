@@ -2,6 +2,7 @@ import React from 'react'
 import Data from './Application/Data'
 import Students from './Application/Students'
 
+
 const Sidebar = () => {
     return (
         <div>

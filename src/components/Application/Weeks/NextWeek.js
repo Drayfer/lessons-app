@@ -122,11 +122,18 @@ export default function NextWeek() {
                                                             />
                                                         </span>
 
-                                                        <span className='student-message-btn' onClick={() => createMessage(student)}>{students.map(s => s.id == student.id && s.name)}</span>
+                                                        <span className='student-message-btn' onClick={(e) => {
+                                                            e.stopPropagation()
+                                                            createMessage(student)
+                                                        }}>{students.map(s => s.id == student.id && s.name)}</span>
                                                     </span>
 
                                                     <span>
-                                                        <CloseButton onClick={() => deleteWeekLesson(student, index, 1)} />
+                                                        <CloseButton onClick={(e) => {
+                                                            e.stopPropagation()
+                                                            deleteWeekLesson(student, index, 1)
+                                                        }
+                                                        } />
                                                     </span>
                                                 </div>
                                                 )

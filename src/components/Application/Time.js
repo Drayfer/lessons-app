@@ -16,7 +16,7 @@ export default function Time({ day, student, hours, nextWeek=false }) {
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow = (e) => setShow(true)
 
 
 
@@ -82,7 +82,10 @@ export default function Time({ day, student, hours, nextWeek=false }) {
         <>
 
 
-            <button className="hour-btn" onClick={handleShow}>{hours}</button>
+            <button className="hour-btn" onClick={e => {
+                e.stopPropagation()
+                handleShow()
+            }}>{hours}</button>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>

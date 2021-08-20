@@ -101,13 +101,23 @@ export default function WeekNow() {
                                                                 day={day}
                                                             />}
                                                     </span>
-                                                    <span> <input className='student-message-btn' type='checkbox' checked={student.day[String(index)].ok} onChange={() => checkLesson(student.id, index)} /> </span>
+                                                    <span> <input className='student-message-btn' type='checkbox' checked={student.day[String(index)].ok} onChange={() => {
+                                                        checkLesson(student.id, index)
+                                                    }} 
+                                                    onClick={e => e.stopPropagation()}
+                                                    /> </span>
                                                     &nbsp;
-                                                    <span className='student-message-btn' onClick={() => createMessage(student)}>{student.name}</span>
+                                
+                                                    <span className='student-message-btn' onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        createMessage(student)
+                                                        }}>{student.name}</span>
                                                 </span>
 
                                                 <span>
-                                                    {student.day[index].ok ? <Calendar2Check /> : <CloseButton onClick={() => deleteWeekLesson(student, index)} />}
+                                                    {student.day[index].ok ? <Calendar2Check /> : <CloseButton onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        deleteWeekLesson(student, index)}} />}
                                                 </span>
                                             </div>
                                             )

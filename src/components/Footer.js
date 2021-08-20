@@ -18,7 +18,6 @@ export const Footer = () => {
             currentLessons = Object.values(lastWeekDays).reduce((sum, current) => {
                 return current.reduce((s, c) =>  s + 1, 0) + sum
             }, 0);
-            console.log(currentLessons)
             break;
         case 'future':
             currentLessons = nextWeekDays.reduce((sum, current) => { 
