@@ -4,6 +4,7 @@ import { Modal, Button, CloseButton, Form, Tabs, Tab } from 'react-bootstrap';
 import { ChatDots, NutFill, Phone } from 'react-bootstrap-icons';
 import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse';
 import { BookmarkPlusFill, CalendarMinusFill } from 'react-bootstrap-icons';
+import { Branch } from './Branch';
 
 export default function Students() {
     const [id, setId] = useState()
@@ -48,7 +49,7 @@ export default function Students() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-   
+
 
     const handleOptions = (id, i) => {
         const currentStudent = students.find(student => student.id === id)
@@ -147,7 +148,7 @@ export default function Students() {
             </Modal>
 
             <h1 className="text-light">Студенты - {students.filter(student => student.hide !== true).length}</h1>
-
+            {/* <Branch /> */}
             <Tabs
                 id="students"
                 activeKey={key}
@@ -161,7 +162,7 @@ export default function Students() {
                             key={student.id}
                             className={lightCheck == student.id ? 'students-list lightcheck' : 'students-list'}
                             style={{ minHeight: '38px' }}
-                            onClick={() => handleLight(student.id)}                            
+                            onClick={() => handleLight(student.id)}
                         >
                             <div className='student-list-info'>
                                 <span onClick={(e) => {
@@ -179,7 +180,7 @@ export default function Students() {
                                 <span className='student-message-btn' onClick={(e) => {
                                     e.stopPropagation()
                                     handleOptions(student.id, i)
-                                }}>{`${student.name} ${(student.lastname!==undefined && student.lastname!=='') ? student.lastname.slice(0,1).concat('.'): ''}`}</span>
+                                }}>{`${student.name} ${(student.lastname !== undefined && student.lastname !== '') ? student.lastname.slice(0, 1).concat('.') : ''}`}</span>
                             </div>
                             <div className="student-list-controls">
                                 <span className={student.balance > 0 ? 'student-balance' : 'student-balance minus-balance'}
@@ -220,7 +221,7 @@ export default function Students() {
                             key={student.id}
                             className='students-list'
                             style={{ minHeight: '38px', backgroundColor: '#DCE8FA' }}
-                            
+
                         >
 
                             <div className='student-list-info'>

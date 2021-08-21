@@ -23,29 +23,32 @@ export default function LastWeek() {
 
                                         return (
                                             <div onClick={() => handleLight(student.id)}
-                                            className={lightCheck == student.id ? 'students-list last-week lightcheck' : 'students-list last-week'}
+                                                className={lightCheck == student.id ? 'students-list last-week lightcheck' : 'students-list last-week'}
                                             >
-                                                
+
 
                                                 <span>
                                                     <span className='student-time'>
                                                         <button className='check-time'>{student.time}</button>
                                                     </span>
-                                                
-                                                    <span className='student-message-btn'>{`${students.find(s => s.id == student.id).name} 
-                                                        ${(students.find(s => s.id == student.id).lastname!==undefined && students.find(s => s.id == student.id).lastname!=='') 
-                                                        ? students.find(s => s.id == student.id).lastname.slice(0,1).concat('.') 
-                                                        : ''}`}</span>
+
+                                                    <span className='student-message-btn'>{
+                                                        students.find(s => s.id == student.id) &&
+                                                        `${students.find(s => s.id == student.id).name} 
+                                                        ${(students.find(s => s.id == student.id).lastname !== undefined && students.find(s => s.id == student.id).lastname !== '')
+                                                            ? students.find(s => s.id == student.id).lastname.slice(0, 1).concat('.')
+                                                            : ''}`
+                                                    }</span>
                                                 </span>
                                                 <span>
-                                                <Calendar2Check />
+                                                    <Calendar2Check />
                                                 </span>
                                             </div>
                                         )
                                     }) : ''
-                            
+
                                 }
-                            
+
                             </div>
                         </div>
                     </div>
