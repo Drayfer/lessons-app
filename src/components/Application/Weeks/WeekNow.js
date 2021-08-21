@@ -111,7 +111,7 @@ export default function WeekNow() {
                                                     <span className='student-message-btn' onClick={(e) => {
                                                         e.stopPropagation()
                                                         createMessage(student)
-                                                        }}>{student.name}</span>
+                                                        }}>{`${student.name} ${(student.lastname!==undefined && student.lastname!=='') ? student.lastname.slice(0,1).concat('.'): ''}`}</span>
                                                 </span>
 
                                                 <span>

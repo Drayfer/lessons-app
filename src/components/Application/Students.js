@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useApp } from '../../contexts/AppContext'
 import { Modal, Button, CloseButton, Form, Tabs, Tab } from 'react-bootstrap';
-import { ChatDots, Phone } from 'react-bootstrap-icons';
+import { ChatDots, NutFill, Phone } from 'react-bootstrap-icons';
 import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse';
 import { BookmarkPlusFill, CalendarMinusFill } from 'react-bootstrap-icons';
 
@@ -13,6 +13,7 @@ export default function Students() {
     const [showOptions, setShowOptions] = useState(false);
     const [showBalance, setShowBalance] = useState();
     const [showName, setShowName] = useState();
+    const [showLastName, setShowLastName] = useState();
     const [place, setPlace] = useState();
     const [phone, setPhone] = useState();
     const [email, setEmail] = useState();
@@ -56,6 +57,7 @@ export default function Students() {
         setId(id)
         setPlace(i)
         setShowName(currentStudent.name)
+        setShowLastName(currentStudent.lastname)
         setShowBalance((currentStudent.showBalance === undefined || currentStudent.showBalance === false) ? false : true)
         setPhone(currentStudent.phone)
         setEmail(currentStudent.email)
@@ -87,8 +89,9 @@ export default function Students() {
                 </Modal.Header>
                 <Modal.Body>
                     <div>
-                        <label className='mr-2'>Имя:</label>
-                        <input type='text' value={showName} onChange={(e) => setShowName(e.target.value)} />
+                        <input type='text' value={showName} placeholder='Имя' onChange={(e) => setShowName(e.target.value)} />
+                        &nbsp;
+                        <input type='text' value={showLastName} placeholder='Фамилия' onChange={(e) => setShowLastName(e.target.value)} />
                         <br />
                         <input className='mr-2 mt-3' type='checkbox' checked={showBalance} onChange={(e) => setShowBalance(!showBalance)} />
                         <span>Скрыть баланс ученика</span>
@@ -131,7 +134,7 @@ export default function Students() {
                         Закрыть
                     </Button>
                     <Button variant="primary" onClick={() => {
-                        updateUser(id, showBalance, showName, place, phone, email, skype, note, hide)
+                        updateUser(id, showBalance, showName, showLastName, place, phone, email, skype, note, hide)
                         setShowOptions(false)
                         setPlace(false)
                         if (hide) {
@@ -176,7 +179,7 @@ export default function Students() {
                                 <span className='student-message-btn' onClick={(e) => {
                                     e.stopPropagation()
                                     handleOptions(student.id, i)
-                                }}>{student.name}</span>
+                                }}>{`${student.name} ${(student.lastname!==undefined && student.lastname!=='') ? student.lastname.slice(0,1).concat('.'): ''}`}</span>
                             </div>
                             <div className="student-list-controls">
                                 <span className={student.balance > 0 ? 'student-balance' : 'student-balance minus-balance'}

@@ -125,9 +125,12 @@ export default function NextWeek() {
                                                         <span className='student-message-btn' onClick={(e) => {
                                                             e.stopPropagation()
                                                             createMessage(student)
-                                                        }}>{students.map(s => s.id == student.id && s.name)}</span>
+                                                        }}>{`${students.find(s => s.id == student.id).name} 
+                                                        ${(students.find(s => s.id == student.id).lastname!==undefined && students.find(s => s.id == student.id).lastname!=='') 
+                                                        ? students.find(s => s.id == student.id).lastname.slice(0,1).concat('.') 
+                                                        : ''}`}</span>
                                                     </span>
-
+                                        
                                                     <span>
                                                         <CloseButton onClick={(e) => {
                                                             e.stopPropagation()

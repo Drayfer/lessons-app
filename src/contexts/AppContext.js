@@ -424,7 +424,7 @@ export function AppProvider({ children }) {
     })])
   }
 
-  const updateUser = (id, showBalance, name, place, phone = '', email = '', skype = '', note = '', hide = false) => {
+  const updateUser = (id, showBalance, name, lastname='', place, phone = '', email = '', skype = '', note = '', hide = false) => {
     function array_move(arr, old_index, new_index) {
       if (new_index >= arr.length) {
         let k = new_index - arr.length + 1
@@ -447,6 +447,7 @@ export function AppProvider({ children }) {
     updateFirestore([...sortedArr], [...sortedArr.map(student => student.id === id && (
       student.showBalance = showBalance,
       student.name = name,
+      student.lastname = lastname,
       student.phone = phone,
       student.email = email,
       student.skype = skype,
