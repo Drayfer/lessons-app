@@ -28,9 +28,6 @@ export const Footer = () => {
     }
 
 
-
-
-console.log(hideStudents)
     return (
         <div className={styles.container}>
         <div style={{marginRight: '1rem'}}>Студенты активные: {students.filter(student => !student.hide).length}</div>
