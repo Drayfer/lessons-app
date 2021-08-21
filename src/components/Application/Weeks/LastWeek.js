@@ -32,13 +32,7 @@ export default function LastWeek() {
                                                         <button className='check-time'>{student.time}</button>
                                                     </span>
 
-                                                    <span className='student-message-btn'>{
-                                                        students.find(s => s.id == student.id) &&
-                                                        `${students.find(s => s.id == student.id).name} 
-                                                        ${(students.find(s => s.id == student.id).lastname !== undefined && students.find(s => s.id == student.id).lastname !== '')
-                                                            ? students.find(s => s.id == student.id).lastname.slice(0, 1).concat('.')
-                                                            : ''}`
-                                                    }</span>
+                                                    <span className='student-message-btn'>{students.map(s => s.id == student.id && s.name)}</span>
                                                 </span>
                                                 <span>
                                                     <Calendar2Check />
