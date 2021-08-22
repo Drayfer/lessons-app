@@ -210,7 +210,7 @@
   
   .student-message-btn {
   cursor: pointer;
-  padding: 0 .2rem;
+  /* padding: 0 .9rem; */
   }
   
   .student-message-btn:hover {
@@ -299,7 +299,16 @@
   }
 
   .lightcheck {
-    outline: 3px solid red;
+    outline: 3px solid rgb(145, 205, 248);
   }
 
+  .circle {
+    margin-top: -.2rem;
+    margin-right: .2rem;
+    width: 10px;
+    height: 10px;
+    border: 1px solid rgb(131, 131, 131);
+    border-radius: 50%;
+    background-color: white;
+  }
  

@@ -45,7 +45,20 @@ export function AppProvider({ children }) {
     notification: true,
     minutes: 3,
     volume: 100,
-    countLessons: 0
+    countLessons: 0,
+    activeBranch: 'Общая категория',
+    branches: [
+      {
+        id: 1,
+        branch: 'Математика',
+        color: '#ff0000'
+      },
+      {
+        id: 2,
+        branch: 'Физика',
+        color: '#f4eb01'
+      },
+    ]
   })
 
   const [students, setStudents] = useState([
@@ -160,7 +173,7 @@ export function AppProvider({ children }) {
     docRef.get().then((doc) => {
       if (doc.data().options) {
         console.log("есть документ options");
-        setOptions(doc.data().options)
+        updateOptions(checkOptions(doc.data().options))
       } else {
         console.log("документа нет options");
         updateOptions(options)
@@ -168,6 +181,11 @@ export function AppProvider({ children }) {
     }).catch((error) => {
       console.log("Error getting document:", error);
     });
+  }
+
+  function checkOptions(data) {
+    Object.keys(options).map(key => data.hasOwnProperty(key) ? null : data[key] = options[key])
+    return data
   }
 
   function updateOptions(params) {
@@ -424,7 +442,7 @@ export function AppProvider({ children }) {
     })])
   }
 
-  const updateUser = (id, showBalance, name, lastname='', place, phone = '', email = '', skype = '', note = '', hide = false) => {
+  const updateUser = (id, showBalance, name, lastname = '', branch = 'Общая категория', place, phone = '', email = '', skype = '', note = '', hide = false) => {
     function array_move(arr, old_index, new_index) {
       if (new_index >= arr.length) {
         let k = new_index - arr.length + 1
@@ -452,7 +470,8 @@ export function AppProvider({ children }) {
       student.email = email,
       student.skype = skype,
       student.note = note,
-      student.hide = hide
+      student.hide = hide,
+      student.branch = branch
     ))])
 
     const sortedArr2 = array_move(nextWeekDays, oldPlace, place)
@@ -491,6 +510,21 @@ export function AppProvider({ children }) {
     id == lightCheck ? setLightCheck('') : setLightCheck(id)
   }
 
+  function deleteStudentsBranch(branch) {
+    console.log(branch)
+    updateFirestore([...students], [...students.map(student => student.branch == branch && (
+      student.branch = 'Общая категория'
+    ))])
+  }
+
+  function addToBranch(ids) {
+    console.log(ids)
+    updateFirestore([...students], [...students.map(item => ids.map(id => id == item.id && (
+      item.branch = options.activeBranch
+    )))])
+    
+  }
+
   const value = {
     getTodayLogo,
     students,
@@ -515,7 +549,9 @@ export function AppProvider({ children }) {
     weekTab,
     setWeekTab,
     lightCheck,
-    handleLight
+    handleLight,
+    deleteStudentsBranch,
+    addToBranch
   }
 
   return (

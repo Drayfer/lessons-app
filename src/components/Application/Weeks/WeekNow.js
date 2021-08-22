@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useApp } from "../../../contexts/AppContext"
 import { Modal, Button, Form, CloseButton } from 'react-bootstrap';
-import { Calendar2Check } from 'react-bootstrap-icons';
+import { Calendar2Check, RecordCircleFill } from 'react-bootstrap-icons';
 import Time from '../Time'
 import AddLesson from '../AddLesson'
 import './WeekNow.css'
@@ -23,7 +23,7 @@ export default function WeekNow() {
     const [id, setId] = useState(0)
 
 
-    const { DAYS, students, checkLesson, leaveMessage, deleteWeekLesson, lightCheck, handleLight } = useApp()
+    const { DAYS, students, checkLesson, leaveMessage, deleteWeekLesson, lightCheck, handleLight, options } = useApp()
 
     const [i, setI] = useState([])
     useEffect(() => {
@@ -92,6 +92,11 @@ export default function WeekNow() {
                                                     : lightCheck == student.id ? 'students-list lightcheck' : 'students-list'
                                                 }>
                                                 <span>
+                                                <RecordCircleFill
+                                                    className='circle'
+                                                //     style={{ color: options.activeBranch !== 'Общая категория' ? options.branches.find(item => item.branch === options.activeBranch && item).color : '#6d6d6d',
+                                                // marginLeft: '-.4rem' }}
+                                                />
                                                     <span className='student-time'>
                                                         {student.day[index].ok
                                                             ? <button className='hour-btn check-time'>{student.day[index].time}</button>
@@ -103,21 +108,22 @@ export default function WeekNow() {
                                                     </span>
                                                     <span> <input className='student-message-btn' type='checkbox' checked={student.day[String(index)].ok} onChange={() => {
                                                         checkLesson(student.id, index)
-                                                    }} 
-                                                    onClick={e => e.stopPropagation()}
+                                                    }}
+                                                        onClick={e => e.stopPropagation()}
                                                     /> </span>
                                                     &nbsp;
-                                
+
                                                     <span className='student-message-btn' onClick={(e) => {
                                                         e.stopPropagation()
                                                         createMessage(student)
-                                                        }}>{`${student.name} ${(student.lastname!==undefined && student.lastname!=='') ? student.lastname.slice(0,1).concat('.'): ''}`}</span>
+                                                    }}>{`${student.name} ${(student.lastname !== undefined && student.lastname !== '') ? student.lastname.slice(0, 1).concat('.') : ''}`}</span>
                                                 </span>
 
                                                 <span>
                                                     {student.day[index].ok ? <Calendar2Check /> : <CloseButton onClick={(e) => {
                                                         e.stopPropagation()
-                                                        deleteWeekLesson(student, index)}} />}
+                                                        deleteWeekLesson(student, index)
+                                                    }} />}
                                                 </span>
                                             </div>
                                             )

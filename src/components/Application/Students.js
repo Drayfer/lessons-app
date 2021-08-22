@@ -3,11 +3,16 @@ import { useApp } from '../../contexts/AppContext'
 import { Modal, Button, CloseButton, Form, Tabs, Tab } from 'react-bootstrap';
 import { ChatDots, NutFill, Phone } from 'react-bootstrap-icons';
 import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse';
-import { BookmarkPlusFill, CalendarMinusFill } from 'react-bootstrap-icons';
+import { BookmarkPlusFill, CalendarMinusFill, RecordCircleFill } from 'react-bootstrap-icons';
 import { Branch } from './Branch';
+import { Branch2 } from './Branch2';
+import { SelectBranch } from './SelectBranch';
+import AddToBranch from './AddToBranch'
+
 
 export default function Students() {
     const [id, setId] = useState()
+    let sss = 0
 
 
     const [index, setIndex] = useState(0)
@@ -21,6 +26,7 @@ export default function Students() {
     const [skype, setSkype] = useState();
     const [note, setNote] = useState();
     const [hide, setHide] = useState();
+    const [branch, setBranch] = useState('Общая категория');
 
     const [key, setKey] = useState('active');
 
@@ -40,7 +46,8 @@ export default function Students() {
         updateUser,
         hideUsers,
         lightCheck,
-        handleLight
+        handleLight,
+        options
     } = useApp()
 
 
@@ -65,7 +72,11 @@ export default function Students() {
         setSkype(currentStudent.skype)
         setNote(currentStudent.note)
         setHide(currentStudent.hide)
+        setBranch(currentStudent.branch === undefined ? 'Общая категория' : currentStudent.branch)
     }
+
+    const changeBranche = e => setBranch(e)
+
 
     return (
         <>
@@ -73,7 +84,8 @@ export default function Students() {
                 <Modal.Header closeButton>
                     <Modal.Title>Напоминание</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>{students.length > 0 && id !== undefined && students.find(s => s.id === id).message}</Modal.Body>
+                {/* <Modal.Body>{students.length > 0 && id !== undefined && students.find(s => s.id == id).message}</Modal.Body> */}
+                <Modal.Body>{students.length > 0 && id !== undefined && students.find(s => s.id == id) !== undefined && students.find(s => s.id == id).message}</Modal.Body>
                 <Modal.Footer>
                     <Button variant="primary" onClick={() => {
                         handleClose()
@@ -94,6 +106,7 @@ export default function Students() {
                         &nbsp;
                         <input type='text' value={showLastName} placeholder='Фамилия' onChange={(e) => setShowLastName(e.target.value)} />
                         <br />
+                        <div className='mt-2'><SelectBranch func={changeBranche} place={branch} /></div>
                         <input className='mr-2 mt-3' type='checkbox' checked={showBalance} onChange={(e) => setShowBalance(!showBalance)} />
                         <span>Скрыть баланс ученика</span>
                         <br />
@@ -135,7 +148,7 @@ export default function Students() {
                         Закрыть
                     </Button>
                     <Button variant="primary" onClick={() => {
-                        updateUser(id, showBalance, showName, showLastName, place, phone, email, skype, note, hide)
+                        updateUser(id, showBalance, showName, showLastName, branch, place, phone, email, skype, note, hide)
                         setShowOptions(false)
                         setPlace(false)
                         if (hide) {
@@ -147,8 +160,9 @@ export default function Students() {
                 </Modal.Footer>
             </Modal>
 
-            <h1 className="text-light">Студенты - {students.filter(student => student.hide !== true).length}</h1>
+            {/* <h1 className="text-light">Студенты - {students.filter(student => student.hide !== true).length}</h1> */}
             {/* <Branch /> */}
+            <Branch2 />
             <Tabs
                 id="students"
                 activeKey={key}
@@ -157,62 +171,82 @@ export default function Students() {
             >
                 <Tab eventKey="active" title={<BookmarkPlusFill />} tabClassName={key == 'active' ? 'text-secondary' : 'text-white'}>
                     <ul className='students-list-container'>
-                        {students.filter(student => student.hide == false || !student.hide).map((student, i) => <li
-                            draggable="true"
-                            key={student.id}
-                            className={lightCheck == student.id ? 'students-list lightcheck' : 'students-list'}
-                            style={{ minHeight: '38px' }}
-                            onClick={() => handleLight(student.id)}
-                        >
-                            <div className='student-list-info'>
-                                <span onClick={(e) => {
-                                    e.stopPropagation()
-                                    setId(student.id)
-                                    handleShow()
-                                }
-
-                                } className={student.message ? `blink2` : `noblink`}> {student.message ? <ChatDots /> : ''}
-                                    &nbsp;
-                                </span>
-                                <span className="index-student">{i + 1}. </span>
-
-                                {/* <span className="student-name-index" > {student.name} </span> */}
-                                <span className='student-message-btn' onClick={(e) => {
-                                    e.stopPropagation()
-                                    handleOptions(student.id, i)
-                                }}>{`${student.name} ${(student.lastname !== undefined && student.lastname !== '') ? student.lastname.slice(0, 1).concat('.') : ''}`}</span>
-                            </div>
-                            <div className="student-list-controls">
-                                <span className={student.balance > 0 ? 'student-balance' : 'student-balance minus-balance'}
-                                >{(student.showBalance === undefined || student.showBalance === false) && student.balance}</span>
-
-                                <span className="student-list-buttons">
-                                    {
-                                        (student.showBalance === undefined || student.showBalance === false) &&
-                                        <span className="setect-btn">
-                                            <button className='arrow-btn' onClick={(e) => {
-                                                e.stopPropagation()
-                                                changeLessons('up', student.id)
-                                            }}>&#9650;</button>
-                                            <button className='arrow-btn' onClick={(e) => {
-                                                e.stopPropagation()
-                                                changeLessons('down', student.id)
-                                            }}> &#9660;</button>
-                                        </span>
+                        {sss = students.filter(student => student.hide == false || !student.hide)
+                            .filter(student => options.activeBranch == student.branch
+                                || (options.activeBranch == 'Общая категория')
+                            )
+                            .map((student, i) => <li
+                                draggable="true"
+                                key={student.id}
+                                className={lightCheck == student.id ? 'students-list lightcheck' : 'students-list'}
+                                style={{ minHeight: '38px' }}
+                                onClick={() => handleLight(student.id)}
+                            >
+                                <div className='student-list-info'>
+                                    <span onClick={(e) => {
+                                        e.stopPropagation()
+                                        setId(student.id)
+                                        handleShow()
                                     }
 
-                                    <span className="ml-3">
-                                        <CloseButton onClick={(e) => {
-                                            e.stopPropagation()
-                                            deleteStudent(student.id)
-                                        }} />
+                                    } className={student.message ? `blink2` : `noblink`}> {student.message ? <ChatDots /> : ''}
+                                        &nbsp;
                                     </span>
-                                </span>
+                                    <span className="index-student">
+                                        <RecordCircleFill
+                                            className='circle'
+                                            //    style={{ color: options.activeBranch !== 'Общая категория' ? options.branches.find(item => item.id == options.activeBranch).color : '#6d6d6d' }} 
+                                            style={{
+                                                color: options.activeBranch == 'Общая категория'
+                                                    ? (!student.branch || student.branch == 'Общая категория' ? null : options.branches.find(item => item.id == student.branch).color)
+                                                    : options.branches.find(item => item.id == student.branch).color
+                                            }}
+                                        />
+                                    </span>
 
-                            </div>
-                        </li>
-                        )}
+                                    {/* <span className="student-name-index" > {student.name} </span> */}
+                                    <span className='student-message-btn' onClick={(e) => {
+                                        e.stopPropagation()
+                                        handleOptions(student.id, i)
+                                    }}>{`${student.name} ${(student.lastname !== undefined && student.lastname !== '') ? student.lastname.slice(0, 1).concat('.') : ''}`}</span>
+                                </div>
+                                <div className="student-list-controls">
+                                    <span className={student.balance > 0 ? 'student-balance' : 'student-balance minus-balance'}
+                                    >{(student.showBalance === undefined || student.showBalance === false) && student.balance}</span>
+
+                                    <span className="student-list-buttons">
+                                        {
+                                            (student.showBalance === undefined || student.showBalance === false) &&
+                                            <span className="setect-btn">
+                                                <button className='arrow-btn' onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    changeLessons('up', student.id)
+                                                }}>&#9650;</button>
+                                                <button className='arrow-btn' onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    changeLessons('down', student.id)
+                                                }}> &#9660;</button>
+                                            </span>
+                                        }
+
+                                        <span className="ml-3">
+                                            <CloseButton onClick={(e) => {
+                                                e.stopPropagation()
+                                                deleteStudent(student.id)
+                                            }} />
+                                        </span>
+                                    </span>
+
+                                </div>
+                            </li>
+                            )
+                        }
                     </ul>
+                    {sss == 0 && <div className='students-list-container'> 
+                        <p className='text-light mt-3'>Нет студентов</p>
+                        <div style={{marginTop: '-1rem', color: 'white'}}><AddToBranch /></div>
+                       
+                    </div>}
                 </Tab>
                 <Tab eventKey="hide" title={<CalendarMinusFill />} tabClassName={key == 'hide' ? 'text-secondary' : 'text-white'}>
                     <ul className='students-list-container'>
