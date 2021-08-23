@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Dropdown, CloseButton, Modal, Button } from 'react-bootstrap';
 import styles from './Branch.module.css'
-import { PencilSquare, PlusCircle, RecordCircleFill } from 'react-bootstrap-icons';
+import { PencilSquare, PlusCircle, PencilFill } from 'react-bootstrap-icons';
 import { useApp } from '../../contexts/AppContext'
 import { SelectBranch } from './SelectBranch';
 
@@ -76,34 +76,44 @@ export const Branch2 = () => {
 
                     {
                         categories.map(branch => {
-                            return <div>
-                                {
-                                    branch.id !== editClick ? branch.branch : <input type='text' value={branch.branch} onChange={e => setCategories([...categories], [...categories.find(item => item.id == branch.id).branch = e.target.value])} />
-                                }
-                                {
-                                    branch.id !== editClick ? <Button onClick={() => setEditClick(branch.id)}>Ред</Button> : <Button onClick={() => setEditClick('')}>Ок</Button>
-                                }
+                            return <div className={styles.modal_content}>
 
-                                <input type='color' value={branch.color} onChange={e => {
+                                <div style={{ display: 'flex' }}>
+                                    <div className={styles.color_background}>
+                                        <input className={styles.color} type='color' value={branch.color} onChange={e => {
 
-                                    setCategories([...categories], [...categories.find(item => item.id == branch.id).color = e.target.value])
-                                }} />
-                                <CloseButton onClick={() => {
-                                    setCategories([...categories.filter(item => item.id !== branch.id)])
-                                    options.activeBranch == branch.id && updateOptions(options, options.activeBranch = 'Общая категория')
-                                    deleteStudentsBranch(branch.id)
-                                }} />
+                                            setCategories([...categories], [...categories.find(item => item.id == branch.id).color = e.target.value])
+                                        }} />
+                                    </div>
+                                    {
+                                        branch.id !== editClick ? branch.branch : <input style={{ width: "130px", height: "25px" }} type='text' value={branch.branch} onChange={e => setCategories([...categories], [...categories.find(item => item.id == branch.id).branch = e.target.value])} />
+                                    }
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'end', alignItems: "center" }}>
+                                    {
+                                        branch.id !== editClick ? <div className={styles.edit1}><PencilSquare className='text-seconday h4' onClick={() => setEditClick(branch.id)} /></div> : <Button className='mr-1' variant="success" size="sm" onClick={() => setEditClick('')}>Ок</Button>
+                                    }
+
+
+                                    <CloseButton onClick={() => {
+                                        if (window.confirm("Действительно удалить категорию?")) {
+                                            setCategories([...categories.filter(item => item.id !== branch.id)])
+                                            options.activeBranch == branch.id && updateOptions(options, options.activeBranch = 'Общая категория')
+                                            deleteStudentsBranch(branch.id)
+                                        }
+                                    }} />
+                                </div>
                             </div>
                         })
                     }
 
                     {
                         addCategory
-                        && <div>
-                            <input value={inputCategory} placeholder='Введите название' onChange={e => {
+                        && <div style={{ display: 'flex', justifyContent: 'end', alignItems: "center" }}>
+                            <input style={{ width: "130px", height: "25px" }} value={inputCategory} placeholder='Введите название' onChange={e => {
                                 setInputCategory(e.target.value)
                             }} />
-                            <Button onClick={() => {
+                            <Button className='ml-1' size="sm" onClick={() => {
                                 setCategories([...categories.concat({
                                     id: Date.now(),
                                     branch: inputCategory,

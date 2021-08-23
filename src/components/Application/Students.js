@@ -195,10 +195,10 @@ export default function Students() {
                                     <span className="index-student">
                                         <RecordCircleFill
                                             className='circle'
-                                            //    style={{ color: options.activeBranch !== 'Общая категория' ? options.branches.find(item => item.id == options.activeBranch).color : '#6d6d6d' }} 
+                                         
                                             style={{
                                                 color: options.activeBranch == 'Общая категория'
-                                                    ? (!student.branch || student.branch == 'Общая категория' ? null : options.branches.find(item => item.id == student.branch).color)
+                                                    ? (!student.branch || student.branch == 'Общая категория' ? null : (options.branches.find(item => item.id == student.branch) && options.branches.find(item => item.id == student.branch).color))
                                                     : options.branches.find(item => item.id == student.branch).color
                                             }}
                                         />

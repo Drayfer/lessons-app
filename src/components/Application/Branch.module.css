@@ -34,3 +34,43 @@
     border-radius: 50%;
     background-color: white;
 }   
+
+.modal_content {
+    width: 250px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(235, 241, 212);
+    margin-bottom: 7px;
+    padding: 5px;
+    border: 1px solid rgb(165, 165, 165);
+    border-radius: 5px;
+}
+
+.color {
+    border: 0;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transform: translate(-25%, -25%)
+}
+
+.color_background {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid rgb(180, 180, 180);
+    overflow: hidden;
+    margin-right: .5rem;
+}
+
+.edit1 {
+    margin-bottom: -10px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.edit1:hover {
+    color: rgb(95, 86, 0);
+}   

@@ -234,7 +234,7 @@
     -webkit-animation: blink2 1s linear infinite;
     animation: blink2 1s linear infinite;
     cursor: pointer;
-    padding-right: .3rem;
+    /* padding-right: .3rem; */
   }
   @-webkit-keyframes blink2 {
     100% { color: rgba(34, 34, 34, 0); }
@@ -243,7 +243,7 @@
     100% { color: rgba(34, 34, 34, 0); }
   }
   .noblink {
-    padding: 10px;
+    padding: 9px;
   
   }
 
