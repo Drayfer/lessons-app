@@ -5,7 +5,7 @@ import { Button, Modal } from 'react-bootstrap'
 import { PlusCircle } from 'react-bootstrap-icons';
 
 export default function AddLesson({ index }) {
-    const { setLessons, DAYS, students } = useApp()
+    const { setLessons, DAYS, students, options } = useApp()
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -41,7 +41,9 @@ export default function AddLesson({ index }) {
                 </Modal.Header>
                 <Modal.Body>
                 <ul className='choose-students-list'>
-                        {students.filter(student => student.hide === false || !student.hide).map(student => {
+                        {students.filter(student => student.hide === false || !student.hide)
+                        .filter(student => student.branch == options.activeBranch || options.activeBranch == 'Общая категория')
+                        .map(student => {
                             if(student.day[index].time === 'none') {
                                 return <li className='student-item' key={student.id} onClick={(event) => changeClass(event)}>
                                 {/* <input type="checkbox" onChange = {}/> */}

@@ -6,7 +6,7 @@ import { useApp } from '../../contexts/AppContext'
 import { SelectBranch } from './SelectBranch';
 
 
-export const Branch2 = () => {
+export const Branch = () => {
     const { options, updateOptions, deleteStudentsBranch } = useApp()
     const [categories, setCategories] = useState(options.branches);
     const [editClick, setEditClick] = useState('');
@@ -18,6 +18,8 @@ export const Branch2 = () => {
     const handleClose = () => {
         setEditClick('')
         setShow(false)
+        setAddCategory(false)
+        setInputCategory('')
     }
 
 
@@ -110,7 +112,7 @@ export const Branch2 = () => {
                     {
                         addCategory
                         && <div style={{ display: 'flex', justifyContent: 'end', alignItems: "center" }}>
-                            <input style={{ width: "130px", height: "25px" }} value={inputCategory} placeholder='Введите название' onChange={e => {
+                            <input style={{ width: "210px", height: "25px" }} value={inputCategory} placeholder='Введите название' onChange={e => {
                                 setInputCategory(e.target.value)
                             }} />
                             <Button className='ml-1' size="sm" onClick={() => {

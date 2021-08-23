@@ -80,6 +80,7 @@ export default function WeekNow() {
                         <div className="lessons" >
                             <div className='lessons-placeholder'>
                                 {i.slice().filter(a => a.day[index].time !== 'none')
+                                    .filter(student => student.branch == options.activeBranch || options.activeBranch == 'Общая категория')
                                     .sort((a, b) => (
                                         +a.day[index].time.replace(':', '') - +b.day[index].time.replace(':', '')
                                     ))
@@ -92,11 +93,14 @@ export default function WeekNow() {
                                                     : lightCheck == student.id ? 'students-list lightcheck' : 'students-list'
                                                 }>
                                                 <span>
-                                                <RecordCircleFill
-                                                    className='circle'
-                                                //     style={{ color: options.activeBranch !== 'Общая категория' ? options.branches.find(item => item.branch === options.activeBranch && item).color : '#6d6d6d',
-                                                // marginLeft: '-.4rem' }}
-                                                />
+                                                    <RecordCircleFill
+                                                        className='circle'
+                                                        style={{
+                                                            color: options.activeBranch == 'Общая категория'
+                                                                ? (!student.branch || student.branch == 'Общая категория' ? null : (options.branches.find(item => item.id == student.branch) && options.branches.find(item => item.id == student.branch).color))
+                                                                : options.branches.find(item => item.id == student.branch).color
+                                                        }}
+                                                    />
                                                     <span className='student-time'>
                                                         {student.day[index].ok
                                                             ? <button className='hour-btn check-time'>{student.day[index].time}</button>

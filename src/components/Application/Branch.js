@@ -1,59 +1,52 @@
 import React, { useState, useEffect } from 'react'
 import { Dropdown, CloseButton, Modal, Button } from 'react-bootstrap';
 import styles from './Branch.module.css'
-import { PencilSquare, PlusCircle, RecordCircleFill } from 'react-bootstrap-icons';
+import { PencilSquare, PlusCircle, PencilFill } from 'react-bootstrap-icons';
 import { useApp } from '../../contexts/AppContext'
+import { SelectBranch } from './SelectBranch';
 
 
 export const Branch = () => {
-    const { options, updateOptions } = useApp()
+    const { options, updateOptions, deleteStudentsBranch } = useApp()
+    const [categories, setCategories] = useState(options.branches);
+    const [editClick, setEditClick] = useState('');
+    const [addCategory, setAddCategory] = useState(false);
+    const [inputCategory, setInputCategory] = useState('');
 
 
     const [show, setShow] = useState(false);
     const handleClose = () => {
-        // setList2(options.branches)
-        setList(options.branches)
+        setEditClick('')
         setShow(false)
+        setAddCategory(false)
+        setInputCategory('')
     }
 
 
 
     const handleShow = () => setShow(true);
 
-    const [list2, setList2] = useState([]);
-    const [list, setList] = useState([]);
 
     useEffect(() => {
-        setList2(options.branches)
-        setList(options.branches)
-    }, [options.branches, show]);
+        setCategories(options.branches)
+    }, [show]);
 
-    function addBranch() {
-        if (list.length === 0 || (list.length !== 0 && list[list.length - 1].branch !== '')) {
-            setList2([...list2.concat({
-                id: Date.now(),
-                branch: '',
-                color: '#444444'
-            })])
-
-            setList([...list.concat({
-                id: Date.now(),
-                branch: '',
-                color: '#444444'
-            })])
-        }
+    const changeBranche = e => {
+        updateOptions(options, options.activeBranch = e)
     }
 
     return (
         <div className={styles.container}>
+            <SelectBranch func={changeBranche} place={options.activeBranch} />
 
-            <Dropdown onSelect={(e) => updateOptions(options, options.activeBranch = e)}>
+            {/* <Dropdown onSelect={(e) => updateOptions(options, options.activeBranch = e)}>
                 <Dropdown.Toggle id="dropdown-button-dark-example1" variant="secondary" className={styles.dropdown}>
-                    <RecordCircleFill 
-                    className={styles.circle}
-                    style={{ color: options.activeBranch !== 'Общая категория' ? options.branches.find(item => item.branch === options.activeBranch && item).color : '#6d6d6d' }} 
+                    <RecordCircleFill
+                        className={styles.circle}
+                       style={{ color: options.activeBranch !== 'Общая категория' ? options.branches.find(item => item.id == options.activeBranch).color : '#6d6d6d' }}
                     />
-                    {options.activeBranch}
+                    {options.activeBranch == 'Общая категория' ? options.activeBranch : options.branches.find(item => item.id == options.activeBranch).branch}
+                 
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu variant="dark">
@@ -65,16 +58,16 @@ export const Branch = () => {
 
                         options.branches.length !== 0 &&
                         options.branches.map(branch => {
-                            return <Dropdown.Item eventKey={branch.branch}>
-                                <RecordCircleFill style={{ color: branch.color}} className={styles.circle} />
+                            return <Dropdown.Item eventKey={branch.id}>
+                                <RecordCircleFill style={{ color: branch.color }} className={styles.circle} />
                                 {branch.branch}
                             </Dropdown.Item>
                         })
                     }
                 </Dropdown.Menu>
-            </Dropdown>
+            </Dropdown> */}
 
-            <div className={styles.edit} onClick={handleShow}><PencilSquare /></div>
+            <div className={styles.edit} onClick={() => setShow(true)}><PencilSquare /></div>
 
 
             <Modal show={show} onHide={handleClose}>
@@ -84,24 +77,58 @@ export const Branch = () => {
                 <Modal.Body className={styles.modal_body}>
 
                     {
-                        list.length !== 0 && list2.map((branch, index) => {
-                            return <div key={branch}>
-                                <input type='text' placeholder='Введите предмет' value={list[index].branch} onChange={e => {
-                                    setList([...list], [...list.map((item, i) => item.id == list[index].id ? item.branch = e.target.value : item)])
+                        categories.map(branch => {
+                            return <div className={styles.modal_content}>
 
-                                }} />
-                                <input type='color' value={list[index].color} onChange={e => setList(list, list[index].color = e.target.value)} />
-                                <CloseButton onClick={() => {
-                                    setList([...list.filter(item => item.id !== list[index].id)])
-                                    setList2([...list2.filter(item => item.id !== list2[index].id)])
-                                    options.activeBranch == list[index].branch && updateOptions(options, options.activeBranch = 'Общая категория')
-                                }} />
+                                <div style={{ display: 'flex' }}>
+                                    <div className={styles.color_background}>
+                                        <input className={styles.color} type='color' value={branch.color} onChange={e => {
+
+                                            setCategories([...categories], [...categories.find(item => item.id == branch.id).color = e.target.value])
+                                        }} />
+                                    </div>
+                                    {
+                                        branch.id !== editClick ? branch.branch : <input style={{ width: "130px", height: "25px" }} type='text' value={branch.branch} onChange={e => setCategories([...categories], [...categories.find(item => item.id == branch.id).branch = e.target.value])} />
+                                    }
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'end', alignItems: "center" }}>
+                                    {
+                                        branch.id !== editClick ? <div className={styles.edit1}><PencilSquare className='text-seconday h4' onClick={() => setEditClick(branch.id)} /></div> : <Button className='mr-1' variant="success" size="sm" onClick={() => setEditClick('')}>Ок</Button>
+                                    }
+
+
+                                    <CloseButton onClick={() => {
+                                        if (window.confirm("Действительно удалить категорию?")) {
+                                            setCategories([...categories.filter(item => item.id !== branch.id)])
+                                            options.activeBranch == branch.id && updateOptions(options, options.activeBranch = 'Общая категория')
+                                            deleteStudentsBranch(branch.id)
+                                        }
+                                    }} />
+                                </div>
                             </div>
                         })
                     }
 
+                    {
+                        addCategory
+                        && <div style={{ display: 'flex', justifyContent: 'end', alignItems: "center" }}>
+                            <input style={{ width: "210px", height: "25px" }} value={inputCategory} placeholder='Введите название' onChange={e => {
+                                setInputCategory(e.target.value)
+                            }} />
+                            <Button className='ml-1' size="sm" onClick={() => {
+                                setCategories([...categories.concat({
+                                    id: Date.now(),
+                                    branch: inputCategory,
+                                    color: '#444444'
+                                })])
+                                setInputCategory('')
+                                setAddCategory(false)
+                            }}>Ок</Button>
+                        </div>
 
-                    <PlusCircle className={styles.add_btn} onClick={addBranch} />
+
+                    }
+                    <PlusCircle className={styles.add_btn} onClick={() => setAddCategory(true)} />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
@@ -109,10 +136,8 @@ export const Branch = () => {
                         Закрыть
                     </Button>
                     <Button variant="primary" onClick={() => {
-
-                        // setList([...list.filter(item => item.branch.length !== 0)])
-                        updateOptions(options, options.branches = list)
-
+                        updateOptions(options, options.branches = categories)
+                        setCategories(options.branches)
                         handleClose()
                     }}>
                         Сохранить

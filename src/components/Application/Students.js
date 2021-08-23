@@ -5,14 +5,13 @@ import { ChatDots, NutFill, Phone } from 'react-bootstrap-icons';
 import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse';
 import { BookmarkPlusFill, CalendarMinusFill, RecordCircleFill } from 'react-bootstrap-icons';
 import { Branch } from './Branch';
-import { Branch2 } from './Branch2';
 import { SelectBranch } from './SelectBranch';
 import AddToBranch from './AddToBranch'
 
 
 export default function Students() {
     const [id, setId] = useState()
-    let sss = 0
+    let filter = 0
 
 
     const [index, setIndex] = useState(0)
@@ -161,8 +160,8 @@ export default function Students() {
             </Modal>
 
             {/* <h1 className="text-light">Студенты - {students.filter(student => student.hide !== true).length}</h1> */}
-            {/* <Branch /> */}
-            <Branch2 />
+
+            <Branch />
             <Tabs
                 id="students"
                 activeKey={key}
@@ -171,7 +170,7 @@ export default function Students() {
             >
                 <Tab eventKey="active" title={<BookmarkPlusFill />} tabClassName={key == 'active' ? 'text-secondary' : 'text-white'}>
                     <ul className='students-list-container'>
-                        {sss = students.filter(student => student.hide == false || !student.hide)
+                        {filter = students.filter(student => student.hide == false || !student.hide)
                             .filter(student => options.activeBranch == student.branch
                                 || (options.activeBranch == 'Общая категория')
                             )
@@ -195,7 +194,7 @@ export default function Students() {
                                     <span className="index-student">
                                         <RecordCircleFill
                                             className='circle'
-                                         
+
                                             style={{
                                                 color: options.activeBranch == 'Общая категория'
                                                     ? (!student.branch || student.branch == 'Общая категория' ? null : (options.branches.find(item => item.id == student.branch) && options.branches.find(item => item.id == student.branch).color))
@@ -242,11 +241,17 @@ export default function Students() {
                             )
                         }
                     </ul>
-                    {sss == 0 && <div className='students-list-container'> 
-                        <p className='text-light mt-3'>Нет студентов</p>
-                        <div style={{marginTop: '-1rem', color: 'white'}}><AddToBranch /></div>
-                       
+
+
+                    {<div className='students-list-container'>
+                        {filter == 0 && <p className='text-light mt-3'>Нет студентов</p>}
+                        {options.activeBranch != 'Общая категория'
+                            && students.filter(student => student.hide === false || !student.hide)
+                                .filter(student => student.branch == 'Общая категория' || !student.branch)
+                                .length !== 0
+                            && <div style={{ marginTop: '-1rem', color: 'white' }}><AddToBranch /></div>}
                     </div>}
+
                 </Tab>
                 <Tab eventKey="hide" title={<CalendarMinusFill />} tabClassName={key == 'hide' ? 'text-secondary' : 'text-white'}>
                     <ul className='students-list-container'>

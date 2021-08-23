@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useApp } from "../../../contexts/AppContext"
 import { Modal, Button, Form, CloseButton, Alert } from 'react-bootstrap';
+import { RecordCircleFill } from 'react-bootstrap-icons';
 import Time from '../Time'
 import AddLessonNextWeek from './AddLessonNextWeek'
 import './NextWeek.css'
@@ -10,6 +11,7 @@ import './NextWeek.css'
 export default function NextWeek() {
 
     const [showAlert, setShowAlert] = useState(false);
+    let activeBranch = 0
 
     const [value, setValue] = useState('')
     const messageRef = useRef()
@@ -24,7 +26,7 @@ export default function NextWeek() {
 
     const [i, setI] = useState([])
 
-    const { DAYS, deleteWeekLesson, nextWeekDays, copyPreviousSchedule, students, leaveMessage, lightCheck, handleLight } = useApp()
+    const { DAYS, deleteWeekLesson, nextWeekDays, copyPreviousSchedule, students, leaveMessage, lightCheck, handleLight, options } = useApp()
 
     function sendMessage(e) {
         e.preventDefault()
@@ -94,7 +96,7 @@ export default function NextWeek() {
                     {!showAlert && <span className='btn btn-outline-secondary btn-sm mr-3' onClick={() => handleButton(true)}>Скопировать расписание прошлой недели</span>}
                 </div>
             </div>
-
+            {/* student.branch == options.activeBranch */}
 
             <div className="bg-light d-flex justify-content-around flex-wrap">
                 {DAYS.map((day, index) => {
@@ -105,7 +107,9 @@ export default function NextWeek() {
                                 <div className='lessons-placeholder'>
                                     {i.slice().filter(a => a.day[index].time !== 'none')
                                         .sort((a, b) => +a.day[index].time.replace(':', '') - +b.day[index].time.replace(':', ''))
+                                        .filter(student => students.find(st => st.id == student.id).branch == options.activeBranch || options.activeBranch == 'Общая категория')
                                         .map((student, i) => {
+                                           activeBranch = students.find(st => st.id == student.id).branch
                                             if (student.day[index].time !== 'none') {
                                                 return (<div
                                                     onClick={() => handleLight(student.id)}
@@ -113,6 +117,14 @@ export default function NextWeek() {
                                                 >
 
                                                     <span>
+                                                    <RecordCircleFill
+                                                        className='circle'
+                                                        style={{
+                                                            color: options.activeBranch == 'Общая категория'
+                                                                ? (!activeBranch || activeBranch == 'Общая категория' ? null : (options.branches.find(item => item.id == activeBranch) && options.branches.find(item => item.id == activeBranch).color))
+                                                                : options.branches.find(item => item.id == activeBranch).color
+                                                        }}
+                                                    />
                                                         <span className='student-time next-week'>
                                                             <Time
                                                                 hours={student.day[index].time}
@@ -126,11 +138,11 @@ export default function NextWeek() {
                                                             e.stopPropagation()
                                                             createMessage(student)
                                                         }}>
-                                                            {students.map(s => s.id == student.id && s.name)}
-                                                            {/* {`${students.find(s => s.id == student.id).name} 
+                                                            {/* {students.map(s => s.id == student.id && s.name)} */}
+                                                            {`${students.find(s => s.id == student.id).name} 
                                                         ${(students.find(s => s.id == student.id).lastname!==undefined && students.find(s => s.id == student.id).lastname!=='') 
                                                         ? students.find(s => s.id == student.id).lastname.slice(0,1).concat('.') 
-                                                        : ''}`} */}
+                                                        : ''}`}
                                                         </span>
                                                     </span>
                                         

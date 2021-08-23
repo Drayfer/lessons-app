@@ -5,7 +5,7 @@ import { Button, Modal } from 'react-bootstrap'
 import { PlusCircle } from 'react-bootstrap-icons';
 
 export default function AddLessonNextWeek({ index }) {
-    const { setLessons, DAYS, nextWeekDays, students } = useApp()
+    const { setLessons, DAYS, nextWeekDays, students, options } = useApp()
 
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -39,7 +39,9 @@ export default function AddLessonNextWeek({ index }) {
                 </Modal.Header>
                 <Modal.Body>
                     <ul className='choose-students-list'>
-                        {nextWeekDays.map(student => {
+                        {nextWeekDays
+                        .filter(student => students.find(st => st.id == student.id).branch == options.activeBranch || options.activeBranch == 'Общая категория')
+                        .map(student => {
                             if (student.day[index].time === 'none'
                                 // && students.find(s => s.id === student.id).hasOwnProperty('hide') === false
                                 && students.find(s => s.id === student.id).hide !== true
