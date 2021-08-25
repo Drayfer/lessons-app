@@ -110,7 +110,7 @@ export default function NextWeek() {
                                         .filter(student => students.find(st => st.id == student.id && st.branch == options.activeBranch) || options.activeBranch == 'Общая категория')
                                         .map((student, i) => {
                                         activeBranch = students.find(st => st.id == student.id) && students.find(st => st.id == student.id).branch
-                                        console.log(activeBranch)
+                                      
                                             if (student.day[index].time !== 'none') {
                                                 return (<div
                                                     onClick={() => handleLight(student.id)}

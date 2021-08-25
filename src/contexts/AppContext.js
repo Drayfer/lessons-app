@@ -56,7 +56,8 @@ export function AppProvider({ children }) {
         branch: 'Физика',
         color: '#f4eb01'
       },
-    ]
+    ],
+    notes: []
   })
 
   const [students, setStudents] = useState([
@@ -522,7 +523,6 @@ export function AppProvider({ children }) {
   }
 
   function addToBranch(ids) {
-    console.log(ids)
     updateFirestore([...students], [...students.map(item => ids.map(id => id == item.id && (
       item.branch = options.activeBranch
     )))])
@@ -555,7 +555,7 @@ export function AppProvider({ children }) {
     lightCheck,
     handleLight,
     deleteStudentsBranch,
-    addToBranch
+    addToBranch,
   }
 
   return (

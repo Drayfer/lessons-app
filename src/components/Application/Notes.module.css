@@ -1,0 +1,18 @@
+.countnotes {
+    position: absolute;
+    color: black;
+    font-size: .8rem;
+    line-height: .5rem;
+    margin-top: -1rem;
+    top: 25px;
+    background-color: rgb(207, 157, 20);
+    padding: 3px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.btn__nav {
+    position: 'relative';
+    cursor: pointer;
+}
+

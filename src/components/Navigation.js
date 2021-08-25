@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react"
 import { Gear } from 'react-bootstrap-icons'
 import { Modal, Button, Form, CloseButton } from 'react-bootstrap';
 import { useApp } from "../contexts/AppContext"
+import { Notes } from './Application/Notes'
 
 
 export default function Navigation() {
@@ -37,7 +38,7 @@ export default function Navigation() {
                         <Modal.Title>Настройки</Modal.Title>
                     </Modal.Header>
                     <Form onSubmit={handleSubmit}>
-                    <Modal.Body>
+                        <Modal.Body>
                             <Form.Group className="mb-3" controlId="formBasicCheckbox">
                                 <Form.Check type="checkbox" checked={optionsNotification.notification}
                                     onChange={() => setOptionsNotification(optionsNotification, optionsNotification.notification = !optionsNotification.notification)}
@@ -69,13 +70,13 @@ export default function Navigation() {
                                 }
                                 }>Сброс</Button>
                             </Form.Group>
-                        
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="primary" type='submit'>
-                            Сохранить
-                        </Button>
-                    </Modal.Footer>
+
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="primary" type='submit'>
+                                Сохранить
+                            </Button>
+                        </Modal.Footer>
                     </Form>
                 </Modal>
             )}
@@ -84,6 +85,10 @@ export default function Navigation() {
 
 
             <Nav className='d-flex justify-content-end bg-dark'>
+                <Nav.Item>
+                    <div className='focus-text text-white pt-2 pl-2 pr-2' ><Notes /></div>
+                    {/* <Nav.Link className='focus-text text-white'><Notes /></Nav.Link> */}
+                </Nav.Item>
                 <Nav.Item>
                     <Nav.Link className='focus-text text-white' onClick={handleShow}><Gear /></Nav.Link>
                 </Nav.Item>
