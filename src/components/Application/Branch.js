@@ -100,8 +100,8 @@ export const Branch = () => {
                                     <CloseButton onClick={() => {
                                         if (window.confirm("Действительно удалить категорию?")) {
                                             setCategories([...categories.filter(item => item.id !== branch.id)])
-                                            options.activeBranch == branch.id && updateOptions(options, options.activeBranch = 'Общая категория')
-                                            deleteStudentsBranch(branch.id)
+                                            // options.activeBranch == branch.id && updateOptions(options, options.activeBranch = 'Общая категория')
+                                            // deleteStudentsBranch(branch.id)
                                         }
                                     }} />
                                 </div>
@@ -116,11 +116,11 @@ export const Branch = () => {
                                 setInputCategory(e.target.value)
                             }} />
                             <Button className='ml-1' size="sm" onClick={() => {
-                                setCategories([...categories.concat({
+                                setCategories([...categories, {
                                     id: Date.now(),
                                     branch: inputCategory,
-                                    color: '#444444'
-                                })])
+                                    color: '#00d9ff'
+                                }])
                                 setInputCategory('')
                                 setAddCategory(false)
                             }}>Ок</Button>
@@ -136,7 +136,13 @@ export const Branch = () => {
                         Закрыть
                     </Button>
                     <Button variant="primary" onClick={() => {
-                        updateOptions(options, options.branches = categories)
+                        if(options.branches.length !== categories.length) {
+                            updateOptions(options, options.branches = categories, options.activeBranch = 'Общая категория')
+                            deleteStudentsBranch(categories.map(cat => cat.id))
+                            categories.find(branch => branch.id == options.activeBranch)
+                        } else {
+                            updateOptions(options, options.branches = categories) 
+                        }
                         setCategories(options.branches)
                         handleClose()
                     }}>
@@ -146,4 +152,4 @@ export const Branch = () => {
             </Modal>
         </div>
     )
-}
+} 

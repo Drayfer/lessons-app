@@ -255,7 +255,11 @@ export default function Students() {
                 </Tab>
                 <Tab eventKey="hide" title={<CalendarMinusFill />} tabClassName={key == 'hide' ? 'text-secondary' : 'text-white'}>
                     <ul className='students-list-container'>
-                        {students.filter(student => student.hide === true).map((student, i) => <li
+                        {students.filter(student => student.hide === true)
+                        .filter(student => options.activeBranch == student.branch
+                            || (options.activeBranch == 'Общая категория')
+                        )
+                        .map((student, i) => <li
                             draggable="true"
                             key={student.id}
                             className='students-list'
@@ -274,7 +278,17 @@ export default function Students() {
                                 } className={student.message ? `blink2` : `noblink`}> {student.message ? <ChatDots /> : ''}
                                     &nbsp;
                                 </span>
-                                <span className="index-student">{i + 1}. </span>
+                                <span className="index-student">
+                                        <RecordCircleFill
+                                            className='circle'
+
+                                            style={{
+                                                color: options.activeBranch == 'Общая категория'
+                                                    ? (!student.branch || student.branch == 'Общая категория' ? null : (options.branches.find(item => item.id == student.branch) && options.branches.find(item => item.id == student.branch).color))
+                                                    : options.branches.find(item => item.id == student.branch).color
+                                            }}
+                                        />
+                                    </span>
 
                                 {/* <span className="student-name-index" > {student.name} </span> */}
                                 <span className='student-message-btn' onClick={() => handleOptions(student.id, i)}>{student.name}</span>

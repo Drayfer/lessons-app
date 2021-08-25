@@ -22,9 +22,9 @@ export default function LastWeek() {
                                 {
 
                                     lastWeekDays[index] ? lastWeekDays[index]
-                                    .filter(item => students.find(student => student.id == item.id).branch == options.activeBranch || options.activeBranch == 'Общая категория')
+                                    .filter(item =>students.find(student => student.id == item.id) && students.find(student => student.id == item.id).branch == options.activeBranch || options.activeBranch == 'Общая категория')
                                     .map((student, i) => {
-                                        activeBranch = students.find(st => st.id == student.id).branch
+                                        activeBranch = students.find(st => st.id == student.id) && students.find(st => st.id == student.id).branch
                                         return (
                                             <div onClick={() => handleLight(student.id)}
                                                 className={lightCheck == student.id ? 'students-list last-week lightcheck' : 'students-list last-week'}
@@ -44,7 +44,7 @@ export default function LastWeek() {
                                                         <button className='check-time'>{student.time}</button>
                                                     </span>
 
-                                                    <span className='student-message-btn'>{students.map(s => s.id == student.id && s.name)}</span>
+                                                    <span className='student-message-btn'>{students.map(s => s.id == student.id && `${s.name} ${(s.lastname && s.lastname !== '') ? s.lastname.slice(0, 1).concat('.') : ''}`)}</span>
                                                 </span>
                                                 <span>
                                                     <Calendar2Check />

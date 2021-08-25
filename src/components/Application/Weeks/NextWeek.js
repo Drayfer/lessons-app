@@ -107,9 +107,10 @@ export default function NextWeek() {
                                 <div className='lessons-placeholder'>
                                     {i.slice().filter(a => a.day[index].time !== 'none')
                                         .sort((a, b) => +a.day[index].time.replace(':', '') - +b.day[index].time.replace(':', ''))
-                                        .filter(student => students.find(st => st.id == student.id).branch == options.activeBranch || options.activeBranch == 'Общая категория')
+                                        .filter(student => students.find(st => st.id == student.id && st.branch == options.activeBranch) || options.activeBranch == 'Общая категория')
                                         .map((student, i) => {
-                                           activeBranch = students.find(st => st.id == student.id).branch
+                                        activeBranch = students.find(st => st.id == student.id) && students.find(st => st.id == student.id).branch
+                                        console.log(activeBranch)
                                             if (student.day[index].time !== 'none') {
                                                 return (<div
                                                     onClick={() => handleLight(student.id)}
@@ -124,6 +125,7 @@ export default function NextWeek() {
                                                                 ? (!activeBranch || activeBranch == 'Общая категория' ? null : (options.branches.find(item => item.id == activeBranch) && options.branches.find(item => item.id == activeBranch).color))
                                                                 : options.branches.find(item => item.id == activeBranch).color
                                                         }}
+                                        
                                                     />
                                                         <span className='student-time next-week'>
                                                             <Time
@@ -139,10 +141,10 @@ export default function NextWeek() {
                                                             createMessage(student)
                                                         }}>
                                                             {/* {students.map(s => s.id == student.id && s.name)} */}
-                                                            {`${students.find(s => s.id == student.id).name} 
-                                                        ${(students.find(s => s.id == student.id).lastname!==undefined && students.find(s => s.id == student.id).lastname!=='') 
-                                                        ? students.find(s => s.id == student.id).lastname.slice(0,1).concat('.') 
-                                                        : ''}`}
+                                                                {`${students.find(s => s.id == student.id) && students.find(s => s.id == student.id).name} 
+                                                            ${(students.find(s => s.id == student.id) && (students.find(s => s.id == student.id).lastname && students.find(s => s.id == student.id).lastname!=='')) 
+                                                            ? students.find(s => s.id == student.id).lastname.slice(0,1).concat('.') 
+                                                            : ''}`}
                                                         </span>
                                                     </span>
                                         

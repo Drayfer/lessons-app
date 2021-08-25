@@ -11,8 +11,6 @@ export function useApp() {
 
 export function AppProvider({ children }) {
 
-
-
   const [today, setToday] = useState(new Date())
   const { currentUser } = useAuth()
 
@@ -24,16 +22,16 @@ export function AppProvider({ children }) {
     return () => clearInterval(interval)
   }, []);
 
-  const lWeek = {
-    0: [
-      { name: 'Игорь', time: '14:00' },
-      { name: 'Dkdf', time: '16:00' },
-    ],
-    1: [
-      { name: 'Игорь', time: '14:00' },
-      { name: 'Dkdf', time: '16:00' },
-    ],
-  }
+  // const lWeek = {
+  //   0: [
+  //     { name: 'Игорь', time: '14:00' },
+  //     { name: 'Dkdf', time: '16:00' },
+  //   ],
+  //   1: [
+  //     { name: 'Игорь', time: '14:00' },
+  //     { name: 'Dkdf', time: '16:00' },
+  //   ],
+  // }
 
   const DAYS = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
   const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
@@ -101,25 +99,39 @@ export function AppProvider({ children }) {
   ])
 
   useEffect(() => {
-    fetchStudents()
-    fetchNextWeek()
-    fetchLastWeek()
-    fetchOptions()
+    initDatabase()
   }, [])
 
+  function initDatabase() {
+    const docRef = firestore.collection("users").doc(currentUser.uid)
+    docRef.get().then((doc) => {
+      if (!doc.exists) {
+        firestore.collection('users').doc(currentUser.uid).set({
+          students: students,
+        })
+        fetchNextWeek()
+        fetchLastWeek()
+        fetchOptions()  
+        console.log(students)
+      } else {
+        pppppppfetchStudents()
+        fetchNextWeek()
+        fetchLastWeek()
+        fetchOptions()
+      }
+    })
+  }
 
 
 
-  function fetchStudents() {
+  function pppppppfetchStudents() {
     let docRef = firestore.collection("users").doc(currentUser.uid)
     docRef.get().then((doc) => {
-      if (doc.exists) {
+      if (doc.data().students) {
         setStudents([...doc.data().students])
-        console.log('есть');
       } else {
-        // updateFirestore([...students])
-        initialFirestore([...students])
-        console.log("No such document!!!!!!!");
+        updateFirestore(students)
+      
       }
     }).catch((error) => {
       console.log("Error getting document:", error);
@@ -141,27 +153,24 @@ export function AppProvider({ children }) {
     });
   }
 
+
   function fetchNextWeek() {
     let docRef = firestore.collection("users").doc(currentUser.uid)
     docRef.get().then((doc) => {
       if (doc.data().nextWeek) {
-        // console.log("есть документ");
+        console.log("nextWeek есть докумета");
         setNextWeekDays([...doc.data().nextWeek])
       } else {
-        console.log("документа нет");
-        let ff = [...doc.data().students.map(student => {
-          const s = student
-          delete s.balance
-          delete s.message
-          delete s.name
-          delete s.showBalance
-          for (let key in s.day) {
-            delete s.day[key].ok
-          }
-          return s
-        })]
+        console.log("nextWeek нет докумета");
 
-        updateNextWeek(ff)
+        let st = ['']
+        students.map((student, i) => {
+          st[i] = {
+            id: student.id,
+            day: student.day
+          }
+        })
+        updateNextWeek(st)
       }
     }).catch((error) => {
       console.log("Error getting document:", error);
@@ -236,13 +245,6 @@ export function AppProvider({ children }) {
     setStudents(params)
   }
 
-  function initialFirestore(students) {
-    firestore.collection('users').doc(currentUser.uid).set({
-      students: students,
-    })
-    fetchNextWeek()
-    fetchLastWeek()
-  }
 
   function deleteStudent(id) {
     if (window.confirm("Действительно удалить студента?")) {
@@ -510,11 +512,13 @@ export function AppProvider({ children }) {
     id == lightCheck ? setLightCheck('') : setLightCheck(id)
   }
 
-  function deleteStudentsBranch(branch) {
-    console.log(branch)
-    updateFirestore([...students], [...students.map(student => student.branch == branch && (
-      student.branch = 'Общая категория'
-    ))])
+  function deleteStudentsBranch(ids) {
+    updateFirestore([...students], [
+      ...students
+        .filter(student => student.branch && !ids.includes(+student.branch))
+        .filter(item => !item.branch || item.branch !== 'Общая категория')
+        .map(item => item.branch = 'Общая категория')
+    ])
   }
 
   function addToBranch(ids) {
@@ -522,7 +526,7 @@ export function AppProvider({ children }) {
     updateFirestore([...students], [...students.map(item => ids.map(id => id == item.id && (
       item.branch = options.activeBranch
     )))])
-    
+
   }
 
   const value = {
