@@ -205,11 +205,11 @@ export function AppProvider({ children }) {
     setOptions(params)
   }
 
-  function createStudent(name, balance) {
+  function createStudent(name, balance, branch) {
     const id = Date.now()
     updateFirestore(
       [...students.concat({
-        id: id, name: name, balance: balance, message: '',
+        id: id, name: name, balance: balance, message: '', branch: branch,
         day: {
           0: { time: 'none', ok: false },
           1: { time: 'none', ok: false },

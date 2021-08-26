@@ -8,7 +8,6 @@ import Login from "./Login"
 import PrivateRoute from "./PrivateRoute"
 import ForgotPassword from "./ForgotPassword"
 import UpdateProfile from "./UpdateProfile"
-import { AppProvider } from "../contexts/AppContext"
 import ReactNotification from 'react-notifications-component'
 import 'react-notifications-component/dist/theme.css'
 
@@ -21,9 +20,7 @@ function App() {
       <ReactNotification />
       <AuthProvider>
         <Switch>
-        <AppProvider>
           <PrivateRoute exact path="/" component={Dashboard} />
-          </AppProvider>
           <Container
             className="d-flex align-items-center justify-content-center"
             style={{ height: '100vh' }}
