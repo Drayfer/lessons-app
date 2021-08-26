@@ -78,7 +78,7 @@ export default function Students() {
 
 
     return (
-        <>
+        <div>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Напоминание</Modal.Title>
@@ -327,6 +327,6 @@ export default function Students() {
                 </Tab>
             </Tabs>
 
-        </>
+        </div>
     )
 }

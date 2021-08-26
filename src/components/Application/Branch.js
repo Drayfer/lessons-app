@@ -7,7 +7,7 @@ import { SelectBranch } from './SelectBranch';
 
 
 export const Branch = () => {
-    const { options, updateOptions, deleteStudentsBranch } = useApp()
+    const { options, updateOptions, deleteStudentsBranch, students } = useApp()
     const [categories, setCategories] = useState(options.branches);
     const [editClick, setEditClick] = useState('');
     const [addCategory, setAddCategory] = useState(false);
@@ -75,10 +75,10 @@ export const Branch = () => {
                     <Modal.Title>Редактирование предметов</Modal.Title>
                 </Modal.Header>
                 <Modal.Body className={styles.modal_body}>
-
+                    <div className='mb-3'>Всего студентов - {students.length}</div>
                     {
                         categories.map(branch => {
-                            return <div className={styles.modal_content}>
+                            return <div className={styles.modal_content}>   
 
                                 <div style={{ display: 'flex' }}>
                                     <div className={styles.color_background}>
@@ -88,7 +88,7 @@ export const Branch = () => {
                                         }} />
                                     </div>
                                     {
-                                        branch.id !== editClick ? branch.branch : <input style={{ width: "130px", height: "25px" }} type='text' value={branch.branch} onChange={e => setCategories([...categories], [...categories.find(item => item.id == branch.id).branch = e.target.value])} />
+                                        branch.id !== editClick ? `${branch.branch} - ${students.filter(student => student.branch == branch.id).length}` : <input style={{ width: "130px", height: "25px" }} type='text' value={branch.branch} onChange={e => setCategories([...categories], [...categories.find(item => item.id == branch.id).branch = e.target.value])} />
                                     }
                                 </div>
                                 <div style={{ display: 'flex', justifyContent: 'end', alignItems: "center" }}>

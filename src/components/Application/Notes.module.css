@@ -5,10 +5,13 @@
     line-height: .5rem;
     margin-top: -1rem;
     top: 25px;
-    background-color: rgb(207, 157, 20);
+    background-color: rgb(230, 231, 214);
     padding: 3px;
     border-radius: 50%;
     cursor: pointer;
+}
+.countnotes:hover {
+    background-color: rgb(255, 255, 255);
 }
 
 .btn__nav {

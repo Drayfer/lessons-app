@@ -5,8 +5,8 @@ import addNotification from 'react-push-notification';
 
 export default function PushNotification() {
     const { DAYS, students, checkLesson, leaveMessage, deleteWeekLesson, options } = useApp()
-    const [nameNotification, setNameNotification] = useState(true)
-    const [nTime, setNTime] = useState(true)
+    // const [nameNotification, setNameNotification] = useState(true)
+    // const [nTime, setNTime] = useState(true)
 
     const notification = (name, dif) => {
         // eslint-disable-next-line no-lone-blocks

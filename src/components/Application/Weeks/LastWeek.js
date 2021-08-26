@@ -29,7 +29,7 @@ export default function LastWeek() {
                                             <div onClick={() => handleLight(student.id)}
                                                 className={lightCheck == student.id ? 'students-list last-week lightcheck' : 'students-list last-week'}
                                             >
-
+                                                
 
                                                 <span>
                                                 <RecordCircleFill

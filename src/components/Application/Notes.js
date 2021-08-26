@@ -7,9 +7,11 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ru from 'date-fns/locale/ru';
 import styles from './Notes.module.css'
+import { NotesNotification } from './NotesNotification';
+
 
 export const Notes = () => {
-    const { options, updateOptions } = useApp()
+    const { options, updateOptions, today } = useApp()
     const [startDate, setStartDate] = useState(new Date());
 
 
@@ -24,8 +26,8 @@ export const Notes = () => {
 
     const addNote = (e) => {
         e.preventDefault()
-        if (input.trim() && startDate > new Date().setMinutes(new Date().getMinutes() + 15)) {
-            updateOptions(options, options.notes = [{ id: Date.now(), text: input, time: startDate }, ...options.notes])
+        if (input.trim() && startDate > new Date().setMinutes(new Date().getMinutes() + 1)) {
+            updateOptions(options, options.notes = [{ id: Date.now(), text: input, time: startDate, confirm: false }, ...options.notes])
             setInput('')
         }
 
@@ -43,8 +45,10 @@ export const Notes = () => {
     ));
 
 
+
     return (
         <div>
+            <NotesNotification />
             <div className = {styles.btn__nav} onClick={handleShow} >
                 <Bell />
                 {options.notes.length !== 0 && <span className={styles.countnotes}>{options.notes.length}</span>}
@@ -74,8 +78,8 @@ export const Notes = () => {
                                 />
                             </div>
 
-                            <Button variant="primary" type="submit" onClick={e => addNote(e)}>
-                                Ок
+                            <Button variant="primary" type="submit" size="sm" onClick={e => addNote(e)}>
+                                ОК
                             </Button>
                         </Form.Group>
                     </Form>
@@ -83,8 +87,8 @@ export const Notes = () => {
                     <ListGroup>
                         {options.notes.map(note => {
                             return <ListGroup.Item className='d-flex justify-content-between align-items-center' key={note.id}>
+                               {/* {showNotification(note.text, note.confirm, note.time)} */}
                                 <div>{note.text}</div>
-
                                 <div>
                                     <span className='text-secondary mr-2' style={{ fontSize: '.8rem' }}>
                                         {note.time.seconds ? note.time.toDate().toLocaleString('ru-RU') : new Date(note.time).toLocaleString('ru-RU')}

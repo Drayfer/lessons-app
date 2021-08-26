@@ -556,6 +556,7 @@ export function AppProvider({ children }) {
     handleLight,
     deleteStudentsBranch,
     addToBranch,
+    today
   }
 
   return (
