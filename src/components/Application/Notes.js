@@ -49,7 +49,7 @@ export const Notes = () => {
     return (
         <div>
             <NotesNotification />
-            <div className = {styles.btn__nav} onClick={handleShow} >
+            <div className={styles.btn__nav} onClick={handleShow} >
                 <Bell />
                 {options.notes.length !== 0 && <span className={styles.countnotes}>{options.notes.length}</span>}
             </div>
@@ -87,8 +87,16 @@ export const Notes = () => {
                     <ListGroup>
                         {options.notes.map(note => {
                             return <ListGroup.Item className='d-flex justify-content-between align-items-center' key={note.id}>
-                               {/* {showNotification(note.text, note.confirm, note.time)} */}
-                                <div>{note.text}</div>
+                                {/* {showNotification(note.text, note.confirm, note.time)} */}
+                                <div>
+                                    <span className='text-secondary mr-2' style={{ fontSize: '.8rem' }}>
+                                        {new Date(note.id).toLocaleTimeString(navigator.language, {
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    })}
+                                    </span>
+                                    <span>{note.text}</span>    
+                                </div>
                                 <div>
                                     <span className='text-secondary mr-2' style={{ fontSize: '.8rem' }}>
                                         {note.time.seconds ? note.time.toDate().toLocaleString('ru-RU') : new Date(note.time).toLocaleString('ru-RU')}

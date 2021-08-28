@@ -22,17 +22,6 @@ export function AppProvider({ children }) {
     return () => clearInterval(interval)
   }, []);
 
-  // const lWeek = {
-  //   0: [
-  //     { name: 'Игорь', time: '14:00' },
-  //     { name: 'Dkdf', time: '16:00' },
-  //   ],
-  //   1: [
-  //     { name: 'Игорь', time: '14:00' },
-  //     { name: 'Dkdf', time: '16:00' },
-  //   ],
-  // }
-
   const DAYS = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье']
   const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
   const [lastWeekDays, setlastWeekDays] = useState({})
@@ -348,18 +337,6 @@ export function AppProvider({ children }) {
 
   }
 
-  // function updateWeek() {
-
-  //   setLastWeek()
-
-
-  //   updateFirestore([...students], [...students.map(student => {
-  //     Object.entries(student.day).map(data => data[1].ok = false)
-  //   })])
-  //   updateNextWeek(([...students], [...students.map(student => {
-  //       Object.entries(student.day).map(data => data[1].ok = false)
-  //     })]))
-  // }
 
 
   function updateWeek() {

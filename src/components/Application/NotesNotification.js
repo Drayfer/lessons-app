@@ -13,7 +13,10 @@ export const NotesNotification = () => {
                 today > (note.time.seconds ? note.time.toDate() : new Date(note.time))
                 && (note.confirm == false || show)
                 && store.addNotification({
-                    title: 'Напоминание',
+                    title: `Напоминание от ${new Date(note.id).toLocaleTimeString(navigator.language, {
+                        hour: '2-digit',
+                        minute:'2-digit'
+                      })}`,
                     message: note.text,
                     type: "success",
                     insert: "top",
