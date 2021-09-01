@@ -89,12 +89,12 @@ export const Notes = () => {
                             return <ListGroup.Item className='d-flex justify-content-between align-items-center' key={note.id}>
                                 {/* {showNotification(note.text, note.confirm, note.time)} */}
                                 <div>
-                                    <span className='text-secondary mr-2' style={{ fontSize: '.8rem' }}>
+                                    {/* <span className='text-secondary mr-2' style={{ fontSize: '.8rem' }}>
                                         {new Date(note.id).toLocaleTimeString(navigator.language, {
                                         hour: '2-digit',
                                         minute: '2-digit'
                                     })}
-                                    </span>
+                                    </span> */}
                                     <span>{note.text}</span>    
                                 </div>
                                 <div>
