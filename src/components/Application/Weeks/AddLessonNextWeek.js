@@ -15,9 +15,9 @@ export default function AddLessonNextWeek({ index }) {
 
     const [selectNames, setSelectNames] = useState([])
 
-    function changeClass(event) {
+    function changeClass(event, id) {
         event.target.className === 'student-item' ? event.target.className = 'student-item choose' : event.target.className = 'student-item'
-        selectNames.includes(event.target.childNodes[0].data) ? setSelectNames([...selectNames.filter(id => id !== event.target.childNodes[0].data)]) : setSelectNames([...selectNames.concat(event.target.childNodes[0].data)])
+        selectNames.includes(id) ? setSelectNames([...selectNames.filter(item => item !== id)]) : setSelectNames([...selectNames, id])
     }
 
     function showRes(event) {
@@ -29,7 +29,6 @@ export default function AddLessonNextWeek({ index }) {
     }
     return (
         <>
-            {/* <button className="create-lesson-btn" onClick={handleShow}></button> */}
             <PlusCircle className="create-lesson-btn" onClick={handleShow} />
 
 
@@ -46,8 +45,11 @@ export default function AddLessonNextWeek({ index }) {
                                 // && students.find(s => s.id === student.id).hasOwnProperty('hide') === false
                                 && students.find(s => s.id === student.id).hide !== true
                             ) {
-                                return <li className='student-item' key={student.id} onClick={(event) => changeClass(event)}>
-                                    {students.map(s => s.id === student.id && s.name)}
+                                return <li className='student-item' key={student.id} onClick={(event) => changeClass(event, student.id)}>
+                                    {students.map(s => s.id === student.id && (s.lastname ? `${s.name} ${s.lastname}` : `${s.name}`) )}
+                                    {/* {`${student.name} `}
+                                   // {student.lastname && student.lastname} */}
+                                   
                                 </li>
                             } else return null
 

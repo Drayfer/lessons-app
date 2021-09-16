@@ -304,11 +304,11 @@ export function AppProvider({ children }) {
     let time = 10;
     if (LessonNextWeek === 0) {
       namesStudents.forEach(element => {
-        updateFirestore([...students], [...students.map(student => student.name === element ? student.day[index].time = `${time++}:00` : student.day[index].time = student.day[index].time)])
+       updateFirestore([...students], [...students.map(student => (student.id == element) && (student.day[index].time = `${time++}:00`))])
       });
     } else {
       namesStudents.forEach(element => {
-        updateNextWeek([...nextWeekDays], [...nextWeekDays.map((student, i) => students[i].name === element ? student.day[index].time = `${time++}:00` : student.day[index].time = student.day[index].time)])
+        updateNextWeek([...nextWeekDays], [...nextWeekDays.map((student, i) => (students[i].id === element) && (student.day[index].time = `${time++}:00`))])
       });
     }
 

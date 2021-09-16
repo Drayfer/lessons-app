@@ -15,11 +15,9 @@ export default function AddLesson({ index }) {
 
     const [selectNames, setSelectNames] = useState([])
 
-    function changeClass(event) {
+    function changeClass(event, id) {
         event.target.className === 'student-item' ? event.target.className = 'student-item choose' : event.target.className = 'student-item'
-        selectNames.includes(event.target.childNodes[0].data) ? setSelectNames([...selectNames.filter(name => name !== event.target.childNodes[0].data)]) : setSelectNames([...selectNames.concat(event.target.childNodes[0].data)])
-        // setTimeout(() => console.log(selectNames), 1000)
-
+        selectNames.includes(id) ? setSelectNames([...selectNames.filter(item => item !== id)]) : setSelectNames([...selectNames, id])
     }
 
     function showRes(event) {
@@ -45,9 +43,10 @@ export default function AddLesson({ index }) {
                         .filter(student => student.branch == options.activeBranch || options.activeBranch == 'Общая категория')
                         .map(student => {
                             if(student.day[index].time === 'none') {
-                                return <li className='student-item' key={student.id} onClick={(event) => changeClass(event)}>
+                                return <li className='student-item' key={student.id} onClick={(event) => changeClass(event, student.id)}>
                                 {/* <input type="checkbox" onChange = {}/> */}
-                                {student.name}
+                                    {`${student.name} `}
+                                    {student.lastname && student.lastname}
                             </li>
                             } else return null
                            

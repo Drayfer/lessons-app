@@ -45,7 +45,8 @@ export default function AddToBranch() {
                                     : setIds([...ids.concat(student.id)])
                                 }}>
                     
-                                {student.name}
+                                    {student.name}
+                                    {student.lastname && ` ${student.lastname}`}
                             </li>
                             } else return null
                            
