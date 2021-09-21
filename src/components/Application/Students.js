@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useApp } from '../../contexts/AppContext'
-import { Modal, Button, CloseButton, Form, Tabs, Tab } from 'react-bootstrap';
-import { ChatDots, NutFill, Phone } from 'react-bootstrap-icons';
+import { Modal, Button, CloseButton, Form, Tabs, Tab, Spinner } from 'react-bootstrap';
+import { ChatDots} from 'react-bootstrap-icons';
 import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse';
 import { BookmarkPlusFill, CalendarMinusFill, RecordCircleFill } from 'react-bootstrap-icons';
 import { Branch } from './Branch';
@@ -46,7 +46,8 @@ export default function Students() {
         hideUsers,
         lightCheck,
         handleLight,
-        options
+        options,
+        loading
     } = useApp()
 
 
@@ -76,7 +77,7 @@ export default function Students() {
 
     const changeBranche = e => setBranch(e)
 
-
+  
     return (
         <div>
             <Modal show={show} onHide={handleClose}>
@@ -162,171 +163,175 @@ export default function Students() {
             {/* <h1 className="text-light">Студенты - {students.filter(student => student.hide !== true).length}</h1> */}
 
             <Branch />
-            <Tabs
-                id="students"
-                activeKey={key}
-                onSelect={(k) => setKey(k)}
-                className="d-flex justify-content-center mb-1 border-0"
-            >
-                <Tab eventKey="active" title={<BookmarkPlusFill />} tabClassName={key == 'active' ? 'text-secondary' : 'text-white'}>
-                    <ul className='students-list-container'>
-                        {filter = students.filter(student => student.hide == false || !student.hide)
-                            .filter(student => options.activeBranch == student.branch
-                                || (options.activeBranch == 'Общая категория')
-                            )
-                            .map((student, i) => <li
-                                draggable="true"
-                                key={student.id}
-                                className={lightCheck == student.id ? 'students-list lightcheck' : 'students-list'}
-                                style={{ minHeight: '38px' }}
-                                onClick={() => handleLight(student.id)}
-                            >
-                                <div className='student-list-info'>
-                                    <span onClick={(e) => {
-                                        e.stopPropagation()
-                                        setId(student.id)
-                                        handleShow()
-                                    }
-
-                                    } className={student.message ? `blink2` : `noblink`}> {student.message ? <ChatDots /> : ''}
-                                        &nbsp;
-                                    </span>
-                                    <span className="index-student">
-                                        <RecordCircleFill
-                                            className='circle'
-
-                                            style={{
-                                                color: options.activeBranch == 'Общая категория'
-                                                    ? (!student.branch || student.branch == 'Общая категория' ? null : (options.branches.find(item => item.id == student.branch) && options.branches.find(item => item.id == student.branch).color))
-                                                    : options.branches.find(item => item.id == student.branch).color
-                                            }}
-                                        />
-                                    </span>
-
-                                    {/* <span className="student-name-index" > {student.name} </span> */}
-                                    <span className='student-message-btn' onClick={(e) => {
-                                        e.stopPropagation()
-                                        handleOptions(student.id, i)
-                                    }}>{`${student.name} ${(student.lastname !== undefined && student.lastname !== '') ? student.lastname.slice(0, 1).concat('.') : ''}`}</span>
-                                </div>
-                                <div className="student-list-controls">
-                                    <span className={student.balance > 0 ? 'student-balance' : 'student-balance minus-balance'}
-                                    >{(student.showBalance === undefined || student.showBalance === false) && student.balance}</span>
-
-                                    <span className="student-list-buttons">
-                                        {
-                                            (student.showBalance === undefined || student.showBalance === false) &&
-                                            <span className="setect-btn">
-                                                <button className='arrow-btn' onClick={(e) => {
-                                                    e.stopPropagation()
-                                                    changeLessons('up', student.id)
-                                                }}>&#9650;</button>
-                                                <button className='arrow-btn' onClick={(e) => {
-                                                    e.stopPropagation()
-                                                    changeLessons('down', student.id)
-                                                }}> &#9660;</button>
-                                            </span>
+            {loading ? <div className='text-center'><Spinner animation="border" variant="primary" /></div> :
+                <Tabs
+                    id="students"
+                    activeKey={key}
+                    onSelect={(k) => setKey(k)}
+                    className="d-flex justify-content-center mb-1 border-0"
+                >
+                    <Tab eventKey="active" title={<BookmarkPlusFill />} tabClassName={key == 'active' ? 'text-secondary' : 'text-white'}>
+               
+                        <ul className='students-list-container'>
+                        
+                            {filter = students.filter(student => student.hide == false || !student.hide)
+                                .filter(student => options.activeBranch == student.branch
+                                    || (options.activeBranch == 'Общая категория')
+                                )
+                                .map((student, i) => <li
+                                    draggable="true"
+                                    key={student.id}
+                                    className={lightCheck == student.id ? 'students-list lightcheck' : 'students-list'}
+                                    style={{ minHeight: '38px' }}
+                                    onClick={() => handleLight(student.id)}
+                                >
+                                    <div className='student-list-info'>
+                                        <span onClick={(e) => {
+                                            e.stopPropagation()
+                                            setId(student.id)
+                                            handleShow()
                                         }
 
-                                        <span className="ml-3">
-                                            <CloseButton onClick={(e) => {
-                                                e.stopPropagation()
-                                                deleteStudent(student.id)
-                                            }} />
+                                        } className={student.message ? `blink2` : `noblink`}> {student.message ? <ChatDots /> : ''}
+                                            &nbsp;
                                         </span>
-                                    </span>
+                                        <span className="index-student">
+                                            <RecordCircleFill
+                                                className='circle'
 
-                                </div>
-                            </li>
-                            )
-                        }
-                    </ul>
-
-
-                    {<div className='students-list-container'>
-                        {filter == 0 && <p className='text-light mt-3'>Нет студентов</p>}
-                        {options.activeBranch != 'Общая категория'
-                            && students.filter(student => student.hide === false || !student.hide)
-                                .filter(student => student.branch == 'Общая категория' || !student.branch)
-                                .length !== 0
-                            && <div style={{ marginTop: '-1rem', color: 'white' }}><AddToBranch /></div>}
-                    </div>}
-
-                </Tab>
-                <Tab eventKey="hide" title={<CalendarMinusFill />} tabClassName={key == 'hide' ? 'text-secondary' : 'text-white'}>
-                    <ul className='students-list-container'>
-                        {students.filter(student => student.hide === true)
-                        .filter(student => options.activeBranch == student.branch
-                            || (options.activeBranch == 'Общая категория')
-                        )
-                        .map((student, i) => <li
-                            draggable="true"
-                            key={student.id}
-                            className='students-list'
-                            style={{ minHeight: '38px', backgroundColor: '#DCE8FA' }}
-
-                        >
-
-                            <div className='student-list-info'>
-                                <span onClick={(e) => {
-                                    e.stopPropagation()
-                                    setIndex(i)
-                                    setId(student.id)
-                                    handleShow()
-                                }
-
-                                } className={student.message ? `blink2` : `noblink`}> {student.message ? <ChatDots /> : ''}
-                                    &nbsp;
-                                </span>
-                                <span className="index-student">
-                                        <RecordCircleFill
-                                            className='circle'
-
-                                            style={{
-                                                color: options.activeBranch == 'Общая категория'
-                                                    ? (!student.branch || student.branch == 'Общая категория' ? null : (options.branches.find(item => item.id == student.branch) && options.branches.find(item => item.id == student.branch).color))
-                                                    : options.branches.find(item => item.id == student.branch).color
-                                            }}
-                                        />
-                                    </span>
-
-                                {/* <span className="student-name-index" > {student.name} </span> */}
-                                <span className='student-message-btn' onClick={() => handleOptions(student.id, i)}>{student.name}</span>
-                            </div>
-                            <div className="student-list-controls">
-                                <span className={student.balance > 0 ? 'student-balance' : 'student-balance minus-balance'}
-                                >{(student.showBalance === undefined || student.showBalance === false) && student.balance}</span>
-
-                                <span className="student-list-buttons">
-                                    {
-                                        (student.showBalance === undefined || student.showBalance === false) &&
-                                        <span className="setect-btn">
-                                            <button className='arrow-btn' onClick={(e) => {
-                                                e.stopPropagation()
-                                                changeLessons('up', student.id)
-                                            }}>&#9650;</button>
-                                            <button className='arrow-btn' onClick={(e) => {
-                                                e.stopPropagation()
-                                                changeLessons('down', student.id)
-                                            }}> &#9660;</button>
+                                                style={{
+                                                    color: options.activeBranch == 'Общая категория'
+                                                        ? (!student.branch || student.branch == 'Общая категория' ? null : (options.branches.find(item => item.id == student.branch) && options.branches.find(item => item.id == student.branch).color))
+                                                        : options.branches.find(item => item.id == student.branch).color
+                                                }}
+                                            />
                                         </span>
-                                    }
 
-                                    <span className="ml-3">
-                                        <CloseButton onClick={(e) => {
+                                        {/* <span className="student-name-index" > {student.name} </span> */}
+                                        <span className='student-message-btn' onClick={(e) => {
                                             e.stopPropagation()
-                                            deleteStudent(student.id)
-                                        }} />
-                                    </span>
-                                </span>
+                                            handleOptions(student.id, i)
+                                        }}>{`${student.name} ${(student.lastname !== undefined && student.lastname !== '') ? student.lastname.slice(0, 1).concat('.') : ''}`}</span>
+                                    </div>
+                                    <div className="student-list-controls">
+                                        <span className={student.balance > 0 ? 'student-balance' : 'student-balance minus-balance'}
+                                        >{(student.showBalance === undefined || student.showBalance === false) && student.balance}</span>
 
-                            </div>
-                        </li>
-                        )}
-                    </ul>
-                </Tab>
-            </Tabs>
+                                        <span className="student-list-buttons">
+                                            {
+                                                (student.showBalance === undefined || student.showBalance === false) &&
+                                                <span className="setect-btn">
+                                                    <button className='arrow-btn' onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        changeLessons('up', student.id)
+                                                    }}>&#9650;</button>
+                                                    <button className='arrow-btn' onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        changeLessons('down', student.id)
+                                                    }}> &#9660;</button>
+                                                </span>
+                                            }
 
+                                            <span className="ml-3">
+                                                <CloseButton onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    deleteStudent(student.id)
+                                                }} />
+                                            </span>
+                                        </span>
+
+                                    </div>
+                                </li>
+                                )
+                            }
+                        </ul>
+
+
+                        {<div className='students-list-container'>
+                            {filter == 0 && !loading && <p className='text-light mt-3'>Нет студентов</p>}
+                            {options.activeBranch != 'Общая категория'
+                                && students.filter(student => student.hide === false || !student.hide)
+                                    .filter(student => student.branch == 'Общая категория' || !student.branch)
+                                    .length !== 0
+                                && <div style={{ marginTop: '-1rem', color: 'white' }}><AddToBranch /></div>}
+                        </div>}
+                    </Tab>
+                    <Tab eventKey="hide" title={<CalendarMinusFill />} tabClassName={key == 'hide' ? 'text-secondary' : 'text-white'}>
+               
+                        <ul className='students-list-container'>
+                    
+                            {students.filter(student => student.hide === true)
+                                .filter(student => options.activeBranch == student.branch
+                                    || (options.activeBranch == 'Общая категория')
+                                )
+                                .map((student, i) => <li
+                                    draggable="true"
+                                    key={student.id}
+                                    className='students-list'
+                                    style={{ minHeight: '38px', backgroundColor: '#DCE8FA' }}
+
+                                >
+
+                                    <div className='student-list-info'>
+                                        <span onClick={(e) => {
+                                            e.stopPropagation()
+                                            setIndex(i)
+                                            setId(student.id)
+                                            handleShow()
+                                        }
+
+                                        } className={student.message ? `blink2` : `noblink`}> {student.message ? <ChatDots /> : ''}
+                                            &nbsp;
+                                        </span>
+                                        <span className="index-student">
+                                            <RecordCircleFill
+                                                className='circle'
+
+                                                style={{
+                                                    color: options.activeBranch == 'Общая категория'
+                                                        ? (!student.branch || student.branch == 'Общая категория' ? null : (options.branches.find(item => item.id == student.branch) && options.branches.find(item => item.id == student.branch).color))
+                                                        : options.branches.find(item => item.id == student.branch).color
+                                                }}
+                                            />
+                                        </span>
+
+                                        {/* <span className="student-name-index" > {student.name} </span> */}
+                                        <span className='student-message-btn' onClick={() => handleOptions(student.id, i)}>{student.name}</span>
+                                    </div>
+                                    <div className="student-list-controls">
+                                        <span className={student.balance > 0 ? 'student-balance' : 'student-balance minus-balance'}
+                                        >{(student.showBalance === undefined || student.showBalance === false) && student.balance}</span>
+
+                                        <span className="student-list-buttons">
+                                            {
+                                                (student.showBalance === undefined || student.showBalance === false) &&
+                                                <span className="setect-btn">
+                                                    <button className='arrow-btn' onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        changeLessons('up', student.id)
+                                                    }}>&#9650;</button>
+                                                    <button className='arrow-btn' onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        changeLessons('down', student.id)
+                                                    }}> &#9660;</button>
+                                                </span>
+                                            }
+
+                                            <span className="ml-3">
+                                                <CloseButton onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    deleteStudent(student.id)
+                                                }} />
+                                            </span>
+                                        </span>
+
+                                    </div>
+                                </li>
+                                )}
+                        </ul>
+                    </Tab>
+                </Tabs>
+            }
         </div>
     )
 }

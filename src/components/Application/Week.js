@@ -24,7 +24,7 @@ export default function Week() {
                 </Tab>
                 <Tab eventKey="future" title="Следующая" tabClassName='text-secondary'>
                 <NextWeek />
-                </Tab>
+                </Tab>  
             </Tabs>
         </div>
     )

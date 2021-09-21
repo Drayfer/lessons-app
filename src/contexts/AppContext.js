@@ -28,6 +28,7 @@ export function AppProvider({ children }) {
   const [nextWeekDays, setNextWeekDays] = useState([])
   const [weekTab, setWeekTab] = useState('active')
   const [lightCheck, setLightCheck] = useState('')
+  const [loading, setLoading] = useState(true)
   const [options, setOptions] = useState({
     notification: true,
     minutes: 3,
@@ -92,6 +93,8 @@ export function AppProvider({ children }) {
     initDatabase()
   }, [])
 
+
+
   function initDatabase() {
     const docRef = firestore.collection("users").doc(currentUser.uid)
     docRef.get().then((doc) => {
@@ -102,9 +105,8 @@ export function AppProvider({ children }) {
         fetchNextWeek()
         fetchLastWeek()
         fetchOptions()  
-        console.log(students)
       } else {
-        pppppppfetchStudents()
+        fetchStudents()
         fetchNextWeek()
         fetchLastWeek()
         fetchOptions()
@@ -114,17 +116,18 @@ export function AppProvider({ children }) {
 
 
 
-  function pppppppfetchStudents() {
+  function fetchStudents() {
     let docRef = firestore.collection("users").doc(currentUser.uid)
     docRef.get().then((doc) => {
       if (doc.data().students) {
         setStudents([...doc.data().students])
+        setLoading(false)
       } else {
         updateFirestore(students)
-      
+        setLoading(false)
       }
     }).catch((error) => {
-      console.log("Error getting document:", error);
+      console.log("Error getting document!:", error);
     });
   }
 
@@ -533,7 +536,8 @@ export function AppProvider({ children }) {
     handleLight,
     deleteStudentsBranch,
     addToBranch,
-    today
+    today,
+    loading
   }
 
   return (
